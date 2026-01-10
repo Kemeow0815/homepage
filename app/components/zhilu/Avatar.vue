@@ -12,6 +12,7 @@ const appConfig = useAppConfig()
 <!-- eslint-disable-next-line vue/block-lang -->
 <style scoped>
 :deep(img) {
+	display: block;
 	height: 1em;
 	border-radius: 1em;
 	color: var(--c-text-3);

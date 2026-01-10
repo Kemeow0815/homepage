@@ -1,5 +1,5 @@
-import process from 'node:process'
 import homepageConfig, { routeRules } from './homepage.config'
+import packageJson from './package.json'
 
 export default defineNuxtConfig({
 	app: {
@@ -10,8 +10,9 @@ export default defineNuxtConfig({
 				{ rel: 'stylesheet', href: 'https://rsms.me/inter/inter.css', media: 'print', onload: 'this.media="all"' },
 			],
 			meta: [
-				{ name: 'author', content: `${homepageConfig.author.name} <${homepageConfig.author.email}>` },
-				{ 'name': 'generator', 'data-github-repo': 'https://github.com/L33Z22L11/homepage-v5' },
+				{ name: 'author', content: [homepageConfig.author.name, homepageConfig.author.email].filter(Boolean).join(', ') },
+				{ name: 'color-scheme', content: 'light dark' },
+				{ 'name': 'generator', 'content': `${packageJson.name} ${packageJson.version}`, 'data-github-repo': packageJson.homepage },
 			],
 			templateParams: {
 				separator: '|',
@@ -47,7 +48,7 @@ export default defineNuxtConfig({
 	},
 
 	future: {
-		compatibilityVersion: 4,
+		compatibilityVersion: 5,
 	},
 
 	routeRules,
@@ -82,10 +83,7 @@ export default defineNuxtConfig({
 	},
 
 	image: {
-		// Netlify 需要特殊处理
-		provider: process.env.NUXT_IMAGE_PROVIDER,
-		domains: [],
-		format: ['avif', 'webp'],
+		provider: 'none',
 	},
 
 	ogImage: {

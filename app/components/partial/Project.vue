@@ -5,21 +5,7 @@ const props = defineProps<{
 	description?: string
 }>()
 
-interface Repo {
-	id: number
-	name: string
-	repo: string
-	description: string
-	createdAt: string
-	updatedAt: string
-	pushedAt: string
-	stars: number
-	watchers: number
-	forks: number
-	defaultBranch: string
-}
-
-const repo = ref<Repo>({
+const initRepo = {
 	id: 0,
 	name: '',
 	repo: '',
@@ -31,15 +17,14 @@ const repo = ref<Repo>({
 	watchers: 0,
 	forks: 0,
 	defaultBranch: '',
-})
+}
+
+type Repo = typeof initRepo
 
 const author = computed(() => props.github?.split('/')[0] || '')
 const authorAvatar = computed(() => getGhAvatar(author.value, { size: null }))
-
-onMounted(async () => {
-	if (!props.github)
-		return
-	repo.value = await $fetch<{ repo: Repo }>(`https://ungh.cc/repos/${props.github}`).then(res => res.repo)
+const { data } = useFetch<{ repo: Repo }>(() => `https://ungh.cc/repos/${props.github}`, {
+	default: () => ({ repo: initRepo }),
 })
 </script>
 
@@ -52,19 +37,19 @@ onMounted(async () => {
 	<div class="project-stats">
 		<span>
 			<Icon name="ri:star-line" />
-			{{ repo.stars }}
+			{{ data.repo.stars }}
 		</span>
 
 		<span>
 			<Icon name="ri:git-fork-line" />
-			{{ repo.forks }}
+			{{ data.repo.forks }}
 		</span>
 
-		<ZDate v-if="repo.updatedAt" class="project-date" icon="ri:calendar-line" :date="repo.updatedAt" />
+		<ZDate class="project-date" icon="ri:calendar-line" :date="data.repo.updatedAt" />
 	</div>
 
 	<div v-if="description" class="project-description">
-		{{ description || repo.description }}
+		{{ description || data.repo.description }}
 	</div>
 
 	<NuxtImg class="project-author-avatar" :src="authorAvatar" :alt="author" />

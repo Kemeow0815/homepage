@@ -9,6 +9,7 @@ const appConfig = useAppConfig()
 
 <template>
 <ZhiluAvatar class="avatar" />
+
 <div class="wrapper">
 	<ZField>
 		<template #label>
@@ -34,38 +35,30 @@ const appConfig = useAppConfig()
 			/>
 		</div>
 	</ZField>
+
 	<ZField label="介绍">
-		<p>
-			<ZLink to="https://github.com/xiyou-linuxer">西邮 Linux 兴趣小组</ZLink>
-			成员，Windows 11 和 Arch Linux 用户。
-		</p>
+		<p>一名即将毕业的西安计算机本科生，目前在北京从事前端开发工作。</p>
+		<p>正在维护自己的开源博客网站，你可以在博客或QQ群和我交流。</p>
 	</ZField>
+
 	<ZField label="近期活动">
-		<p>
-			2024 年 7 月完善
-			<ZLink to="https://wiki.cooo.site/">西邮Wiki</ZLink>，8 月使用 Nuxt Content 重构了
-			<ZLink to="https://blog.zhilu.site/">个人博客</ZLink>，2025 年 3 月重构了西邮 Linux 兴趣小组博客后端，近期正在寻找前端秋招。
-		</p>
+		<p>2024年7月完善<ZLink to="https://wiki.cooo.site/">西邮Wiki</ZLink>，8月使用Nuxt Content重构了<ZLink to="https://blog.zhilu.site/">个人博客</ZLink>。</p>
+		<p>2025年3月重构了<ZLink to="https://www.xiyoulinux.com/">西邮Linux兴趣小组</ZLink>博客后端，5月开始前端实习。</p>
 	</ZField>
+
 	<ZField label="关于主页">
 		<p>
-			自2024年6月1日开始重构，目前缓慢修缮中。
+			感谢
+			<ZBadge link="https://github.com/KazariEX" text="KazariEX" />
+			<ZBadge link="https://github.com/isYangs" text="isYangs" />
+			等众多朋友为个人主页提供帮助。
 		</p>
 		<p>
-			感谢<ZBadge link="https://github.com/KazariEX">
-				KazariEX
-			</ZBadge><ZBadge link="https://github.com/isYangs">
-				isYangs
-			</ZBadge>等众多朋友为个人主页提供帮助。
-			<br>
 			主页开源在
 			<ZLink to="https://github.com/L33Z22L11/homepage-v5" icon="ri:github-line">L33Z22L11/homepage-v5</ZLink>
-			上。
+			上，欢迎使用、参考样式：<br>
 		</p>
-		<p>
-			欢迎使用、参考样式：<br>
-			<ZBadge v-for="item in appConfig.fork" :key="item.link" v-bind="item" />
-		</p>
+		<p><ZBadge v-for="item in appConfig.fork" :key="item.link" v-bind="item" /></p>
 	</ZField>
 </div>
 </template>
@@ -74,10 +67,10 @@ const appConfig = useAppConfig()
 .avatar {
 	position: fixed;
 	opacity: 0.2;
-	top: 0;
 	right: 20vw;
-	margin-right: -0.4em;
-	font-size: min(100vw, 60vh);
+	margin-right: -0.382em; // (1 - √5)/2
+	mask-image: radial-gradient(#FFF 43.7%, transparent 70.7%); // (√5 - 1) / 2 x, x = √2 / 2
+	font-size: min(100vw, 61.8vh);
 	z-index: -1;
 }
 

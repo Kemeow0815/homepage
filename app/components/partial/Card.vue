@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { VNode } from 'vue'
+import type { MaybeRefOrGetter, VNodeChild } from 'vue'
 import type { ButtonProps } from './Button.vue'
 
 export interface CardProps {
@@ -7,7 +7,7 @@ export interface CardProps {
 	badges?: Array<string>
 	nameAlt?: string
 	buttons: Array<ButtonProps>
-	desc: string | VNode | (() => VNode)
+	desc: MaybeRefOrGetter<VNodeChild>
 }
 defineProps<CardProps>()
 </script>
@@ -27,9 +27,8 @@ defineProps<CardProps>()
 	<div class="z-card-buttons">
 		<ZButton v-for="(button, buttonIndex) in buttons" v-bind="button" :key="buttonIndex" />
 	</div>
-	<!-- FIXME: 水合不匹配 -->
 	<p class="z-card-desc">
-		<ZRender :content="desc" />
+		<component :is="() => toValue(desc)" />
 	</p>
 </li>
 </template>

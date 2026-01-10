@@ -16,11 +16,6 @@ export default defineAppConfig({
 	// 用于在主页展示下游引用
 	fork: [
 		{
-			img: 'https://image.m-c.top/?/images/2024/07/21/iyt3mhQCDe/b_a3f6e95501bcc4ce64c19c63a1211bcd.png',
-			link: 'https://oio.mckfs.com/',
-			text: 'Oiolosse MC服',
-		},
-		{
 			img: 'https://api-space.tnxg.top/avatar?s=qq',
 			link: 'https://tnxg.top/',
 			text: '天翔TNXG',
@@ -30,11 +25,6 @@ export default defineAppConfig({
 			link: 'https://ykc.im/',
 			text: 'York Chou',
 		},
-		// {
-		// 	img: 'https://www.xxfer.cn/icon.png',
-		// 	link: 'https://www.xxfer.cn/',
-		// 	text: '小李同学',
-		// },
 		{
 			img: 'https://q1.qlogo.cn/g?b=qq&nk=1043865083&s=2',
 			link: 'https://www.xlenco.top/',
@@ -64,6 +54,11 @@ export default defineAppConfig({
 			img: 'https://file.furrys.im/img/logo.webp',
 			link: 'https://www.furrys.im/',
 			text: 'lpcay',
+		},
+		{
+			img: 'https://wsrv.nl/?url=github.com/zsxcoder.png%3fsize=92',
+			link: 'https://home.zsxcoder.top/',
+			text: '钟神秀',
 		},
 	],
 
