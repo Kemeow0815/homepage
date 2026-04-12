@@ -39,6 +39,8 @@ export default defineNuxtConfig({
 	// @keep-sorted
 	experimental: {
 		extractAsyncDataHandlers: true,
+		// https://github.com/nuxt/nuxt/issues/34142#issuecomment-3791192527
+		nitroAutoImports: true,
 		typescriptPlugin: true,
 		viewTransition: true,
 	},

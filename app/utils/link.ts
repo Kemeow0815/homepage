@@ -26,3 +26,12 @@ export function getGhAvatar(name: string, options?: Record<string, any>) {
 export function isExtLink(url?: string) {
 	return !!url?.includes(':')
 }
+
+export function safelyDecodeUriComponent(str: string) {
+	try {
+		return decodeURIComponent(str)
+	}
+	catch {
+		return str
+	}
+}

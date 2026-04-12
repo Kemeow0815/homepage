@@ -25,11 +25,11 @@ useSeoMeta({
 	height: 100vh;
 	height: 100dvh;
 
-	>.content {
+	> .content {
 		flex-grow: 1;
 		overflow: auto;
 
-		main {
+		> main {
 			padding: 1rem 5vw;
 		}
 	}

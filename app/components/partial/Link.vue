@@ -7,7 +7,7 @@ const props = defineProps<{
 }>()
 
 const tip = computed(() => ({
-	content: isExtLink(props.to) ? getDomain(props.to) : decodeURIComponent(props.to),
+	content: isExtLink(props.to) ? getDomain(props.to) : safelyDecodeUriComponent(props.to),
 	inlinePositioning: true,
 }))
 </script>

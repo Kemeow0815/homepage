@@ -28,7 +28,7 @@ const tip = computed(() => {
 		return ''
 	if (isExtLink(props.link))
 		return getDomain(props.link)
-	return decodeURIComponent(props.link)
+	return safelyDecodeUriComponent(props.link)
 })
 </script>
 
@@ -75,7 +75,7 @@ const tip = computed(() => {
 	border-radius: 3.5px;
 
 	+ .badge-text {
-		margin-left: -0.1em;
+		margin-inline-start: -0.1em;
 	}
 }
 

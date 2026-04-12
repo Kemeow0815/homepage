@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import type { NuxtError } from '#app'
 
-defineProps({
-	error: Object as () => NuxtError,
-})
-
-const handleError = () => clearError({ redirect: '/' })
+defineProps<{
+	error: NuxtError & { url?: string }
+}>()
 </script>
 
 <template>
@@ -15,14 +13,13 @@ const handleError = () => clearError({ redirect: '/' })
 	<main>
 		<div>
 			<ZTitle>出错了</ZTitle>
-			<ZField :label="error?.statusCode?.toString()">
+			<ZField :label="error?.status?.toString()">
 				<div class="error-message">
 					<pre>{{ error?.message }}</pre>
 				</div>
 				<br>
-				<ZButton @click="handleError">
-					返回主页
-				</ZButton>
+				<ZButton text="返回主页" @click="clearError({ redirect: '/' })" />
+				<ZButton text="尝试忽略" @click="clearError()" />
 			</ZField>
 		</div>
 	</main>
