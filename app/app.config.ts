@@ -10,8 +10,8 @@ export default defineAppConfig({
 	...homepageConfig,
 
 	footer: [
-		`© ${new Date().getFullYear()} 纸鹿本鹿 (L33Z22L11)`,
-		h('a', { href: 'https://beian.miit.gov.cn/', target: '_blank', rel: 'noopener nofollow' }, '陕ICP备2025082251号'),
+		`© ${new Date().getFullYear()} 克喵爱吃卤面 (Kemeow0815)`,
+		// h('a', { href: 'https://beian.miit.gov.cn/', target: '_blank', rel: 'noopener nofollow' }, '陕ICP备2025082251号'),
 	],
 
 	// 用于在主页展示下游引用
@@ -35,11 +35,6 @@ export default defineAppConfig({
 			img: 'https://www.mugzx.top/icon.png',
 			link: 'https://www.mugzx.top/',
 			text: 'Mugzx',
-		},
-		{
-			img: 'https://cn.cravatar.com/avatar/1F6C8947D35A8186A1647009BA8BC5F2?size=256',
-			link: 'https://www.kemiao.online/',
-			text: '克喵爱吃卤面',
 		},
 		{
 			img: 'https://q1.qlogo.cn/g?b=qq&nk=3310149631&s=2',
