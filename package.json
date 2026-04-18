@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:quality",
+    "@iconify-json/dinkie-icons": "^1.2.0",
     "@iconify-json/ri": "^1.2.10",
     "@zinkawaii/stylelint-config": "catalog:quality",
     "eslint": "catalog:quality",

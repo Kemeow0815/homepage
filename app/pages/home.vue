@@ -1,4 +1,7 @@
 <script setup lang="ts">
+// 从 homepage.config.ts 导入个人配置
+import homepageConfig from '~~/homepage.config'
+
 useHead({ title: '' })
 
 definePageMeta({
@@ -7,9 +10,6 @@ definePageMeta({
 })
 
 const _appConfig = useAppConfig()
-
-// 从 homepage.config.ts 导入个人配置
-import homepageConfig from '~~/homepage.config'
 
 // 解构配置数据
 const {
@@ -63,15 +63,21 @@ const socialLinks = descriptionAndSocial.socialLinks
 				</div>
 			</div>
 		</div>
-		<h1 class="site-name">{{ topInfo.siteName }}</h1>
-		<p class="motto">{{ topInfo.motto }}</p>
+		<h1 class="site-name">
+			{{ topInfo.siteName }}
+		</h1>
+		<p class="motto">
+			{{ topInfo.motto }}
+		</p>
 	</section>
 
 	<!-- 信息区域 -->
 	<section class="info-section">
 		<div class="left-column card">
 			<div class="personal-info">
-				<h2 class="section-title">个人信息</h2>
+				<h2 class="section-title">
+					个人信息
+				</h2>
 				<div class="info-grid">
 					<p><strong>姓名:</strong> {{ personalInfo.name }}</p>
 					<p><strong>性别:</strong> {{ personalInfo.gender }}</p>
@@ -88,16 +94,24 @@ const socialLinks = descriptionAndSocial.socialLinks
 		<div class="right-column">
 			<div class="personality card">
 				<div class="personality-info">
-					<p class="type">{{ personality.type }}</p>
-					<p class="type-name">{{ personality.typeName }}</p>
-					<p class="personality-desc">{{ personality.description }}</p>
+					<p class="type">
+						{{ personality.type }}
+					</p>
+					<p class="type-name">
+						{{ personality.typeName }}
+					</p>
+					<p class="personality-desc">
+						{{ personality.description }}
+					</p>
 				</div>
 				<div class="personality-icon">
-					<Icon name="ri:user-smile-line" />
+					<img :src="personality.svg" :alt="personality.type" class="personality-svg">
 				</div>
 			</div>
 			<div class="description-and-social card">
-				<p class="description">{{ description }}</p>
+				<p class="description">
+					{{ description }}
+				</p>
 				<div class="social-links">
 					<a
 						v-for="link in socialLinks"
@@ -118,7 +132,9 @@ const socialLinks = descriptionAndSocial.socialLinks
 	<!-- 技能与项目区域 -->
 	<section class="skills-and-projects">
 		<div class="skills card">
-			<h2 class="section-title">技能</h2>
+			<h2 class="section-title">
+				技能
+			</h2>
 			<div class="skills-content">
 				<div class="skill-category">
 					<h4>技术</h4>
@@ -129,7 +145,7 @@ const socialLinks = descriptionAndSocial.socialLinks
 							:src="icon"
 							alt="技术图标"
 							class="skill-icon"
-						/>
+						>
 					</div>
 				</div>
 				<div class="skill-category">
@@ -141,14 +157,18 @@ const socialLinks = descriptionAndSocial.socialLinks
 							:src="icon"
 							alt="通用图标"
 							class="skill-icon"
-						/>
+						>
 					</div>
 				</div>
 			</div>
-			<p class="learning">{{ skills.learning }}</p>
+			<p class="learning">
+				{{ skills.learning }}
+			</p>
 		</div>
 		<div class="projects card">
-			<h2 class="section-title">项目</h2>
+			<h2 class="section-title">
+				项目
+			</h2>
 			<div class="projects-grid">
 				<a
 					v-for="project in projects"
@@ -168,17 +188,25 @@ const socialLinks = descriptionAndSocial.socialLinks
 	<!-- 爱好与评价区域 -->
 	<section class="hobbies-and-evaluation">
 		<div class="hobbies card">
-			<h2 class="section-title">爱好</h2>
+			<h2 class="section-title">
+				爱好
+			</h2>
 			<ul class="hobbies-list">
-				<li v-for="hobby in hobbies" :key="hobby">{{ hobby }}</li>
+				<li v-for="hobby in hobbies" :key="hobby">
+					{{ hobby }}
+				</li>
 			</ul>
 		</div>
 		<div class="self-evaluation card">
-			<h2 class="section-title">评价</h2>
+			<h2 class="section-title">
+				评价
+			</h2>
 			<div class="evaluation-content">
 				<p><strong>思想:</strong> {{ selfEvaluation.thoughts }}</p>
 				<p><strong>工作:</strong> {{ selfEvaluation.work }}</p>
-				<p class="summary"><strong>总结:</strong> {{ selfEvaluation.summary }}</p>
+				<p class="summary">
+					<strong>总结:</strong> {{ selfEvaluation.summary }}
+				</p>
 			</div>
 		</div>
 	</section>
@@ -403,6 +431,12 @@ const socialLinks = descriptionAndSocial.socialLinks
 				color: var(--c-primary);
 				opacity: 0.6;
 				transition: transform 0.3s ease;
+
+				.personality-svg {
+					width: 100px;
+					height: 100px;
+					object-fit: contain;
+				}
 
 				&:hover {
 					transform: rotate(15deg);

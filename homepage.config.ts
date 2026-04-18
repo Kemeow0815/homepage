@@ -30,65 +30,70 @@ const topInfo = {
 
 // 个人信息
 const personalInfo = {
-	name: '柳清扬',
+	name: 'MCY',
 	gender: '男',
-	address: '陕西西安',
-	school: '武汉理工大学',
-	grade: '二〇二一级',
-	major: '人工智能',
-	email: '01@liushen.fun',
-	qq: '3162475700',
-	birthday: '2003/01/01',
+	address: '江苏苏州',
+	school: '南京工业职业技术大学',
+	grade: '二〇二三级',
+	major: '自动化技术与应用',
+	email: 'mcy@kemiaosw.top',
+	qq: '3813596020',
+	birthday: '2005/08/15',
 }
 
 // 性格类型
 const personality = {
-	type: 'ENFJ-T',
-	typeName: '主人公',
-	svg: '/config/img/enfj.svg',
-	url: 'https://cdn.jsdmirror.com/gh/zsxcoder/github-img@main/img/infj.avif',
-	description: '富有魅力和鼓舞人心的领导者，能够吸引和激励他人。',
+	type: 'INFJ-T',
+	typeName: '提倡者',
+	svg: 'https://cdn.jsdmirror.com/gh/zsxcoder/github-img@main/img/infj.avif',
+	url: 'https://www.16personalities.com/infj-personality',
+	description: '倡导者是默默的远见者，他们往往是鼓舞人心、不知疲倦的理想主义者。',
 }
 
 // 个人描述及社交链接
 const descriptionAndSocial = {
-	description: '大家好！这里是清羽飞扬的小站。为什么叫清羽飞扬呢？因为"清扬"是我的名字，而"飞扬"代表着自由和轻盈，这与我的性格不谋而合。我是一个充满热情、富有同情心的人，喜欢与人交流，乐于分享我的想法和见解。在这里，我会分享我的生活点滴、兴趣爱好以及对世界的观察和思考。希望我的小站能给大家带来一些启发和乐趣。',
+	description: '大家好！这里是克喵爱吃卤面的小站。为什么叫克喵爱吃卤面呢？「克喵」来自小说《诡秘之主》的主角，「卤面」来自《宿命之环》主角卢米安·李。你可以称呼我克喵。目前在南京就学，博客是兴趣使然，没什么技术，只会CTRL CV。不常聊天，网上找我的，我会回，但是一般不会聊久，见谅。最后，欢迎您来到我的主页！',
 	socialLinks: [
-		{ platform: 'GitHub', url: 'https://github.com/willow-god', icon: 'ri:github-line' },
-		{ platform: 'Gitee', url: 'https://gitee.com/willow-god', icon: 'ri:git-repository-line' },
-		{ platform: 'QQ', url: 'https://qm.qq.com/cgi-bin/qm_share/open_source_page?uin=3162475700&jump_from=webapi', icon: 'ri:qq-line' },
+		{ platform: 'GitHub', url: 'https://github.com/Kemeow0815', icon: 'ri:github-line' },
+		{ platform: 'Gitee', url: 'https://gitee.com/kemiaoshiwo', icon: 'ri:gitee-line' },
+		{ platform: 'QQ', url: 'https://qm.qq.com/q/cX0MfAZEQg', icon: 'ri:qq-line' },
+		{ platform: 'Mail', url: 'mailto:mcy@kemiaosw.top', icon: 'mynaui:mail' },
+		{ platform: 'BiliBili', url: 'https://space.bilibili.com/3546643173477234', icon: 'dinkie-icons:bilibili' },
+		{ platform: 'Telegram', url: 'https://t.me/yxksw', icon: 'ri:telegram-line' },
 	],
 }
 
 // 技能列表（使用图标链接）
 const skills = {
 	technical: [
-		'https://img02.anheyu.com/adminuploads/1/2022/09/25/633005bf0fd1e.jpg',
-		'https://img02.anheyu.com/adminuploads/1/2022/09/25/63300647df7fa.png',
-		'https://img02.anheyu.com/adminuploads/1/2022/09/25/63300647e1f10.png',
-		'https://img02.anheyu.com/adminuploads/1/2022/09/26/6330ff27e5c9b.png',
-		'https://img02.anheyu.com/adminuploads/1/2022/09/25/63300647dea51.png',
-		'https://img02.anheyu.com/adminuploads/1/2023/05/09/645a45854e093.png',
-		'https://img02.anheyu.com/adminuploads/1/2022/09/25/633001374747b.png',
+		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/astro.svg',
+		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/css.svg',
+		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/git.svg',
+		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/html.svg',
+		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/js.svg',
+		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/markdown.svg',
+		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/ts.svg',
 	],
 	general: [
-		'https://img02.anheyu.com/adminuploads/1/2022/09/25/633006cc55e07.png',
-		'https://img02.anheyu.com/adminuploads/1/2022/09/25/633006eee047b.png',
-		'https://img02.anheyu.com/adminuploads/1/2022/09/25/633006f9ab27d.png',
-		'https://img02.anheyu.com/adminuploads/1/2023/04/11/6434a635e9726.webp',
-		'https://img02.anheyu.com/adminuploads/1/2022/09/25/633007087a4dc.webp',
+		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/nextjs.svg',
+		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/node.svg',
+		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/nuxt.svg',
+		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/php.svg',
+		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/vite.svg',
+		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/vue.svg',
 	],
 	learning: '正在持续学习中',
 }
 
 // 项目列表
 const projects = [
-	{ name: 'Friend-Circle-lite', description: '轻量化友链朋友圈', url: 'https://github.com/willow-god/Friend-Circle-Lite' },
-	{ name: 'Hexo-Safego', description: 'hexo插件之安全跳转中转页', url: 'https://github.com/willow-god/hexo-safego' },
+	{ name: 'miaoluoge-links', description: '我的友链屋', url: 'https://github.com/Kemeow0815/miaoluoge-links' },
+	{ name: 'Gridea-pro-flavor-theme', description: 'Grideo-pro主题自用', url: 'https://github.com/Kemeow0815/Gridea-pro-flavor-theme' },
+	{ name: 'Homepage', description: '纸鹿的个人主页自用', url: 'https://github.com/Kemeow0815/homepage' },
 ]
 
 // 兴趣爱好
-const hobbies = ['阅读', '写作', '编程', '摄影']
+const hobbies = ['阅读', '写作', '编程', '小说']
 
 // 自我评价
 const selfEvaluation = {
@@ -100,15 +105,22 @@ const selfEvaluation = {
 // ==================== 主页配置导出 ====================
 
 const homepageConfig = {
-	title: '纸鹿 (@L33Z22L11)',
-	subtitle: '纸鹿至麓不知路，支炉制露不止漉',
-	description: '纸鹿（也称作纸鹿本鹿、Zhilu、L33Z22L11）是一名开源爱好者，这是纸鹿的个人主页。他有一个博客「纸鹿摸鱼处」，记录了他在生活和技术学习中的点滴经历，充满启发与思考。他的个人主页和博客界面简洁美观，内容丰富实用，人气互动活跃，涵盖了编程、生活、学习等多个领域，为读者提供了卓越的阅读体验。',
+	title: '克喵(KeMiao)',
+	subtitle: '每一段旅行，都有终点。',
+	description: '欢迎来到我的主页，你可以在这里了解我的信息。',
 	author,
 	language: 'zh-CN',
 	timeZone: 'Asia/Shanghai',
 	favicon: '/icon.png',
-	url: 'https://www.zhilu.site/',
-	blogAtom: 'https://blog.zhilu.site/atom.xml',
+	url: 'https://www.kemiaosw.top/',
+	blog: {
+		url: 'https://kemeow0815.github.io/',
+		atom: 'https://kemeow0815.github.io/feed.xml',
+		link: 'https://kemeow0815.github.io/links',
+		archive: 'https://kemeow0815.github.io/archive',
+		name: '喵洛阁',
+	},
+
 	// 主页个人配置
 	topInfo,
 	personalInfo,
@@ -118,6 +130,26 @@ const homepageConfig = {
 	projects,
 	hobbies,
 	selfEvaluation,
+
+	// Moments 即刻短文配置
+	moments: {
+		// 数据源类型: 'local' | 'ispeak' | 'tgtalk'
+		type: 'tgtalk',
+		// 本地配置
+		local: {
+			pageSize: 10,
+		},
+		// ispeak API 配置
+		ispeak: {
+			api: 'https://ispeak.api.example.com/',
+			author: '',
+			pageSize: '20',
+		},
+		// tgtalk API 配置
+		tgtalk: {
+			url: 'https://tgtalk.kemeow.top/',
+		},
+	},
 }
 
 // https://nitro.build/config#routerules
