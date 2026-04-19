@@ -65,7 +65,15 @@ export default defineAppConfig({
 				{ icon: 'ri:id-card-line', text: '简介', url: '/' },
 				{ icon: 'ri:quill-pen-line', text: '文章', url: '/article' },
 				{ icon: 'ri:chat-smile-line', text: '即刻', url: '/moments' },
-				{ icon: 'tabler:friends', text: '友链屋', url: 'https://www.268682.xyz' },
+				{
+					icon: 'ri:links-line',
+					text: '友链',
+					url: '#',
+					children: [
+						{ icon: 'tabler:friends', text: '友链屋', url: 'https://www.268682.xyz' },
+						{ icon: 'ri:add-circle-line', text: '申请友链', url: '/addlinks' },
+					],
+				},
 				{ icon: 'ri:code-line', text: '项目', url: '/project' },
 				{ icon: 'ri:planet-line', text: '站点', url: '/site' },
 				{ icon: 'ri:history-line', text: '日志', url: '/log' },
@@ -74,9 +82,10 @@ export default defineAppConfig({
 		{
 			title: '社交',
 			items: [
-				{ icon: 'ri:qq-line', text: '群: 169994096', url: 'https://jq.qq.com/?_wv=1027&k=lQfNSeEd' },
-				{ icon: 'ri:mail-line', text: 'hi@zhilu.cyou', url: 'mailto:hi@zhilu.cyou' },
-				{ icon: 'ri:github-line', text: 'Github', url: 'https://github.com/L33Z22L11' },
+				{ icon: 'ri:qq-line', text: 'id: 3813596020', url: 'https://qm.qq.com/q/cX0MfAZEQg' },
+				{ icon: 'ri:mail-line', text: 'mcy@kemiaosw.top', url: 'mailto:mcy@kemiaosw.top' },
+				{ icon: 'ri:github-line', text: 'Github', url: 'https://github.com/Kemeow0815' },
+				{ icon: 'ri:telegram-line', text: 'Telegram', url: 'https://t.me/yxksw' },
 			],
 		},
 	] satisfies Nav,

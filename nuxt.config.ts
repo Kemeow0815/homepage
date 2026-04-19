@@ -32,6 +32,7 @@ export default defineNuxtConfig({
 	components: [
 		{ path: '~/components/partial', prefix: 'Z' },
 		'~/components',
+		'~/components/content',
 	],
 
 	css: [
@@ -99,5 +100,10 @@ export default defineNuxtConfig({
 		name: homepageConfig.title,
 		url: homepageConfig.url,
 		defaultLocale: homepageConfig.language,
+	},
+
+	runtimeConfig: {
+		// 仅在服务端可用的私有配置
+		githubToken: process.env.GITHUB_TOKEN,
 	},
 })

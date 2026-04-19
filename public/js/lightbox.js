@@ -1,35 +1,38 @@
-(function() {
-  class Lightbox {
-    constructor(options = {}) {
-      this.options = Object.assign({
-        animationDuration: 300,
-        closeOnOverlayClick: true,
-        onOpen: null,
-        onClose: null,
-        onNavigate: null
-      }, options);
+(function () {
+	class Lightbox {
+		constructor(options = {}) {
+			this.options = Object.assign(
+				{
+					animationDuration: 300,
+					closeOnOverlayClick: true,
+					onOpen: null,
+					onClose: null,
+					onNavigate: null,
+				},
+				options,
+			);
 
-      this.images = [];
-      this.currentIndex = 0;
-      this.isOpen = false;
-      this.zoomLevel = 1;
-      this.touchStartX = 0;
-      this.touchEndX = 0;
-      this.wheelTimer = null;
-      this.preloadedImages = {};
+			this.images = [];
+			this.currentIndex = 0;
+			this.isOpen = false;
+			this.zoomLevel = 1;
+			this.touchStartX = 0;
+			this.touchEndX = 0;
+			this.wheelTimer = null;
+			this.preloadedImages = {};
 
-      this.init();
-    }
+			this.init();
+		}
 
-    init() {
-      this.createStyles();
-      this.createLightbox();
-      this.bindEvents();
-    }
+		init() {
+			this.createStyles();
+			this.createLightbox();
+			this.bindEvents();
+		}
 
-    createStyles() {
-      const style = document.createElement('style');
-      style.textContent = `
+		createStyles() {
+			const style = document.createElement("style");
+			style.textContent = `
         .lb-lightbox-overlay {
           position: fixed;
           top: 0;
@@ -123,235 +126,303 @@
             height: 40px;
             font-size: 20px;
           }
+          .lb-lightbox-image {
+            max-width: 95vw;
+            max-height: 80vh;
+            width: auto;
+            height: auto;
+          }
+          .lb-lightbox-image-wrapper {
+            padding: 10px;
+          }
         }
       `;
-      document.head.appendChild(style);
-    }
+			document.head.appendChild(style);
+		}
 
-    createLightbox() {
-      this.overlay = document.createElement('div');
-      this.overlay.className = 'lb-lightbox-overlay';
+		createLightbox() {
+			this.overlay = document.createElement("div");
+			this.overlay.className = "lb-lightbox-overlay";
 
-      this.contentWrapper = document.createElement('div');
-      this.contentWrapper.className = 'lb-lightbox-content-wrapper';
+			this.contentWrapper = document.createElement("div");
+			this.contentWrapper.className = "lb-lightbox-content-wrapper";
 
-      this.container = document.createElement('div');
-      this.container.className = 'lb-lightbox-container';
+			this.container = document.createElement("div");
+			this.container.className = "lb-lightbox-container";
 
-      this.imageWrapper = document.createElement('div');
-      this.imageWrapper.className = 'lb-lightbox-image-wrapper';
+			this.imageWrapper = document.createElement("div");
+			this.imageWrapper.className = "lb-lightbox-image-wrapper";
 
-      this.image = document.createElement('img');
-      this.image.className = 'lb-lightbox-image';
+			this.image = document.createElement("img");
+			this.image.className = "lb-lightbox-image";
 
-      this.prevButton = document.createElement('button');
-      this.prevButton.className = 'lb-lightbox-nav lb-lightbox-prev';
-      this.prevButton.innerHTML = '&#10094;';
+			this.prevButton = document.createElement("button");
+			this.prevButton.className = "lb-lightbox-nav lb-lightbox-prev";
+			this.prevButton.innerHTML = "&#10094;";
 
-      this.nextButton = document.createElement('button');
-      this.nextButton.className = 'lb-lightbox-nav lb-lightbox-next';
-      this.nextButton.innerHTML = '&#10095;';
+			this.nextButton = document.createElement("button");
+			this.nextButton.className = "lb-lightbox-nav lb-lightbox-next";
+			this.nextButton.innerHTML = "&#10095;";
 
-      this.closeButton = document.createElement('button');
-      this.closeButton.className = 'lb-lightbox-close';
-      this.closeButton.innerHTML = '&times;';
+			this.closeButton = document.createElement("button");
+			this.closeButton.className = "lb-lightbox-close";
+			this.closeButton.innerHTML = "&times;";
 
-      this.imageWrapper.appendChild(this.image);
-      this.container.appendChild(this.imageWrapper);
-      this.contentWrapper.appendChild(this.container);
-      this.contentWrapper.appendChild(this.prevButton);
-      this.contentWrapper.appendChild(this.nextButton);
-      this.contentWrapper.appendChild(this.closeButton);
+			this.imageWrapper.appendChild(this.image);
+			this.container.appendChild(this.imageWrapper);
+			this.contentWrapper.appendChild(this.container);
+			this.contentWrapper.appendChild(this.prevButton);
+			this.contentWrapper.appendChild(this.nextButton);
+			this.contentWrapper.appendChild(this.closeButton);
 
-      this.overlay.appendChild(this.contentWrapper);
-      document.body.appendChild(this.overlay);
+			this.overlay.appendChild(this.contentWrapper);
+			document.body.appendChild(this.overlay);
 
-      this.closeButton.addEventListener('click', this.close.bind(this));
-    }
+			this.closeButton.addEventListener("click", this.close.bind(this));
+		}
 
-    bindEvents() {
-      document.addEventListener('click', this.handleImageClick.bind(this), true);
-      this.overlay.addEventListener('click', this.handleOverlayClick.bind(this));
-      this.prevButton.addEventListener('click', this.showPreviousImage.bind(this));
-      this.nextButton.addEventListener('click', this.showNextImage.bind(this));
-      this.closeButton.addEventListener('click', this.close.bind(this));
-      document.addEventListener('keydown', this.handleKeyDown.bind(this));
-      this.overlay.addEventListener('wheel', this.handleWheel.bind(this));
-      this.overlay.addEventListener('touchstart', this.handleTouchStart.bind(this));
-      this.overlay.addEventListener('touchmove', this.handleTouchMove.bind(this));
-      this.overlay.addEventListener('touchend', this.handleTouchEnd.bind(this));
-    }
+		bindEvents() {
+			document.addEventListener(
+				"click",
+				this.handleImageClick.bind(this),
+				true,
+			);
+			this.overlay.addEventListener(
+				"click",
+				this.handleOverlayClick.bind(this),
+			);
+			this.prevButton.addEventListener(
+				"click",
+				this.showPreviousImage.bind(this),
+			);
+			this.nextButton.addEventListener("click", this.showNextImage.bind(this));
+			this.closeButton.addEventListener("click", this.close.bind(this));
+			document.addEventListener("keydown", this.handleKeyDown.bind(this));
+			this.overlay.addEventListener("wheel", this.handleWheel.bind(this));
+			this.overlay.addEventListener(
+				"touchstart",
+				this.handleTouchStart.bind(this),
+			);
+			this.overlay.addEventListener(
+				"touchmove",
+				this.handleTouchMove.bind(this),
+			);
+			this.overlay.addEventListener("touchend", this.handleTouchEnd.bind(this));
+		}
 
-    handleImageClick(event) {
-      const clickedImage = event.target.closest('img');
-      if (clickedImage && !this.isOpen) {
-        event.preventDefault();
-        event.stopPropagation();
-        this.images = Array.from(document.querySelectorAll('.markdown-body img, table img'));
-        this.currentIndex = this.images.indexOf(clickedImage);
-        this.open();
-      }
-    }
+		handleImageClick(event) {
+			const clickedImage = event.target.closest("img");
+			if (clickedImage && !this.isOpen) {
+				event.preventDefault();
+				event.stopPropagation();
+				this.images = Array.from(
+					document.querySelectorAll(".markdown-body img, table img"),
+				);
+				this.currentIndex = this.images.indexOf(clickedImage);
+				this.open();
+			}
+		}
 
-    handleOverlayClick(event) {
-      if (event.target === this.overlay && this.options.closeOnOverlayClick) {
-        this.close();
-      }
-    }
+		handleOverlayClick(event) {
+			if (event.target === this.overlay && this.options.closeOnOverlayClick) {
+				this.close();
+			}
+		}
 
-    handleKeyDown(event) {
-      if (!this.isOpen) return;
-      switch (event.key) {
-        case 'ArrowLeft':
-          this.showPreviousImage();
-          break;
-        case 'ArrowRight':
-          this.showNextImage();
-          break;
-        case 'Escape':
-          this.close();
-          break;
-      }
-    }
+		handleKeyDown(event) {
+			if (!this.isOpen) return;
+			switch (event.key) {
+				case "ArrowLeft":
+					this.showPreviousImage();
+					break;
+				case "ArrowRight":
+					this.showNextImage();
+					break;
+				case "Escape":
+					this.close();
+					break;
+			}
+		}
 
-    handleWheel(event) {
-      event.preventDefault();
+		handleWheel(event) {
+			event.preventDefault();
 
-      if (event.ctrlKey) {
-        this.zoomLevel += event.deltaY > 0 ? -0.1 : 0.1;
-        this.zoomLevel = Math.max(1, this.zoomLevel);
-        this.image.style.transform = `scale(${this.zoomLevel})`;
-      } else {
-        clearTimeout(this.wheelTimer);
-        this.wheelTimer = setTimeout(() => {
-          const delta = Math.sign(event.deltaY);
-          if (delta > 0) {
-            this.showNextImage();
-          } else {
-            this.showPreviousImage();
-          }
-        }, 50);
-      }
-    }
+			if (event.ctrlKey) {
+				this.zoomLevel += event.deltaY > 0 ? -0.1 : 0.1;
+				this.zoomLevel = Math.max(1, this.zoomLevel);
+				this.image.style.transform = `scale(${this.zoomLevel})`;
+			} else {
+				clearTimeout(this.wheelTimer);
+				this.wheelTimer = setTimeout(() => {
+					const delta = Math.sign(event.deltaY);
+					if (delta > 0) {
+						this.showNextImage();
+					} else {
+						this.showPreviousImage();
+					}
+				}, 50);
+			}
+		}
 
-    handleTouchStart(event) {
-      this.touchStartX = event.touches[0].clientX;
-    }
+		handleTouchStart(event) {
+			this.touchStartX = event.touches[0].clientX;
+		}
 
-    handleTouchMove(event) {
-      this.touchEndX = event.touches[0].clientX;
-    }
+		handleTouchMove(event) {
+			this.touchEndX = event.touches[0].clientX;
+		}
 
-    handleTouchEnd() {
-      const difference = this.touchStartX - this.touchEndX;
-      if (Math.abs(difference) > 50) {
-        difference > 0 ? this.showNextImage() : this.showPreviousImage();
-      }
-    }
+		handleTouchEnd() {
+			const difference = this.touchStartX - this.touchEndX;
+			if (Math.abs(difference) > 50) {
+				difference > 0 ? this.showNextImage() : this.showPreviousImage();
+			}
+		}
 
-    open() {
-      this.isOpen = true;
-      this.overlay.classList.add('active');
-      this.showImage(this.images[this.currentIndex].src);
-      document.body.style.overflow = 'hidden';
-      if (typeof this.options.onOpen === 'function') {
-        this.options.onOpen();
-      }
-    }
+		open() {
+			this.isOpen = true;
+			this.overlay.classList.add("active");
+			this.showImage(this.images[this.currentIndex].src);
+			document.body.style.overflow = "hidden";
+			if (typeof this.options.onOpen === "function") {
+				this.options.onOpen();
+			}
+		}
 
-    close() {
-      document.body.style.overflow = '';
-      this.overlay.classList.remove('active');
-      this.isOpen = false;
-      this.clearPreloadedImages();
-      if (typeof this.options.onClose === 'function') {
-        this.options.onClose();
-      }
-      this.unbindEvents();
-    }
+		close() {
+			document.body.style.overflow = "";
+			this.overlay.classList.remove("active");
+			this.isOpen = false;
+			this.clearPreloadedImages();
+			if (typeof this.options.onClose === "function") {
+				this.options.onClose();
+			}
+			this.unbindEvents();
+		}
 
-    showPreviousImage() {
-      if (this.currentIndex > 0) {
-        this.currentIndex--;
-        this.showImage(this.images[this.currentIndex].src);
-        this.resetButtonScale(this.prevButton);
-      }
-    }
+		showPreviousImage() {
+			if (this.currentIndex > 0) {
+				this.currentIndex--;
+				this.showImage(this.images[this.currentIndex].src);
+				this.resetButtonScale(this.prevButton);
+			}
+		}
 
-    showNextImage() {
-      if (this.currentIndex < this.images.length - 1) {
-        this.currentIndex++;
-        this.showImage(this.images[this.currentIndex].src);
-        this.resetButtonScale(this.nextButton);
-      }
-    }
+		showNextImage() {
+			if (this.currentIndex < this.images.length - 1) {
+				this.currentIndex++;
+				this.showImage(this.images[this.currentIndex].src);
+				this.resetButtonScale(this.nextButton);
+			}
+		}
 
-    resetButtonScale(button) {
-      button.style.transform = 'scale(1.1)';
-      setTimeout(() => {
-        button.style.transform = 'scale(1)';
-      }, 200);
-    }
+		resetButtonScale(button) {
+			button.style.transform = "scale(1.1)";
+			setTimeout(() => {
+				button.style.transform = "scale(1)";
+			}, 200);
+		}
 
-    showImage(imgSrc) {
-      const newImage = new Image();
-      newImage.src = imgSrc;
+		showImage(imgSrc) {
+			// 先隐藏当前图片
+			this.image.style.opacity = "0";
 
-      newImage.onload = () => {
-        this.image.style.transition = `opacity ${this.options.animationDuration}ms ease`;
-        this.image.style.transform = 'scale(1)';
-        this.image.src = imgSrc;
-        this.image.style.opacity = '1';
+			const newImage = new Image();
+			newImage.src = imgSrc;
 
-        this.preloadImages(); 
-        this.prevButton.style.display = this.currentIndex === 0 ? 'none' : 'block';
-        this.nextButton.style.display = this.currentIndex === this.images.length - 1 ? 'none' : 'block';
-      };
+			// 如果图片已经缓存（complete 为 true），直接显示
+			if (newImage.complete) {
+				this.image.style.transition = `opacity ${this.options.animationDuration}ms ease`;
+				this.image.style.transform = "scale(1)";
+				this.image.src = imgSrc;
+				this.image.style.opacity = "1";
+				this.preloadImages();
+				this.prevButton.style.display =
+					this.currentIndex === 0 ? "none" : "block";
+				this.nextButton.style.display =
+					this.currentIndex === this.images.length - 1 ? "none" : "block";
+				return;
+			}
 
-      newImage.onerror = () => {
-        console.error('Failed to load image:', imgSrc);
-      };
-    }
+			newImage.onload = () => {
+				this.image.style.transition = `opacity ${this.options.animationDuration}ms ease`;
+				this.image.style.transform = "scale(1)";
+				this.image.src = imgSrc;
+				this.image.style.opacity = "1";
 
-    preloadImages() {
-      const preloadNext = this.currentIndex + 1;
-      const preloadPrev = this.currentIndex - 1;
+				this.preloadImages();
+				this.prevButton.style.display =
+					this.currentIndex === 0 ? "none" : "block";
+				this.nextButton.style.display =
+					this.currentIndex === this.images.length - 1 ? "none" : "block";
+			};
 
-      if (preloadNext < this.images.length) {
-        this.preloadedImages[preloadNext] = new Image();
-        this.preloadedImages[preloadNext].src = this.images[preloadNext].src;
-      }
+			newImage.onerror = () => {
+				console.error("Failed to load image:", imgSrc);
+			};
+		}
 
-      if (preloadPrev >= 0) {
-        this.preloadedImages[preloadPrev] = new Image();
-        this.preloadedImages[preloadPrev].src = this.images[preloadPrev].src;
-      }
-    }
+		preloadImages() {
+			const preloadNext = this.currentIndex + 1;
+			const preloadPrev = this.currentIndex - 1;
 
-    clearPreloadedImages() {
-      Object.keys(this.preloadedImages).forEach(key => {
-        this.preloadedImages[key].src = '';
-      });
-      this.preloadedImages = {};
-    }
+			if (preloadNext < this.images.length) {
+				this.preloadedImages[preloadNext] = new Image();
+				this.preloadedImages[preloadNext].src = this.images[preloadNext].src;
+			}
 
-    unbindEvents() {
-      document.removeEventListener('click', this.handleImageClick.bind(this), true);
-      this.overlay.removeEventListener('click', this.handleOverlayClick.bind(this));
-      this.prevButton.removeEventListener('click', this.showPreviousImage.bind(this));
-      this.nextButton.removeEventListener('click', this.showNextImage.bind(this));
-      this.closeButton.removeEventListener('click', this.close.bind(this));
-      document.removeEventListener('keydown', this.handleKeyDown.bind(this));
-      this.overlay.removeEventListener('wheel', this.handleWheel.bind(this));
-      this.overlay.removeEventListener('touchstart', this.handleTouchStart.bind(this));
-      this.overlay.removeEventListener('touchmove', this.handleTouchMove.bind(this));
-      this.overlay.removeEventListener('touchend', this.handleTouchEnd.bind(this));
-    }
-  }
+			if (preloadPrev >= 0) {
+				this.preloadedImages[preloadPrev] = new Image();
+				this.preloadedImages[preloadPrev].src = this.images[preloadPrev].src;
+			}
+		}
 
-  window.Lightbox = Lightbox;
+		clearPreloadedImages() {
+			Object.keys(this.preloadedImages).forEach((key) => {
+				this.preloadedImages[key].src = "";
+			});
+			this.preloadedImages = {};
+		}
 
-  document.addEventListener('DOMContentLoaded', () => {
-    new Lightbox();
-  });
+		unbindEvents() {
+			document.removeEventListener(
+				"click",
+				this.handleImageClick.bind(this),
+				true,
+			);
+			this.overlay.removeEventListener(
+				"click",
+				this.handleOverlayClick.bind(this),
+			);
+			this.prevButton.removeEventListener(
+				"click",
+				this.showPreviousImage.bind(this),
+			);
+			this.nextButton.removeEventListener(
+				"click",
+				this.showNextImage.bind(this),
+			);
+			this.closeButton.removeEventListener("click", this.close.bind(this));
+			document.removeEventListener("keydown", this.handleKeyDown.bind(this));
+			this.overlay.removeEventListener("wheel", this.handleWheel.bind(this));
+			this.overlay.removeEventListener(
+				"touchstart",
+				this.handleTouchStart.bind(this),
+			);
+			this.overlay.removeEventListener(
+				"touchmove",
+				this.handleTouchMove.bind(this),
+			);
+			this.overlay.removeEventListener(
+				"touchend",
+				this.handleTouchEnd.bind(this),
+			);
+		}
+	}
+
+	window.Lightbox = Lightbox;
+
+	document.addEventListener("DOMContentLoaded", () => {
+		new Lightbox();
+	});
 })();

@@ -11,8 +11,8 @@
 	--c-border: hsl(var(--hue-theme) 10% 20%);
 	--c-bg-a50: hsl(var(--hue-theme) 10% 7% / 50%);
 	--c-bg-a80: hsl(var(--hue-theme) 10% 7% / 80%);
-	--c-primary: hsl(var(--hue-theme) 100% 70%);
-	--c-primary-soft: hsl(var(--hue-theme) 100% 60% / 20%);
+	--c-primary: hsl(var(--c-primary-h) var(--c-primary-s) calc(var(--c-primary-l) + 15%));
+	--c-primary-soft: hsl(var(--c-primary-h) var(--c-primary-s) 60% / 20%);
 	--ld-bg-blur: var(--c-bg-a80);
 	--ld-bg-card: var(--c-bg-3);
 	--ld-bg-active: var(--c-primary-soft);
@@ -21,7 +21,14 @@
 
 :root,
 .light {
-	--hue-theme: 220deg;
+	// 主题色 HSL 分量（可通过 JS 动态修改）
+	--c-primary-h: 220deg;
+	--c-primary-s: 100%;
+	--c-primary-l: 55%;
+	--c-primary-base: #3366ff;
+
+	// 使用 HSL 分量定义主题色
+	--hue-theme: var(--c-primary-h);
 	--c-text: hsl(var(--hue-theme) 0% 0%);
 	--c-text-1: hsl(var(--hue-theme) 0% 20%);
 	--c-text-2: hsl(var(--hue-theme) 0% 40%);
@@ -34,8 +41,8 @@
 	--c-border: hsl(var(--hue-theme) 10% 91%);
 	--c-bg-a50: hsl(var(--hue-theme) 20% 100% / 50%);
 	--c-bg-a80: hsl(var(--hue-theme) 20% 100% / 80%);
-	--c-primary: hsl(var(--hue-theme) 100% 55%);
-	--c-primary-soft: hsl(var(--hue-theme) 100% 60% / 15%);
+	--c-primary: hsl(var(--c-primary-h) var(--c-primary-s) var(--c-primary-l));
+	--c-primary-soft: hsl(var(--c-primary-h) var(--c-primary-s) 60% / 15%);
 	--c-accent: hsl(180deg 70% 60%);
 	--ld-bg-blur: var(--c-bg-1);
 	--ld-bg-card: var(--c-bg);

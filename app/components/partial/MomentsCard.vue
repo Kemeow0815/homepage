@@ -58,6 +58,9 @@ const renderedContent = computed(() => {
 	return content
 })
 
+// 全局灯箱实例
+let globalLightbox: any = null
+
 // 打开灯箱
 function openLightbox(index: number) {
 	if (typeof window !== 'undefined' && (window as any).Lightbox) {
@@ -66,21 +69,21 @@ function openLightbox(index: number) {
 		if (cardImages.length === 0)
 			return
 
-		// 创建灯箱实例并手动设置图片列表
-		const lightbox = new (window as any).Lightbox({
+		// 如果已有灯箱实例，先关闭并清理
+		if (globalLightbox) {
+			globalLightbox.close()
+			globalLightbox = null
+		}
+
+		// 创建新的灯箱实例
+		globalLightbox = new (window as any).Lightbox({
 			closeOnOverlayClick: true,
 		})
 
-		// 将图片转换为灯箱需要的格式（HTMLImageElement 数组）
-		const imageElements = cardImages.map((src: string) => {
-			const img = document.createElement('img')
-			img.src = src
-			return img
-		})
-
-		lightbox.images = imageElements
-		lightbox.currentIndex = index
-		lightbox.open()
+		// 设置图片列表（直接使用字符串 URL 数组）
+		globalLightbox.images = cardImages.map((src: string) => ({ src }))
+		globalLightbox.currentIndex = index
+		globalLightbox.open()
 	}
 }
 

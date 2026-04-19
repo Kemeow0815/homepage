@@ -3,8 +3,8 @@ import type { MomentItem } from '~/types/moments'
 import homepageConfig from '~~/homepage.config'
 import { localMoments } from '~/data/moments/local'
 import { fetchTgtalkData } from '~/data/moments/tgtalk'
-import MomentsCard from './MomentsCard.vue'
 import { useMomentsStore } from '~/stores/moments'
+import MomentsCard from './MomentsCard.vue'
 
 const props = defineProps<{
 	type: 'local' | 'ispeak' | 'tgtalk'
@@ -84,7 +84,8 @@ async function loadTgtalkData() {
 
 // 加载更多数据
 async function loadMore() {
-	if (loading.value || !hasMore.value) return
+	if (loading.value || !hasMore.value)
+		return
 
 	loading.value = true
 
@@ -120,54 +121,54 @@ if (import.meta.server) {
 </script>
 
 <template>
-	<div class="moments-list">
-		<!-- 筛选状态栏 -->
-		<div v-if="momentsStore.filterTag" class="filter-bar">
-			<span class="filter-info">
-				筛选标签: <strong>{{ momentsStore.filterTag }}</strong>
-				<span class="filter-count">({{ filteredMomentsList.length }} 条)</span>
-			</span>
-			<button class="clear-filter" @click="momentsStore.clearFilter">
-				<Icon name="ri:close-line" />
-				清除筛选
-			</button>
-		</div>
-
-		<!-- 列表内容 -->
-		<div class="moments-container">
-			<MomentsCard
-				v-for="(moment, index) in filteredMomentsList"
-				:key="moment.id"
-				:moment="moment"
-				:style="{ '--delay': `${index * 0.1}s` }"
-			/>
-		</div>
-
-		<!-- 无结果提示 -->
-		<div v-if="filteredMomentsList.length === 0 && momentsStore.filterTag" class="empty-state">
-			<Icon name="ri:inbox-line" />
-			<p>没有找到带有标签 {{ momentsStore.filterTag }} 的说说</p>
-		</div>
-
-		<!-- 加载状态 -->
-		<div v-if="loading" class="loading-state">
-			<Icon name="ri:loader-4-line" class="spin" />
-			<span>加载中...</span>
-		</div>
-
-		<!-- 加载更多按钮 -->
-		<div v-else-if="hasMore" class="load-more">
-			<button :disabled="loading" @click="loadMore">
-				<Icon name="ri:arrow-down-line" />
-				加载更多
-			</button>
-		</div>
-
-		<!-- 结束提示 -->
-		<div v-else-if="message" class="end-message">
-			{{ message }}
-		</div>
+<div class="moments-list">
+	<!-- 筛选状态栏 -->
+	<div v-if="momentsStore.filterTag" class="filter-bar">
+		<span class="filter-info">
+			筛选标签: <strong>{{ momentsStore.filterTag }}</strong>
+			<span class="filter-count">({{ filteredMomentsList.length }} 条)</span>
+		</span>
+		<button class="clear-filter" @click="momentsStore.clearFilter">
+			<Icon name="ri:close-line" />
+			清除筛选
+		</button>
 	</div>
+
+	<!-- 列表内容 -->
+	<div class="moments-container">
+		<MomentsCard
+			v-for="(moment, index) in filteredMomentsList"
+			:key="moment.id"
+			:moment="moment"
+			:style="{ '--delay': `${index * 0.1}s` }"
+		/>
+	</div>
+
+	<!-- 无结果提示 -->
+	<div v-if="filteredMomentsList.length === 0 && momentsStore.filterTag" class="empty-state">
+		<Icon name="ri:inbox-line" />
+		<p>没有找到带有标签 {{ momentsStore.filterTag }} 的说说</p>
+	</div>
+
+	<!-- 加载状态 -->
+	<div v-if="loading" class="loading-state">
+		<Icon name="ri:loader-4-line" class="spin" />
+		<span>加载中...</span>
+	</div>
+
+	<!-- 加载更多按钮 -->
+	<div v-else-if="hasMore" class="load-more">
+		<button :disabled="loading" @click="loadMore">
+			<Icon name="ri:arrow-down-line" />
+			加载更多
+		</button>
+	</div>
+
+	<!-- 结束提示 -->
+	<div v-else-if="message" class="end-message">
+		{{ message }}
+	</div>
+</div>
 </template>
 
 <style lang="scss" scoped>

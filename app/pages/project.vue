@@ -4,9 +4,9 @@ definePageMeta({ headerText: '参与的开源项目' })
 
 const projects = [
 	{
-		title: 'blog-v3',
-		github: 'L33Z22L11/blog-v3',
-		description: '个人博客网站，收获 100 star，被多人使用',
+		title: 'Gridea-pro-flavor-theme',
+		github: 'Kemeow0815/Gridea-pro-flavor-theme',
+		description: 'Gridea-pro主题自改',
 	},
 	{
 		title: 'homepage-v5',

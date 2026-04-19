@@ -1,6 +1,47 @@
 <script setup lang="ts">
+import { watch } from 'vue'
+import { useRoute } from 'vue-router'
+
 const appConfig = useAppConfig()
 const sidebarStore = useSidebarStore()
+const route = useRoute()
+
+// 子菜单展开状态
+const openMenuKeys = ref<Record<string, boolean>>({})
+
+const itemKey = (groupIndex: number, itemIndex: number) => `g${groupIndex}-i${itemIndex}`
+
+// 判断是否有子菜单
+const hasSubItems = (item: any) => Boolean(item.children && item.children.length)
+
+// 判断当前项是否激活
+function isActive(item: any): boolean {
+	if (item.url && item.url !== '#' && !isExtLink(item.url) && route.path === item.url)
+		return true
+
+	if (item.children?.length)
+		return item.children.some(isActive)
+
+	return false
+}
+
+const isOpen = (key: string) => Boolean(openMenuKeys.value[key])
+
+function toggleSubMenu(key: string) {
+	openMenuKeys.value[key] = !openMenuKeys.value[key]
+}
+
+// 自动展开当前激活的菜单
+function openActiveMenus() {
+	appConfig.nav.forEach((group, groupIndex) => {
+		group.items.forEach((item, itemIndex) => {
+			if (hasSubItems(item) && isActive(item))
+				openMenuKeys.value[itemKey(groupIndex, itemIndex)] = true
+		})
+	})
+}
+
+watch(() => route.path, openActiveMenus, { immediate: true })
 </script>
 
 <template>
@@ -17,11 +58,40 @@ const sidebarStore = useSidebarStore()
 			</h2>
 			<menu>
 				<li v-for="(item, itemIndex) in group.items" :key="itemIndex">
-					<ZRawLink v-slot="{ external }" :to="item.url" class="aside-nav-item">
-						<Icon :name="item.icon" />
-						<span class="nav-text">{{ item.text }}</span>
-						<Icon v-if="external" class="external-tip" name="ri:arrow-right-up-line" />
-					</ZRawLink>
+					<!-- 有子菜单的情况 -->
+					<template v-if="hasSubItems(item)">
+						<button
+							class="aside-nav-item aside-nav-item-parent"
+							:class="{ open: isOpen(itemKey(groupIndex, itemIndex)), active: isActive(item) }"
+							type="button"
+							@click="toggleSubMenu(itemKey(groupIndex, itemIndex))"
+						>
+							<span class="nav-text-wrap">
+								<Icon :name="item.icon" />
+								<span class="nav-text">{{ item.text }}</span>
+							</span>
+							<Icon :name="isOpen(itemKey(groupIndex, itemIndex)) ? 'ri:arrow-up-s-line' : 'ri:arrow-down-s-line'" />
+						</button>
+
+						<ul v-show="isOpen(itemKey(groupIndex, itemIndex))" class="aside-subnav">
+							<li v-for="(subItem, subIndex) in item.children" :key="subIndex">
+								<ZRawLink v-slot="{ external }" :to="subItem.url" class="aside-nav-item submenu-item" :class="{ 'router-link-active': isActive(subItem) }">
+									<Icon :name="subItem.icon" />
+									<span class="nav-text">{{ subItem.text }}</span>
+									<Icon v-if="external" class="external-tip" name="ri:arrow-right-up-line" />
+								</ZRawLink>
+							</li>
+						</ul>
+					</template>
+
+					<!-- 没有子菜单的情况 -->
+					<template v-else>
+						<ZRawLink v-slot="{ external }" :to="item.url" class="aside-nav-item" :class="{ 'router-link-active': isActive(item) }">
+							<Icon :name="item.icon" />
+							<span class="nav-text">{{ item.text }}</span>
+							<Icon v-if="external" class="external-tip" name="ri:arrow-right-up-line" />
+						</ZRawLink>
+					</template>
 				</li>
 			</menu>
 		</template>
@@ -148,6 +218,58 @@ const sidebarStore = useSidebarStore()
 	.external-tip {
 		opacity: 0.5;
 		font-size: 1em;
+	}
+}
+
+// 父级菜单按钮
+.aside-nav-item-parent {
+	justify-content: space-between;
+	width: 100%;
+	text-align: left;
+	cursor: pointer;
+	font-weight: 500;
+	border: 1px solid transparent;
+
+	.nav-text-wrap {
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
+		flex-grow: 1;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	&:hover, &.active {
+		background-color: var(--c-bg-soft);
+		color: var(--c-text);
+		border-color: var(--c-primary);
+	}
+
+	&.open {
+		background-color: var(--c-bg-soft);
+		color: var(--c-text);
+	}
+}
+
+// 子菜单
+.aside-subnav {
+	margin: 0.2em 0 0 1.2rem;
+	padding: 0;
+	list-style: none;
+
+	li {
+		margin: 0.25em 0;
+	}
+}
+
+.submenu-item {
+	padding-left: 0.5em;
+	background: transparent;
+	font-size: 0.9em;
+
+	.iconify {
+		font-size: 1.1em;
 	}
 }
 
