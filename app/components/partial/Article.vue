@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type FeedProps from '~/types/feed'
+import type { FeedEntry } from '~/types/feed'
 
-defineProps<FeedProps>()
+defineProps<FeedEntry>()
 </script>
 
 <template>
