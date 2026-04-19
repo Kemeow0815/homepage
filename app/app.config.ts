@@ -81,6 +81,7 @@ export default defineAppConfig({
 					children: [
 						{ icon: 'meteor-icons:bilibili', text: '追番', url: '/bangumi' },
 						{ icon: 'tdesign:device', text: '装备', url: '/equipment' },
+						{ icon: 'bxs:hot', text: '热榜', url: '/hot' },
 					],
 				},
 				{ icon: 'ri:code-line', text: '项目', url: '/project' },
