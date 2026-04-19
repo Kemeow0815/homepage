@@ -9,24 +9,19 @@ const projects = [
 		description: 'Gridea-pro主题自改',
 	},
 	{
-		title: 'homepage-v5',
-		github: 'L33Z22L11/homepage-v5',
-		description: '个人首页，使用 Nuxt.js 构建',
+		title: 'homepage',
+		github: 'Kemeow0815/homepage',
+		description: '纸鹿博客个人自用魔改',
 	},
 	{
-		title: 'hexo-theme-stellar',
-		github: 'xaoxuu/hexo-theme-stellar',
-		description: '简洁优雅的 Hexo 主题',
+		title: 'miaoluoge-links',
+		github: 'Kemeow0815/miaoluoge-links',
+		description: '克喵の友链屋',
 	},
 	{
-		title: 'blog-feed',
-		github: 'xiyou-linuxer/blog-feed',
-		description: '使用 Nitro + MongoDB 搭建的博客订阅聚合 API',
-	},
-	{
-		title: 'zhilu-cv',
-		github: 'L33Z22L11/zhilu-cv',
-		description: '个人简历，使用 Nuxt.js 构建',
+		title: 'smtp-feed',
+		github: 'Kemeow0815/smtp-feed',
+		description: '订阅我的博客',
 	},
 ]
 </script>

@@ -69,6 +69,16 @@ const socialLinks = descriptionAndSocial.socialLinks
 		<p class="motto">
 			{{ topInfo.motto }}
 		</p>
+		<a
+			id="card-info-btn"
+			href="https://github.com/Kemeow0815/smtp-feed/issues/new?template=subscribe.yml"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="github-subscribe-btn"
+		>
+			<Icon name="ri:github-fill" />
+			<span>Follow Me 🛫</span>
+		</a>
 	</section>
 
 	<!-- 信息区域 -->
@@ -318,6 +328,33 @@ const socialLinks = descriptionAndSocial.socialLinks
 		font-size: 1rem;
 		color: var(--c-text-2);
 		font-style: italic;
+	}
+
+	.github-subscribe-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-top: 1rem;
+		padding: 0.6rem 1.2rem;
+		background-color: var(--c-bg-2);
+		border: 1px solid var(--c-border);
+		border-radius: 8px;
+		color: var(--c-text-1);
+		font-size: 0.9rem;
+		text-decoration: none;
+		transition: all 0.2s ease;
+
+		&:hover {
+			background-color: var(--c-primary);
+			border-color: var(--c-primary);
+			color: var(--c-bg);
+			transform: translateY(-2px);
+			box-shadow: 0 4px 12px var(--c-primary-soft);
+		}
+
+		.iconify {
+			font-size: 1.2rem;
+		}
 	}
 }
 
