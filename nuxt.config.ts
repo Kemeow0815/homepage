@@ -1,3 +1,4 @@
+import process from 'node:process'
 import homepageConfig, { routeRules } from './homepage.config'
 import packageJson from './package.json'
 
@@ -104,6 +105,6 @@ export default defineNuxtConfig({
 
 	runtimeConfig: {
 		// 仅在服务端可用的私有配置
-		githubToken: process.env.GITHUB_TOKEN,
+		gitToken: process.env.GIT_TOKEN,
 	},
 })

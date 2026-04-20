@@ -1,4 +1,4 @@
-import { defineEventHandler, readBody, createError } from 'h3'
+import { createError, defineEventHandler, readBody } from 'h3'
 
 interface FriendLinkRequest {
 	name: string
@@ -64,10 +64,7 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	try {
-		new URL(body.website)
-	}
-	catch {
+	if (!URL.canParse(body.website)) {
 		throw createError({
 			statusCode: 400,
 			statusMessage: '请输入有效的博客链接',
@@ -76,10 +73,7 @@ export default defineEventHandler(async (event) => {
 
 	// 截图链接验证（如果提供了）
 	if (body.screenshot?.trim()) {
-		try {
-			new URL(body.screenshot)
-		}
-		catch {
+		if (!URL.canParse(body.screenshot)) {
 			throw createError({
 				statusCode: 400,
 				statusMessage: '请输入有效的截图链接',
@@ -89,10 +83,7 @@ export default defineEventHandler(async (event) => {
 
 	// RSS 链接验证（如果提供了）
 	if (body.feed?.trim()) {
-		try {
-			new URL(body.feed)
-		}
-		catch {
+		if (!URL.canParse(body.feed)) {
 			throw createError({
 				statusCode: 400,
 				statusMessage: '请输入有效的 RSS 订阅链接',
@@ -116,9 +107,9 @@ export default defineEventHandler(async (event) => {
 	}
 
 	const config = useRuntimeConfig()
-	const githubToken = config.githubToken
+	const gitToken = config.gitToken
 
-	if (!githubToken) {
+	if (!gitToken) {
 		throw createError({
 			statusCode: 500,
 			statusMessage: '服务器配置错误：缺少 GitHub Token',
@@ -180,7 +171,7 @@ ${body.feed ? `### 博客 RSS 订阅链接\n${body.feed}\n` : ''}
 		const response = await fetch('https://api.github.com/repos/Kemeow0815/miaoluoge-links/issues', {
 			method: 'POST',
 			headers: {
-				'Authorization': `Bearer ${githubToken}`,
+				'Authorization': `Bearer ${gitToken}`,
 				'Accept': 'application/vnd.github+json',
 				'X-GitHub-Api-Version': '2022-11-28',
 				'Content-Type': 'application/json',
