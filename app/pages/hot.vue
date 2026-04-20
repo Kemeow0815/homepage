@@ -201,17 +201,24 @@ const statusMessage = computed(() => {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0.5em;
   margin-bottom: 20px;
+  position: relative;
+  width: fit-content;
+  margin-inline: auto;
+  font-size: 0.9em;
+  line-height: 1.4;
 
   .platform-tab {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 16px;
-    border: 1px solid var(--c-border);
-    border-radius: 8px;
-    background: var(--c-bg-1);
+    position: relative;
+    margin-bottom: 0.5em;
+    padding: 0.3em 0.5em;
+    border: none;
+    border-radius: 0.4em;
+    background: transparent;
     color: var(--c-text-2);
     font-size: 14px;
     cursor: pointer;
@@ -222,14 +229,26 @@ const statusMessage = computed(() => {
     }
 
     &:hover {
-      border-color: var(--c-primary);
-      color: var(--c-primary);
+      background-color: var(--c-bg-soft);
+      color: var(--c-text);
     }
 
     &.active {
-      background: var(--c-primary);
-      border-color: var(--c-primary);
-      color: white;
+      box-shadow: 0 1px 0.5em var(--ld-shadow);
+      background-color: var(--ld-bg-card);
+      color: var(--c-text);
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -0.5em;
+        left: 0.3em;
+        right: 0.3em;
+        height: 2px;
+        border-radius: 1em;
+        background-color: var(--c-primary);
+        z-index: 1;
+      }
     }
   }
 }
@@ -271,10 +290,11 @@ const statusMessage = computed(() => {
   }
 
   .platform-tabs {
-    gap: 6px;
+    gap: 0.4em;
+    font-size: 0.85em;
 
     .platform-tab {
-      padding: 6px 12px;
+      padding: 0.25em 0.4em;
       font-size: 13px;
 
       .iconify {
@@ -290,16 +310,25 @@ const statusMessage = computed(() => {
 
 @media (max-width: 480px) {
   .platform-tabs {
+    gap: 0.3em;
+    font-size: 0.8em;
+
     .platform-tab {
-      padding: 6px 10px;
+      padding: 0.2em 0.35em;
       font-size: 12px;
 
       span {
-        display: none;
+        font-size: 11px;
       }
 
       .iconify {
-        font-size: 20px;
+        font-size: 14px;
+      }
+
+      &.active::after {
+        left: 0.2em;
+        right: 0.2em;
+        height: 2px;
       }
     }
   }
