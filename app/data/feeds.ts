@@ -6,5 +6,5 @@ export const myFeed = {
 	avatar: 'https://wsrv.nl/?url=github.com%2FKemeow0815.png',
 	feed: 'https://kemeow0815.github.io/feed.xml',
 	desc: '每一段旅行，都有终点。',
-	screenshot: 'https://imgbed.050815.xyz/file/cover/timetable/screenshot.webp',
+	screenshot: 'https://cdn.jsdmirror.com/gh/zsxcoder/github-img@main/img/avatar-screen.webp',
 }

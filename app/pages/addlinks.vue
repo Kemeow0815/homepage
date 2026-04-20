@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { myFeed } from '~/data/feeds'
 import homepageConfig from '~~/homepage.config'
+import { myFeed } from '~/data/feeds'
 
 useHead({
 	title: '申请友链',
@@ -97,13 +97,19 @@ function isValidUrl(url: string): boolean {
 
 // 提交表单
 async function handleSubmit() {
-	if (!validateForm()) return
+	if (!validateForm())
+		return
 
 	isSubmitting.value = true
 	submitError.value = ''
 
 	try {
-		const response = await $fetch('/api/friend-link/apply', {
+		const response = await $fetch<{
+			success: boolean
+			issueUrl?: string
+			issueNumber?: number
+			message: string
+		}>('/api/friend-link/apply', {
 			method: 'POST',
 			body: {
 				name: formData.name,
@@ -176,319 +182,323 @@ function resetForm() {
 </script>
 
 <template>
-	<div class="addlinks-page">
-		<!-- 页面标题区域 -->
-		<div class="page-header-section">
-			<h1 class="page-title">
-				<Icon name="ri:links-line" />
-				期待与您建立友好的互联网连接
-			</h1>
-			<p class="page-subtitle">
-				欢迎来到 {{ homepageConfig.title }}！如果您想申请友链，请先阅读下方的友链要求，
-				若符合要求请填写表单提交申请，感谢您的赏识！
-			</p>
-		</div>
-
-		<!-- 使用 Tab 组件 -->
-		<Tab :tabs="['我的博客信息', '申请友链']" center border>
-			<template #tab1>
-				<div class="link-tab">
-					<FeedCard v-bind="myFeed" />
-					<Copy v-for="(code, prompt) in copyFields" :key="prompt" :prompt="prompt" :code="code" />
-				</div>
-			</template>
-			<template #tab2>
-				<div class="apply-tab">
-					<!-- 注意事项 -->
-					<section class="content-section notice-section">
-						<h2 class="section-title">
-							<Icon name="ri:alert-line" />
-							注意事项
-						</h2>
-						<div class="notice-content">
-							<p>欢迎来到 {{ homepageConfig.title }}！如果想申请友链，请点击查看友链要求，若符合要求请填写下方表单提交申请，发送您网站相关内容，感谢您的赏识！</p>
-						</div>
-					</section>
-
-					<!-- 友链要求 -->
-					<section class="content-section requirements-section">
-						<h2 class="section-title">
-							<Icon name="ri:file-list-3-line" />
-							友链要求
-						</h2>
-
-						<div class="update-badge">
-							<Icon name="ri:refresh-line" />
-							更新记录
-						</div>
-
-						<div class="requirements-content">
-							<p class="update-date">2026-04-19规则更新：</p>
-
-							<ol class="requirements-list">
-								<li>如果想直接申请友链，请尽量确保贵站的文章数量大于10篇，这样更能展现您对网站长期维护的决心。</li>
-								<li>
-									友链友链，先友后链，如果愿意和我多交流，成为朋友（例如多次留言且多次过来玩），完全可以取消10篇文章的限制，前提是贵站满足以下条件：
-									<ul class="sub-list">
-										<li>站点内容积极向上，无不良广告或违规内容。</li>
-										<li>页面设计美观，展现出长期用心经营的态度。</li>
-									</ul>
-								</li>
-								<li>即便取消文章数量的要求，也希望贵站能保持定期更新，这样我们的交流会更有活力！</li>
-							</ol>
-
-							<p class="thanks-text">感谢理解，期待与您成为朋友！如果有任何不便，敬请包涵。</p>
-
-							<ol class="requirements-list" start="4">
-								<li><strong>网站性质：</strong>申请的网站应为<strong>非营利性质</strong>，例如个人博客或博客组织等，体现内容分享的初心与乐趣，原则上不接受商业化严重的站点。</li>
-								<li><strong>内容要求：</strong>博客内容建议以原创为主，避免采集站和严重同质化的内容（如"60秒读懂全世界"等）；同时，需要有一定数量的文章（建议15篇以上），展现长期经营的决心。</li>
-								<li><strong>界面设计：</strong>希望贵站有清晰、美观的界面设计，避免过多广告或影响阅读体验的元素，给访客留下良好的第一印象。</li>
-								<li><strong>更新频率：</strong>希望贵站能保持一定的更新频率，哪怕是每月一篇，也能体现您对博客的用心与坚持。</li>
-								<li><strong>互动意愿：</strong>友链不仅是链接，更是友谊的桥梁。如果您愿意多交流、常互动，友链的意义会更加丰富！</li>
-							</ol>
-						</div>
-					</section>
-
-					<!-- 申请表单 -->
-					<section class="content-section form-section">
-						<h2 class="section-title">
-							<Icon name="ri:edit-line" />
-							提交申请
-						</h2>
-
-						<!-- 成功提示 -->
-						<div v-if="submitSuccess" class="success-message">
-							<Icon name="ri:checkbox-circle-line" />
-							<h3>提交成功！</h3>
-							<p>感谢您的申请，我会尽快审核并添加您的友链。</p>
-							<div class="success-actions">
-								<a
-									v-if="issueUrl"
-									:href="issueUrl"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="btn-primary"
-								>
-									<Icon name="ri:external-link-line" />
-									查看 Issue
-								</a>
-								<button class="btn-secondary" @click="resetForm">
-									<Icon name="ri:refresh-line" />
-									继续申请
-								</button>
-							</div>
-						</div>
-
-						<!-- 表单 -->
-						<form v-else class="apply-form" @submit.prevent="handleSubmit">
-							<!-- 用户昵称 -->
-							<div class="form-group">
-								<label for="name">
-									<Icon name="ri:user-line" />
-									用户昵称 <span class="required">*</span>
-								</label>
-								<input
-									id="name"
-									v-model="formData.name"
-									type="text"
-									placeholder="您希望在友链列表中显示的名称"
-									:class="{ error: errors.name }"
-								>
-								<span v-if="errors.name" class="error-message">{{ errors.name }}</span>
-							</div>
-
-							<!-- 博客名称 -->
-							<div class="form-group">
-								<label for="title">
-									<Icon name="ri:global-line" />
-									博客名称 <span class="required">*</span>
-								</label>
-								<input
-									id="title"
-									v-model="formData.title"
-									type="text"
-									placeholder="您的博客标题"
-									:class="{ error: errors.title }"
-								>
-								<span v-if="errors.title" class="error-message">{{ errors.title }}</span>
-							</div>
-
-							<!-- 博客介绍 -->
-							<div class="form-group">
-								<label for="desc">
-									<Icon name="ri:article-line" />
-									博客/用户介绍 <span class="required">*</span>
-								</label>
-								<textarea
-									id="desc"
-									v-model="formData.desc"
-									rows="3"
-									placeholder="简短介绍您的博客或自己"
-									:class="{ error: errors.desc }"
-								/>
-								<span v-if="errors.desc" class="error-message">{{ errors.desc }}</span>
-							</div>
-
-							<!-- 头像类型 -->
-							<div class="form-group">
-								<label for="avatarType">
-									<Icon name="ri:image-line" />
-									头像类型 <span class="required">*</span>
-								</label>
-								<select
-									id="avatarType"
-									v-model="formData.avatarType"
-									class="form-select"
-								>
-									<option v-for="opt in avatarTypeOptions" :key="opt.value" :value="opt.value">
-										{{ opt.label }}
-									</option>
-								</select>
-								<span class="form-tip">
-									选择头像来源类型：QQ 头像、GitHub 头像或自定义链接
-								</span>
-							</div>
-
-							<!-- 头像标识 -->
-							<div class="form-group">
-								<label for="avatar">
-									<Icon name="ri:user-smile-line" />
-									头像标识 <span class="required">*</span>
-								</label>
-								<input
-									id="avatar"
-									v-model="formData.avatar"
-									type="text"
-									:placeholder="avatarPlaceholder"
-									:class="{ error: errors.avatar }"
-								>
-								<span v-if="errors.avatar" class="error-message">{{ errors.avatar }}</span>
-								<span class="form-tip">
-									<span v-if="formData.avatarType === 'qq'">填写 QQ 号码，将自动获取 QQ 头像</span>
-									<span v-else-if="formData.avatarType === 'github'">填写 GitHub 用户名，将自动获取 GitHub 头像</span>
-									<span v-else>填写头像图片的完整 URL 链接</span>
-								</span>
-							</div>
-
-							<!-- 网站截图 -->
-							<div class="form-group">
-								<label for="screenshot">
-									<Icon name="ri:screenshot-line" />
-									网站截图链接
-								</label>
-								<input
-									id="screenshot"
-									v-model="formData.screenshot"
-									type="url"
-									placeholder="https://blog.example.com/screenshot.png（可选）"
-									:class="{ error: errors.screenshot }"
-								>
-								<span v-if="errors.screenshot" class="error-message">{{ errors.screenshot }}</span>
-								<span class="form-tip">用于展示网站预览（可选）</span>
-							</div>
-
-							<!-- GitHub 用户名 -->
-							<div class="form-group">
-								<label for="github">
-									<Icon name="ri:github-line" />
-									GitHub 用户名
-								</label>
-								<input
-									id="github"
-									v-model="formData.github"
-									type="text"
-									placeholder="例如：Kemeow0815（可选）"
-									:class="{ error: errors.github }"
-								>
-							</div>
-
-							<!-- 博客链接 -->
-							<div class="form-group">
-								<label for="website">
-									<Icon name="ri:link" />
-									博客链接 <span class="required">*</span>
-								</label>
-								<input
-									id="website"
-									v-model="formData.website"
-									type="url"
-									placeholder="https://blog.example.com/"
-									:class="{ error: errors.website }"
-								>
-								<span v-if="errors.website" class="error-message">{{ errors.website }}</span>
-							</div>
-
-							<!-- RSS 订阅 -->
-							<div class="form-group">
-								<label for="feed">
-									<Icon name="ri:rss-line" />
-									博客 RSS 订阅链接
-								</label>
-								<input
-									id="feed"
-									v-model="formData.feed"
-									type="url"
-									placeholder="https://blog.example.com/atom.xml（可选）"
-									:class="{ error: errors.feed }"
-								>
-								<span v-if="errors.feed" class="error-message">{{ errors.feed }}</span>
-								<span class="form-tip">用于文章聚合（可选）</span>
-							</div>
-
-							<!-- 确认事项 -->
-							<div class="form-group checkbox-group">
-								<label class="checkbox-label">
-									<Icon name="ri:shield-check-line" />
-									确认事项 <span class="required">*</span>
-								</label>
-								<div class="checkbox-list">
-									<label class="checkbox-item">
-										<input
-											v-model="formData.confirm.accessible"
-											type="checkbox"
-										>
-										<span>我的网站可以正常访问</span>
-									</label>
-									<label class="checkbox-item">
-										<input
-											v-model="formData.confirm.reciprocal"
-											type="checkbox"
-										>
-										<span>我已添加本站友链（推荐）</span>
-									</label>
-									<label class="checkbox-item">
-										<input
-											v-model="formData.confirm.authentic"
-											type="checkbox"
-										>
-										<span>我确认提供的信息真实有效</span>
-									</label>
-								</div>
-								<span v-if="errors.confirm" class="error-message">{{ errors.confirm }}</span>
-							</div>
-
-							<div v-if="submitError" class="error-alert">
-								<Icon name="ri:error-warning-line" />
-								{{ submitError }}
-							</div>
-
-							<div class="form-actions">
-								<button type="button" class="btn-secondary" @click="resetForm">
-									<Icon name="ri:refresh-line" />
-									重置
-								</button>
-								<button type="submit" class="btn-primary" :disabled="isSubmitting">
-									<Icon v-if="isSubmitting" name="ri:loader-4-line" class="spin" />
-									<Icon v-else name="ri:send-plane-line" />
-									{{ isSubmitting ? '提交中...' : '提交申请' }}
-								</button>
-							</div>
-						</form>
-					</section>
-				</div>
-			</template>
-		</Tab>
+<div class="addlinks-page">
+	<!-- 页面标题区域 -->
+	<div class="page-header-section">
+		<h1 class="page-title">
+			<Icon name="ri:links-line" />
+			期待与您建立友好的互联网连接
+		</h1>
+		<p class="page-subtitle">
+			欢迎来到 {{ homepageConfig.title }}！如果您想申请友链，请先阅读下方的友链要求，
+			若符合要求请填写表单提交申请，感谢您的赏识！
+		</p>
 	</div>
+
+	<!-- 使用 Tab 组件 -->
+	<Tab :tabs="['我的博客信息', '申请友链']" center border>
+		<template #tab1>
+			<div class="link-tab">
+				<FeedCard v-bind="myFeed" />
+				<Copy v-for="(code, prompt) in copyFields" :key="prompt" :prompt="prompt" :code="code" />
+			</div>
+		</template>
+		<template #tab2>
+			<div class="apply-tab">
+				<!-- 注意事项 -->
+				<section class="content-section notice-section">
+					<h2 class="section-title">
+						<Icon name="ri:alert-line" />
+						注意事项
+					</h2>
+					<div class="notice-content">
+						<p>欢迎来到 {{ homepageConfig.title }}！如果想申请友链，请点击查看友链要求，若符合要求请填写下方表单提交申请，发送您网站相关内容，感谢您的赏识！</p>
+					</div>
+				</section>
+
+				<!-- 友链要求 -->
+				<section class="content-section requirements-section">
+					<h2 class="section-title">
+						<Icon name="ri:file-list-3-line" />
+						友链要求
+					</h2>
+
+					<div class="update-badge">
+						<Icon name="ri:refresh-line" />
+						更新记录
+					</div>
+
+					<div class="requirements-content">
+						<p class="update-date">
+							2026-04-19规则更新：
+						</p>
+
+						<ol class="requirements-list">
+							<li>如果想直接申请友链，请尽量确保贵站的文章数量大于10篇，这样更能展现您对网站长期维护的决心。</li>
+							<li>
+								友链友链，先友后链，如果愿意和我多交流，成为朋友（例如多次留言且多次过来玩），完全可以取消10篇文章的限制，前提是贵站满足以下条件：
+								<ul class="sub-list">
+									<li>站点内容积极向上，无不良广告或违规内容。</li>
+									<li>页面设计美观，展现出长期用心经营的态度。</li>
+								</ul>
+							</li>
+							<li>即便取消文章数量的要求，也希望贵站能保持定期更新，这样我们的交流会更有活力！</li>
+						</ol>
+
+						<p class="thanks-text">
+							感谢理解，期待与您成为朋友！如果有任何不便，敬请包涵。
+						</p>
+
+						<ol class="requirements-list" start="4">
+							<li><strong>网站性质：</strong>申请的网站应为<strong>非营利性质</strong>，例如个人博客或博客组织等，体现内容分享的初心与乐趣，原则上不接受商业化严重的站点。</li>
+							<li><strong>内容要求：</strong>博客内容建议以原创为主，避免采集站和严重同质化的内容（如"60秒读懂全世界"等）；同时，需要有一定数量的文章（建议15篇以上），展现长期经营的决心。</li>
+							<li><strong>界面设计：</strong>希望贵站有清晰、美观的界面设计，避免过多广告或影响阅读体验的元素，给访客留下良好的第一印象。</li>
+							<li><strong>更新频率：</strong>希望贵站能保持一定的更新频率，哪怕是每月一篇，也能体现您对博客的用心与坚持。</li>
+							<li><strong>互动意愿：</strong>友链不仅是链接，更是友谊的桥梁。如果您愿意多交流、常互动，友链的意义会更加丰富！</li>
+						</ol>
+					</div>
+				</section>
+
+				<!-- 申请表单 -->
+				<section class="content-section form-section">
+					<h2 class="section-title">
+						<Icon name="ri:edit-line" />
+						提交申请
+					</h2>
+
+					<!-- 成功提示 -->
+					<div v-if="submitSuccess" class="success-message">
+						<Icon name="ri:checkbox-circle-line" />
+						<h3>提交成功！</h3>
+						<p>感谢您的申请，我会尽快审核并添加您的友链。</p>
+						<div class="success-actions">
+							<a
+								v-if="issueUrl"
+								:href="issueUrl"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="btn-primary"
+							>
+								<Icon name="ri:external-link-line" />
+								查看 Issue
+							</a>
+							<button class="btn-secondary" @click="resetForm">
+								<Icon name="ri:refresh-line" />
+								继续申请
+							</button>
+						</div>
+					</div>
+
+					<!-- 表单 -->
+					<form v-else class="apply-form" @submit.prevent="handleSubmit">
+						<!-- 用户昵称 -->
+						<div class="form-group">
+							<label for="name">
+								<Icon name="ri:user-line" />
+								用户昵称 <span class="required">*</span>
+							</label>
+							<input
+								id="name"
+								v-model="formData.name"
+								type="text"
+								placeholder="您希望在友链列表中显示的名称"
+								:class="{ error: errors.name }"
+							>
+							<span v-if="errors.name" class="error-message">{{ errors.name }}</span>
+						</div>
+
+						<!-- 博客名称 -->
+						<div class="form-group">
+							<label for="title">
+								<Icon name="ri:global-line" />
+								博客名称 <span class="required">*</span>
+							</label>
+							<input
+								id="title"
+								v-model="formData.title"
+								type="text"
+								placeholder="您的博客标题"
+								:class="{ error: errors.title }"
+							>
+							<span v-if="errors.title" class="error-message">{{ errors.title }}</span>
+						</div>
+
+						<!-- 博客介绍 -->
+						<div class="form-group">
+							<label for="desc">
+								<Icon name="ri:article-line" />
+								博客/用户介绍 <span class="required">*</span>
+							</label>
+							<textarea
+								id="desc"
+								v-model="formData.desc"
+								rows="3"
+								placeholder="简短介绍您的博客或自己"
+								:class="{ error: errors.desc }"
+							/>
+							<span v-if="errors.desc" class="error-message">{{ errors.desc }}</span>
+						</div>
+
+						<!-- 头像类型 -->
+						<div class="form-group">
+							<label for="avatarType">
+								<Icon name="ri:image-line" />
+								头像类型 <span class="required">*</span>
+							</label>
+							<select
+								id="avatarType"
+								v-model="formData.avatarType"
+								class="form-select"
+							>
+								<option v-for="opt in avatarTypeOptions" :key="opt.value" :value="opt.value">
+									{{ opt.label }}
+								</option>
+							</select>
+							<span class="form-tip">
+								选择头像来源类型：QQ 头像、GitHub 头像或自定义链接
+							</span>
+						</div>
+
+						<!-- 头像标识 -->
+						<div class="form-group">
+							<label for="avatar">
+								<Icon name="ri:user-smile-line" />
+								头像标识 <span class="required">*</span>
+							</label>
+							<input
+								id="avatar"
+								v-model="formData.avatar"
+								type="text"
+								:placeholder="avatarPlaceholder"
+								:class="{ error: errors.avatar }"
+							>
+							<span v-if="errors.avatar" class="error-message">{{ errors.avatar }}</span>
+							<span class="form-tip">
+								<span v-if="formData.avatarType === 'qq'">填写 QQ 号码，将自动获取 QQ 头像</span>
+								<span v-else-if="formData.avatarType === 'github'">填写 GitHub 用户名，将自动获取 GitHub 头像</span>
+								<span v-else>填写头像图片的完整 URL 链接</span>
+							</span>
+						</div>
+
+						<!-- 网站截图 -->
+						<div class="form-group">
+							<label for="screenshot">
+								<Icon name="ri:screenshot-line" />
+								网站截图链接
+							</label>
+							<input
+								id="screenshot"
+								v-model="formData.screenshot"
+								type="url"
+								placeholder="https://blog.example.com/screenshot.png（可选）"
+								:class="{ error: errors.screenshot }"
+							>
+							<span v-if="errors.screenshot" class="error-message">{{ errors.screenshot }}</span>
+							<span class="form-tip">用于展示网站预览（可选）</span>
+						</div>
+
+						<!-- GitHub 用户名 -->
+						<div class="form-group">
+							<label for="github">
+								<Icon name="ri:github-line" />
+								GitHub 用户名
+							</label>
+							<input
+								id="github"
+								v-model="formData.github"
+								type="text"
+								placeholder="例如：Kemeow0815（可选）"
+								:class="{ error: errors.github }"
+							>
+						</div>
+
+						<!-- 博客链接 -->
+						<div class="form-group">
+							<label for="website">
+								<Icon name="ri:link" />
+								博客链接 <span class="required">*</span>
+							</label>
+							<input
+								id="website"
+								v-model="formData.website"
+								type="url"
+								placeholder="https://blog.example.com/"
+								:class="{ error: errors.website }"
+							>
+							<span v-if="errors.website" class="error-message">{{ errors.website }}</span>
+						</div>
+
+						<!-- RSS 订阅 -->
+						<div class="form-group">
+							<label for="feed">
+								<Icon name="ri:rss-line" />
+								博客 RSS 订阅链接
+							</label>
+							<input
+								id="feed"
+								v-model="formData.feed"
+								type="url"
+								placeholder="https://blog.example.com/atom.xml（可选）"
+								:class="{ error: errors.feed }"
+							>
+							<span v-if="errors.feed" class="error-message">{{ errors.feed }}</span>
+							<span class="form-tip">用于文章聚合（可选）</span>
+						</div>
+
+						<!-- 确认事项 -->
+						<div class="form-group checkbox-group">
+							<label class="checkbox-label">
+								<Icon name="ri:shield-check-line" />
+								确认事项 <span class="required">*</span>
+							</label>
+							<div class="checkbox-list">
+								<label class="checkbox-item">
+									<input
+										v-model="formData.confirm.accessible"
+										type="checkbox"
+									>
+									<span>我的网站可以正常访问</span>
+								</label>
+								<label class="checkbox-item">
+									<input
+										v-model="formData.confirm.reciprocal"
+										type="checkbox"
+									>
+									<span>我已添加本站友链（推荐）</span>
+								</label>
+								<label class="checkbox-item">
+									<input
+										v-model="formData.confirm.authentic"
+										type="checkbox"
+									>
+									<span>我确认提供的信息真实有效</span>
+								</label>
+							</div>
+							<span v-if="errors.confirm" class="error-message">{{ errors.confirm }}</span>
+						</div>
+
+						<div v-if="submitError" class="error-alert">
+							<Icon name="ri:error-warning-line" />
+							{{ submitError }}
+						</div>
+
+						<div class="form-actions">
+							<button type="button" class="btn-secondary" @click="resetForm">
+								<Icon name="ri:refresh-line" />
+								重置
+							</button>
+							<button type="submit" class="btn-primary" :disabled="isSubmitting">
+								<Icon v-if="isSubmitting" name="ri:loader-4-line" class="spin" />
+								<Icon v-else name="ri:send-plane-line" />
+								{{ isSubmitting ? '提交中...' : '提交申请' }}
+							</button>
+						</div>
+					</form>
+				</section>
+			</div>
+		</template>
+	</Tab>
+</div>
 </template>
 
 <style lang="scss" scoped>

@@ -11,64 +11,64 @@ const domainIcon = computed(() => getDomainIcon(props.link))
 </script>
 
 <template>
-	<div class="feed-card-wrapper">
-		<ZRawLink
-			class="feed-card"
-			:to="error ? undefined : link"
-			rel="noopener"
-			:data-error="error"
-		>
-			<!-- 截图展示区域 -->
-			<div v-if="screenshot" class="screenshot-wrapper">
-				<img class="screenshot" :src="screenshot" :alt="`${author} 的网站截图`" loading="lazy">
+<div class="feed-card-wrapper">
+	<ZRawLink
+		class="feed-card"
+		:to="error ? undefined : link"
+		rel="noopener"
+		:data-error="error"
+	>
+		<!-- 截图展示区域 -->
+		<div v-if="screenshot" class="screenshot-wrapper">
+			<img class="screenshot" :src="screenshot" :alt="`${author} 的网站截图`" loading="lazy">
+		</div>
+
+		<!-- 信息区域 -->
+		<div class="info-wrapper">
+			<div class="avatar" :title="feed ? undefined : '无订阅源'">
+				<img class="round-cobblestone" :src="avatar" :alt="author" loading="lazy">
+				<Icon v-if="(appConfig as any).link?.remindNoFeed && !feed" class="no-feed" name="ri:notification-off-line" />
 			</div>
 
-			<!-- 信息区域 -->
-			<div class="info-wrapper">
-				<div class="avatar" :title="feed ? undefined : '无订阅源'">
-					<img class="round-cobblestone" :src="avatar" :alt="author" loading="lazy">
-					<Icon v-if="appConfig.link?.remindNoFeed && !feed" class="no-feed" name="ri:notification-off-line" />
-				</div>
-
-				<div class="text-info">
-					<span class="author">{{ author }}</span>
-					<span class="sitenick">{{ desc || sitenick }}</span>
-				</div>
-			</div>
-		</ZRawLink>
-
-		<!-- Tooltip 内容 -->
-		<div class="feed-tooltip">
-			<div class="site-content">
-				<img class="site-icon" :src="icon" :alt="title">
-
-				<div class="site-info">
-					<h3>{{ title }}</h3>
-
-					<code class="domain" :title="domainTip">
-						<span>{{ getDomain(link) }}</span>
-						<Icon v-if="domainIcon" class="domain-mark" :name="domainIcon" />
-					</code>
-				</div>
-
-				<Icon
-					v-for="arch in archs" :key="arch"
-					class="arch" :name="getArchIcon(arch)" :title="arch"
-				/>
-			</div>
-			<div class="desc-content">
-				<div v-if="date" class="date">
-					{{ new Date(date).toLocaleDateString('zh-CN') }}
-				</div>
-
-				<p>{{ error ?? desc }}</p>
-
-				<p v-if="comment">
-					<Icon name="ri:message-3-line" /> {{ comment }}
-				</p>
+			<div class="text-info">
+				<span class="author">{{ author }}</span>
+				<span class="sitenick">{{ desc || sitenick }}</span>
 			</div>
 		</div>
+	</ZRawLink>
+
+	<!-- Tooltip 内容 -->
+	<div class="feed-tooltip">
+		<div class="site-content">
+			<img class="site-icon" :src="icon" :alt="title">
+
+			<div class="site-info">
+				<h3>{{ title }}</h3>
+
+				<code class="domain" :title="domainTip">
+					<span>{{ getDomain(link) }}</span>
+					<Icon v-if="domainIcon" class="domain-mark" :name="domainIcon" />
+				</code>
+			</div>
+
+			<Icon
+				v-for="arch in archs" :key="arch"
+				class="arch" :name="getArchIcon(arch)" :title="arch"
+			/>
+		</div>
+		<div class="desc-content">
+			<div v-if="date" class="date">
+				{{ new Date(date).toLocaleDateString('zh-CN') }}
+			</div>
+
+			<p>{{ error ?? desc }}</p>
+
+			<p v-if="comment">
+				<Icon name="ri:message-3-line" /> {{ comment }}
+			</p>
+		</div>
 	</div>
+</div>
 </template>
 
 <style lang="scss" scoped>

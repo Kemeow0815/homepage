@@ -144,6 +144,9 @@ importers:
       '@iconify-json/dinkie-icons':
         specifier: ^1.2.0
         version: 1.2.0
+      '@iconify-json/jam':
+        specifier: ^1.2.3
+        version: 1.2.3
       '@iconify-json/ri':
         specifier: ^1.2.10
         version: 1.2.10
@@ -747,6 +750,9 @@ packages:
 
   '@iconify-json/dinkie-icons@1.2.0':
     resolution: {integrity: sha512-/RSAjK6twyEOKfW9FddZDP+EPMeSIocb4Y4Zq2Y2IbqUxYmNHqXtxidVioBzpv+a3JeiQ61ARlRKtCQ0BqSGpA==}
+
+  '@iconify-json/jam@1.2.3':
+    resolution: {integrity: sha512-Kp+OxTzB8xvbaMyIoqEqB96Ik4zv7uo5y1yavjAee0N1K/6u+PCOBwEi+Djn3WJ2trCrNZk+qYw1BJUsZC41Eg==}
 
   '@iconify-json/ri@1.2.10':
     resolution: {integrity: sha512-WWMhoncVVM+Xmu9T5fgu2lhYRrKTEWhKk3Com0KiM111EeEsRLiASjpsFKnC/SrB6covhUp95r2mH8tGxhgd5Q==}
@@ -7372,6 +7378,10 @@ snapshots:
       '@iconify/types': 2.0.0
 
   '@iconify-json/dinkie-icons@1.2.0':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/jam@1.2.3':
     dependencies:
       '@iconify/types': 2.0.0
 

@@ -117,7 +117,7 @@ const homepageConfig = {
 		url: 'https://kemeow0815.github.io/',
 		atom: 'https://kemeow0815.github.io/feed.xml',
 		link: 'https://kemeow0815.github.io/links',
-		archive: 'https://kemeow0815.github.io/archive',
+		archive: 'https://kemeow0815.github.io/archives',
 		name: '喵洛阁',
 	},
 

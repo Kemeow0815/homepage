@@ -10,7 +10,7 @@ export default defineAppConfig({
 	...homepageConfig,
 
 	footer: [
-		`© 2025 克喵爱吃卤面 (Kemeow0815)`,
+		`© 2026 克喵爱吃卤面 (Kemeow0815)`,
 		// h('a', { href: 'https://beian.miit.gov.cn/', target: '_blank', rel: 'noopener nofollow' }, '陕ICP备2025082251号'),
 	],
 
@@ -74,19 +74,20 @@ export default defineAppConfig({
 						{ icon: 'ri:add-circle-line', text: '申请友链', url: '/addlinks' },
 					],
 				},
-				{
-					icon: 'material-symbols:page-footer-outline',
-					text: '页面',
-					url: '#',
-					children: [
-						{ icon: 'meteor-icons:bilibili', text: '追番', url: '/bangumi' },
-						{ icon: 'tdesign:device', text: '装备', url: '/equipment' },
-						{ icon: 'bxs:hot', text: '热榜', url: '/hot' },
-					],
-				},
-				{ icon: 'ri:code-line', text: '项目', url: '/project' },
-				{ icon: 'ri:planet-line', text: '站点', url: '/site' },
-				{ icon: 'ri:history-line', text: '日志', url: '/log' },
+				// {
+				// 	icon: 'material-symbols:page-footer-outline',
+				// 	text: '页面',
+				// 	url: '#',
+				// 	children: [
+				// 		{ icon: 'meteor-icons:bilibili', text: '追番', url: '/bangumi' },
+				// 		{ icon: 'tdesign:device', text: '装备', url: '/equipment' },
+				// 		{ icon: 'bxs:hot', text: '热榜', url: '/hot' },
+				// 		{ icon: 'material-symbols:calendar-month', text: '课表', url: '/timetable' },
+				// 	],
+				// },
+				{ icon: 'jam:tools', text: '工具', url: '/tools' },
+				// { icon: 'ri:planet-line', text: '站点', url: '/site' },
+				// { icon: 'ri:history-line', text: '日志', url: '/log' },
 			],
 		},
 		{

@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import type { TimetableViewModel, TimetableData } from '~/types/timetable'
+import { buildTimetableViewModel, resolveCurrentWeek, parseTimetableData } from '~/utils/timetable'
+import timetableData from '~/data/timetable/大三下.json'
 // 从 homepage.config.ts 导入个人配置
 import homepageConfig from '~~/homepage.config'
+import LiveTimetableStatus from '~/components/content/LiveTimetableStatus.vue'
 
 useHead({ title: '' })
 
@@ -32,6 +36,22 @@ const description = descriptionAndSocial.description
 
 // 社交链接
 const socialLinks = descriptionAndSocial.socialLinks
+
+// 课表数据
+const coursesByDay = computed(() => {
+	try {
+		const parsedData: TimetableData = timetableData as TimetableData
+		const currentWeek = resolveCurrentWeek(
+			parsedData.settings.startDate,
+			parsedData.settings.maxWeek,
+		)
+		const viewModel = buildTimetableViewModel(parsedData, currentWeek)
+		return viewModel.coursesByDay
+	}
+	catch {
+		return {}
+	}
+})
 </script>
 
 <template>
@@ -79,6 +99,11 @@ const socialLinks = descriptionAndSocial.socialLinks
 			<Icon name="ri:github-fill" />
 			<span>Follow Me 🛫</span>
 		</a>
+
+		<!-- 课程表状态卡片 -->
+		<NuxtLink v-if="Object.keys(coursesByDay).length > 0" to="/timetable" class="timetable-link">
+			<LiveTimetableStatus :courses-by-day="coursesByDay" />
+		</NuxtLink>
 	</section>
 
 	<!-- 信息区域 -->
@@ -354,6 +379,23 @@ const socialLinks = descriptionAndSocial.socialLinks
 
 		.iconify {
 			font-size: 1.2rem;
+		}
+	}
+
+	// 课程表状态卡片链接
+	.timetable-link {
+		display: block;
+		margin-top: 1rem;
+		text-decoration: none;
+		transition: transform 0.2s ease;
+
+		&:hover {
+			transform: translateY(-2px);
+		}
+
+		:deep(.live-status-card) {
+			margin-bottom: 0;
+			cursor: pointer;
 		}
 	}
 }
