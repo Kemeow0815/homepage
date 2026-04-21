@@ -33,7 +33,24 @@ const webSites: Array<CardProps> = [
 		],
 		desc: '克喵の友链屋',
 	},
-
+	{
+		name: '克喵のGists',
+		nameAlt: 'opengist',
+		buttons: [
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://gist.268682.xyz' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/opengist' },
+		],
+		desc: '克喵の代码片段',
+	},
+	{
+		name: '克喵の多端截图',
+		nameAlt: 'screenshot',
+		buttons: [
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://screenshot.268682.xyz' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/screenshot' },
+		],
+		desc: '克喵の多端截图',
+	},
 ]
 
 // const orgSites: Array<CardProps> = [
