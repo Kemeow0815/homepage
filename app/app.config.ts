@@ -96,7 +96,7 @@ export default defineAppConfig({
 				{ icon: 'ri:qq-line', text: 'id: 3813596020', url: 'https://qm.qq.com/q/cX0MfAZEQg' },
 				{ icon: 'ri:mail-line', text: 'mcy@kemiaosw.top', url: 'mailto:mcy@kemiaosw.top' },
 				{ icon: 'ri:github-line', text: 'Github', url: 'https://github.com/Kemeow0815' },
-				{ icon: 'ri:telegram-line', text: 'Telegram', url: 'https://t.me/yxksw' },
+				{ icon: 'ri:telegram-line', text: 'Telegram', url: 'https://t.me/Kemeow0815' },
 			],
 		},
 	] satisfies Nav,

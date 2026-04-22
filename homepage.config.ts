@@ -59,7 +59,7 @@ const descriptionAndSocial = {
 		{ platform: 'QQ', url: 'https://qm.qq.com/q/cX0MfAZEQg', icon: 'ri:qq-line' },
 		{ platform: 'Mail', url: 'mailto:mcy@kemiaosw.top', icon: 'mynaui:mail' },
 		{ platform: 'BiliBili', url: 'https://space.bilibili.com/3546643173477234', icon: 'dinkie-icons:bilibili' },
-		{ platform: 'Telegram', url: 'https://t.me/yxksw', icon: 'ri:telegram-line' },
+		{ platform: 'Telegram', url: 'https://t.me/Kemeow0815', icon: 'ri:telegram-line' },
 	],
 }
 
