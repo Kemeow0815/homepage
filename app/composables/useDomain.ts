@@ -19,11 +19,11 @@ export function getMainDomain(url: string, removeWww = false): string {
 }
 
 /**
- * 获取域名
+ * 获取主机名（域名）
  * @param url URL 字符串
- * @returns 域名
+ * @returns 主机名
  */
-export function getDomain(url: string): string {
+export function getHostname(url: string): string {
 	try {
 		const urlObj = new URL(url)
 		return urlObj.hostname
@@ -57,7 +57,7 @@ export function getDomainType(domain: string): string {
  */
 export function getDomainIcon(url: string): string | null {
 	const domain = getMainDomain(url, true)
-	
+
 	if (domain.includes('github')) return 'ri:github-fill'
 	if (domain.includes('gitlab')) return 'ri:gitlab-fill'
 	if (domain.includes('gitee')) return 'ri:git-repository-fill'
@@ -66,7 +66,7 @@ export function getDomainIcon(url: string): string | null {
 	if (domain.includes('weibo')) return 'ri:weibo-fill'
 	if (domain.includes('twitter') || domain.includes('x.com')) return 'ri:twitter-x-fill'
 	if (domain.includes('youtube')) return 'ri:youtube-fill'
-	
+
 	return null
 }
 
@@ -94,6 +94,6 @@ export function getArchIcon(arch: string): string {
 		'rust': 'ri:rust-line',
 		'php': 'ri:php-line',
 	}
-	
+
 	return archMap[arch.toLowerCase()] || 'ri:server-line'
 }

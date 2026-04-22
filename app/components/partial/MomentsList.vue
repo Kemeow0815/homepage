@@ -18,6 +18,9 @@ const hasMore = ref(false)
 const currentPage = ref(1)
 const message = ref('')
 
+// 分页配置
+const PAGE_SIZE = 8
+
 // 根据标签筛选后的列表
 const filteredMomentsList = computed(() => {
 	if (!momentsStore.filterTag) {
@@ -38,25 +41,27 @@ const filteredMomentsList = computed(() => {
 	})
 })
 
+// 当前页显示的数据（带分页）
+const paginatedList = computed(() => {
+	const list = filteredMomentsList.value
+	const start = 0
+	const end = currentPage.value * PAGE_SIZE
+	return list.slice(start, end)
+})
+
+// 是否有更多数据
+const hasMoreData = computed(() => {
+	return paginatedList.value.length < filteredMomentsList.value.length
+})
+
 // 加载本地数据
 async function loadLocalData() {
-	const pageSize = homepageConfig.moments.local.pageSize
 	const sorted = [...localMoments].sort((a, b) =>
 		new Date(b.date).getTime() - new Date(a.date).getTime(),
 	)
-
-	if (currentPage.value === 1) {
-		momentsList.value = sorted.slice(0, pageSize)
-	}
-	else {
-		const start = (currentPage.value - 1) * pageSize
-		const end = start + pageSize
-		const newItems = sorted.slice(start, end)
-		momentsList.value.push(...newItems)
-	}
-
-	hasMore.value = momentsList.value.length < sorted.length
-	currentPage.value++
+	momentsList.value = sorted
+	hasMore.value = sorted.length > PAGE_SIZE
+	currentPage.value = 1
 }
 
 // 加载 tgtalk 数据
@@ -83,17 +88,10 @@ async function loadTgtalkData() {
 }
 
 // 加载更多数据
-async function loadMore() {
-	if (loading.value || !hasMore.value)
+function loadMore() {
+	if (loading.value || !hasMoreData.value)
 		return
-
-	loading.value = true
-
-	if (props.type === 'local') {
-		await loadLocalData()
-	}
-
-	loading.value = false
+	currentPage.value++
 }
 
 // 初始加载
@@ -109,13 +107,12 @@ onMounted(async () => {
 // 服务端渲染时加载数据
 if (import.meta.server) {
 	if (props.type === 'local') {
-		const pageSize = homepageConfig.moments.local.pageSize
 		const sorted = [...localMoments].sort((a, b) =>
 			new Date(b.date).getTime() - new Date(a.date).getTime(),
 		)
-		momentsList.value = sorted.slice(0, pageSize)
-		hasMore.value = sorted.length > pageSize
-		currentPage.value = 2
+		momentsList.value = sorted
+		hasMore.value = sorted.length > PAGE_SIZE
+		currentPage.value = 1
 	}
 }
 </script>
@@ -137,7 +134,7 @@ if (import.meta.server) {
 	<!-- 列表内容 -->
 	<div class="moments-container">
 		<MomentsCard
-			v-for="(moment, index) in filteredMomentsList"
+			v-for="(moment, index) in paginatedList"
 			:key="moment.id"
 			:moment="moment"
 			:style="{ '--delay': `${index * 0.1}s` }"
@@ -151,14 +148,34 @@ if (import.meta.server) {
 	</div>
 
 	<!-- 加载状态 -->
-	<div v-if="loading" class="loading-state">
-		<Icon name="ri:loader-4-line" class="spin" />
-		<span>加载中...</span>
+	<template v-if="loading">
+		<div class="loading-state">
+			<div v-for="i in 3" :key="`skeleton-${i}`" class="skeleton">
+				<div class="skeleton-meta">
+					<div class="skeleton-avatar" />
+					<div class="skeleton-info">
+						<div class="skeleton-nick" />
+						<div class="skeleton-date" />
+					</div>
+				</div>
+				<div class="skeleton-content">
+					<div class="skeleton-text" />
+					<div class="skeleton-text" />
+					<div class="skeleton-text" />
+				</div>
+				<div class="skeleton-bottom" />
+			</div>
+		</div>
+	</template>
+
+	<!-- 分页信息 -->
+	<div v-if="!loading && filteredMomentsList.length > 0" class="pagination-info">
+		<span>显示 {{ paginatedList.length }} / {{ filteredMomentsList.length }} 条</span>
 	</div>
 
 	<!-- 加载更多按钮 -->
-	<div v-else-if="hasMore" class="load-more">
-		<button :disabled="loading" @click="loadMore">
+	<div v-if="hasMoreData" class="load-more">
+		<button @click="loadMore">
 			<Icon name="ri:arrow-down-line" />
 			加载更多
 		</button>
@@ -183,23 +200,97 @@ if (import.meta.server) {
 
 .loading-state {
 	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 0.5rem;
-	padding: 2rem;
-	color: var(--c-text-3);
+	flex-direction: column;
+	gap: 1rem;
+	margin: 1rem 0;
+}
 
-	.spin {
-		animation: spin 1s linear infinite;
+.skeleton {
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+	padding: 1rem;
+	border-radius: 8px;
+	box-shadow: 0 0 0 1px var(--c-bg-soft);
+	background-color: var(--c-bg-1);
+}
+
+.skeleton-meta {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.skeleton-avatar {
+	width: 3em;
+	height: 3em;
+	border-radius: 50%;
+	background: linear-gradient(90deg, var(--c-bg-2) 25%, var(--c-bg-soft) 50%, var(--c-bg-2) 75%);
+	background-size: 200% 100%;
+	animation: loading 1.5s infinite;
+}
+
+.skeleton-info {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 0.3rem;
+}
+
+.skeleton-nick {
+	width: 120px;
+	height: 18px;
+	border-radius: 4px;
+	background: linear-gradient(90deg, var(--c-bg-2) 25%, var(--c-bg-soft) 50%, var(--c-bg-2) 75%);
+	background-size: 200% 100%;
+	animation: loading 1.5s infinite;
+}
+
+.skeleton-date {
+	width: 100px;
+	height: 14px;
+	border-radius: 4px;
+	background: linear-gradient(90deg, var(--c-bg-2) 25%, var(--c-bg-soft) 50%, var(--c-bg-2) 75%);
+	background-size: 200% 100%;
+	animation: loading 1.5s infinite;
+}
+
+.skeleton-content {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.skeleton-text {
+	height: 16px;
+	border-radius: 4px;
+	background: linear-gradient(90deg, var(--c-bg-2) 25%, var(--c-bg-soft) 50%, var(--c-bg-2) 75%);
+	background-size: 200% 100%;
+	animation: loading 1.5s infinite;
+
+	&:nth-child(2) {
+		width: 80%;
+	}
+
+	&:nth-child(3) {
+		width: 60%;
 	}
 }
 
-@keyframes spin {
-	from {
-		transform: rotate(0deg);
+.skeleton-bottom {
+	height: 24px;
+	border-radius: 4px;
+	background: linear-gradient(90deg, var(--c-bg-2) 25%, var(--c-bg-soft) 50%, var(--c-bg-2) 75%);
+	background-size: 200% 100%;
+	animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+	0% {
+		background-position: 200% 0;
 	}
-	to {
-		transform: rotate(360deg);
+	100% {
+		background-position: -200% 0;
 	}
 }
 
@@ -239,10 +330,18 @@ if (import.meta.server) {
 }
 
 .end-message {
+	margin: 2rem 0;
+	font-size: 1rem;
 	text-align: center;
-	padding: 2rem;
 	color: var(--c-text-3);
-	font-size: 0.9rem;
+}
+
+// 分页信息
+.pagination-info {
+	text-align: center;
+	padding: 1rem;
+	color: var(--c-text-3);
+	font-size: 0.85rem;
 }
 
 // 筛选栏样式
@@ -297,21 +396,22 @@ if (import.meta.server) {
 
 // 无结果提示样式
 .empty-state {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	padding: 3rem;
+	margin: 1rem 0;
+	padding: 3rem 1rem;
+	border-radius: 8px;
+	box-shadow: 0 0 0 1px var(--c-bg-soft);
+	text-align: center;
 	color: var(--c-text-3);
 
 	:deep(.iconify) {
 		font-size: 3rem;
-		margin-bottom: 1rem;
+		margin-bottom: 0.5rem;
 		opacity: 0.5;
 	}
 
 	p {
 		font-size: 0.9rem;
+		margin: 0;
 	}
 }
 </style>

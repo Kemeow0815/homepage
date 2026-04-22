@@ -262,7 +262,7 @@ watch(() => colorMode.value, async () => {
               @click="toggleCollapse(snippet.id)"
             >
               <Icon
-                :name="collapsedSnippets[snippet.id] ? 'material-symbols:expand-more' : 'material-symbols:expand-less'"
+                :name="collapsedSnippets[snippet.id] ? 'material-symbols:keyboard-arrow-down' : 'material-symbols:keyboard-arrow-up'"
                 class="collapse-icon"
               />
               <span>{{ collapsedSnippets[snippet.id] ? '展开' : '收起' }}</span>

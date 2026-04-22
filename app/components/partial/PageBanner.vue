@@ -41,7 +41,33 @@ defineProps<{
 		background: linear-gradient(135deg, var(--c-bg-2) 0%, var(--c-bg-3) 100%);
 	}
 
+	// 有背景图时添加遮罩层
+	&[style*="background-image"]::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			to right,
+			rgba(0, 0, 0, 0.6) 0%,
+			rgba(0, 0, 0, 0.4) 50%,
+			rgba(0, 0, 0, 0.2) 100%
+		);
+		z-index: 0;
+	}
+
+	// 浅色模式使用白色遮罩
+	:root[data-theme="light"] &[style*="background-image"]::before {
+		background: linear-gradient(
+			to right,
+			rgba(255, 255, 255, 0.85) 0%,
+			rgba(255, 255, 255, 0.7) 50%,
+			rgba(255, 255, 255, 0.5) 100%
+		);
+	}
+
 	.banner-content {
+		position: relative;
+		z-index: 1;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -50,7 +76,8 @@ defineProps<{
 		bottom: 0;
 		left: 0;
 		padding: 1.5rem;
-		color: var(--c-text-1);
+		color: #fff;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
 		h1 {
 			font-size: 1.75rem;
@@ -61,8 +88,18 @@ defineProps<{
 
 		p {
 			font-size: 0.9rem;
-			opacity: 0.8;
+			opacity: 0.9;
 			margin: 0;
+			color: rgba(255, 255, 255, 0.9);
+		}
+	}
+
+	// 浅色模式下文字使用深色
+	:root[data-theme="light"] &[style*="background-image"] .banner-content {
+		color: var(--c-text-1);
+		text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+
+		p {
 			color: var(--c-text-2);
 		}
 	}

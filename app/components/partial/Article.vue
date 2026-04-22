@@ -1,20 +1,27 @@
 <script setup lang="ts">
-import type { FeedEntry } from '~/types/feed'
+interface ArticleItem {
+	id: string
+	title: string
+	link: { $href: string }
+	published: string
+	summary: string
+	updated?: string
+}
 
-defineProps<FeedEntry>()
+defineProps<ArticleItem>()
 </script>
 
 <template>
-<ZRawLink class="article-card" :to="link.$href || id">
+<ZRawLink class="article-card" :to="link?.$href || id">
 	<div class="article-header">
-		<ZDate v-if="updated && isTimeDiffSignificant(updated, published)" class="article-date" :date="updated" />
+		<ZDate v-if="updated" class="article-date" :date="updated" />
 		<ZDate class="article-date" :date="published" />
 	</div>
 	<h2 class="article-title">
-		{{ typeof title === 'string' ? title : title._ }}
+		{{ title || '无标题' }}
 	</h2>
 	<p class="article-descrption">
-		{{ typeof summary === 'string' ? summary : summary._ }}
+		{{ summary || '暂无摘要' }}
 	</p>
 </ZRawLink>
 </template>

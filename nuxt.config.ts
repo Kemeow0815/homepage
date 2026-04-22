@@ -71,6 +71,9 @@ export default defineNuxtConfig({
 		server: {
 			allowedHosts: true,
 		},
+		optimizeDeps: {
+			include: ['marked'],
+		},
 	},
 
 	// @keep-sorted

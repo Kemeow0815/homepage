@@ -24,7 +24,31 @@ export default defineCachedEventHandler(async (_event) => {
 
 		// 转换为前端期望的格式
 		const transformedEntries = entries.map((item: any) => {
-			const pubDate = item.pubDate?.[0]?._ || item.pubDate
+			// 安全获取字段值的辅助函数
+			// RSS 字段可能是：字符串、{_:'文本'}、['文本']、[{_:'文本'}]
+			const getFieldValue = (field: any): string => {
+				if (field === undefined || field === null) return ''
+				// 字符串直接返回
+				if (typeof field === 'string') return field
+				// 数组取第一个元素
+				if (Array.isArray(field)) {
+					if (field.length === 0) return ''
+					const first = field[0]
+					if (typeof first === 'string') return first
+					if (typeof first === 'object' && first !== null) {
+						// 优先取 _ (textNodeName)，然后是 $ (cdataPropName)
+						return first._ || first.$ || ''
+					}
+					return ''
+				}
+				// 对象取 _ 或 $
+				if (typeof field === 'object') {
+					return field._ || field.$ || ''
+				}
+				return ''
+			}
+
+			const pubDate = getFieldValue(item.pubDate)
 			let formattedDate = pubDate
 
 			// 将 RSS 日期格式转换为 ISO 格式
@@ -40,45 +64,13 @@ export default defineCachedEventHandler(async (_event) => {
 				}
 			}
 
-			const link = item.link?.[0]?._ || item.link
+			const link = getFieldValue(item.link)
 
 			// 提取标题和摘要
-			const title = item.title?.[0]?._ || item.title || ''
+			const title = getFieldValue(item.title)
 
 			// 提取摘要（前50字）
-			let summary = ''
-			if (item.description) {
-				if (Array.isArray(item.description) && item.description[0]) {
-					// 直接尝试获取内容，不管字段名
-					const desc = item.description[0]
-					if (typeof desc === 'string') {
-						summary = desc
-					}
-					else if (typeof desc === 'object') {
-						// 尝试所有可能的字段
-						const keys = Object.keys(desc)
-						for (const key of keys) {
-							if (typeof desc[key] === 'string' && desc[key].length > 0) {
-								summary = desc[key]
-								break
-							}
-						}
-					}
-				}
-				else if (typeof item.description === 'string') {
-					summary = item.description
-				}
-				else if (typeof item.description === 'object') {
-					// 处理对象类型的 description
-					const keys = Object.keys(item.description)
-					for (const key of keys) {
-						if (typeof item.description[key] === 'string' && item.description[key].length > 0) {
-							summary = item.description[key]
-							break
-						}
-					}
-				}
-			}
+			let summary = getFieldValue(item.description)
 
 			// 去除 HTML 标签
 			summary = summary.replace(/<[^>]*>/g, '')
@@ -90,13 +82,13 @@ export default defineCachedEventHandler(async (_event) => {
 			}
 
 			return {
-				id: item.guid?.[0]?._ || link || title,
+				id: getFieldValue(item.guid) || link || title,
 				title,
 				link: { $href: link },
 				published: formattedDate,
 				summary,
 				category: (item.category || []).map((cat: any) => ({
-					$term: cat._ || cat,
+					$term: typeof cat === 'string' ? cat : (cat?._ || cat?.$ || ''),
 					$scheme: '',
 				})),
 			}
