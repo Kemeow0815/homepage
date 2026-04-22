@@ -51,6 +51,15 @@ const webSites: Array<CardProps> = [
 		],
 		desc: '克喵の多端截图',
 	},
+	{
+		name: '克喵の内容中转',
+		nameAlt: 'paste-share',
+		buttons: [
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://paste.268682.xyz' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/paste-share' },
+		],
+		desc: '克喵の内容中转',
+	},
 ]
 
 // const orgSites: Array<CardProps> = [
