@@ -122,6 +122,9 @@ importers:
       pinia:
         specifier: catalog:framework
         version: 3.0.4(typescript@6.0.2)(vue@3.5.32(typescript@6.0.2))
+      shiki:
+        specifier: ^4.0.2
+        version: 4.0.2
       temporal-polyfill:
         specifier: catalog:util
         version: 0.3.2
@@ -147,9 +150,15 @@ importers:
       '@iconify-json/jam':
         specifier: ^1.2.3
         version: 1.2.3
+      '@iconify-json/material-symbols':
+        specifier: ^1.2.67
+        version: 1.2.67
       '@iconify-json/ri':
         specifier: ^1.2.10
         version: 1.2.10
+      '@iconify-json/tdesign':
+        specifier: ^1.2.14
+        version: 1.2.14
       '@zinkawaii/stylelint-config':
         specifier: catalog:quality
         version: 0.4.0(postcss-html@1.7.0)(postcss@8.5.9)(stylelint@17.6.0(typescript@6.0.2))
@@ -159,6 +168,9 @@ importers:
       sass-embedded:
         specifier: catalog:framework
         version: 1.99.0
+      simple-icons:
+        specifier: link:iconify-json\simple-icons
+        version: link:iconify-json/simple-icons
       stylelint:
         specifier: catalog:quality
         version: 17.6.0(typescript@6.0.2)
@@ -754,8 +766,14 @@ packages:
   '@iconify-json/jam@1.2.3':
     resolution: {integrity: sha512-Kp+OxTzB8xvbaMyIoqEqB96Ik4zv7uo5y1yavjAee0N1K/6u+PCOBwEi+Djn3WJ2trCrNZk+qYw1BJUsZC41Eg==}
 
+  '@iconify-json/material-symbols@1.2.67':
+    resolution: {integrity: sha512-9cKkCiHfShI795yoX+f7EqchoOcPWgyl2pMcXkyylX66AJ+B5mYEOEFxYpU7toOoquOEY2OYrgU89neik0N02w==}
+
   '@iconify-json/ri@1.2.10':
     resolution: {integrity: sha512-WWMhoncVVM+Xmu9T5fgu2lhYRrKTEWhKk3Com0KiM111EeEsRLiASjpsFKnC/SrB6covhUp95r2mH8tGxhgd5Q==}
+
+  '@iconify-json/tdesign@1.2.14':
+    resolution: {integrity: sha512-cxiW56RvY4YxOgeyGAVQhoxynJgCYoskVjXYXVUv6B1dFjr6GYUnc59MPdh5P+LvrUlEOaiLOfsH3NYMQlsW/g==}
 
   '@iconify/collections@1.0.671':
     resolution: {integrity: sha512-+UO1BvRCf2zpuKg6REnJfgDjKvtMGjmTFKIZSRhOLK3A6sAFo1ZDB+AjDE1g0lzhKZ4KZsYM7b5tCHFFvalQQA==}
@@ -7385,7 +7403,15 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
+  '@iconify-json/material-symbols@1.2.67':
+    dependencies:
+      '@iconify/types': 2.0.0
+
   '@iconify-json/ri@1.2.10':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/tdesign@1.2.14':
     dependencies:
       '@iconify/types': 2.0.0
 

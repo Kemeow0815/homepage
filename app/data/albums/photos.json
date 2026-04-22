@@ -1,0 +1,17 @@
+{
+  "photos": [
+    {
+      "id": "1",
+      "title": "背景",
+      "description": "收藏好图~",
+      "width": 1920,
+      "height": 1080,
+      "aspectRatio": 1.78,
+      "dateTaken": "2026-04-21T12:00:00Z",
+      "thumbnailUrl": "https://jsd.268682.xyz/gh/Kemeow0815/img@main/img/bg.webp",
+      "originalUrl": "https://jsd.268682.xyz/gh/Kemeow0815/img@main/img/bg.webp",
+      "fileSize": 1024000,
+      "tags": ["风景", "自然"]
+    }
+  ]
+}

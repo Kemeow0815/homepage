@@ -45,7 +45,7 @@ const personalInfo = {
 const personality = {
 	type: 'INFJ-T',
 	typeName: '提倡者',
-	svg: 'https://cdn.jsdmirror.com/gh/zsxcoder/github-img@main/img/infj.avif',
+	svg: 'https://jsd.268682.xyz/gh/zsxcoder/github-img@main/img/infj.avif',
 	url: 'https://www.16personalities.com/infj-personality',
 	description: '倡导者是默默的远见者，他们往往是鼓舞人心、不知疲倦的理想主义者。',
 }
@@ -66,21 +66,21 @@ const descriptionAndSocial = {
 // 技能列表（使用图标链接）
 const skills = {
 	technical: [
-		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/astro.svg',
-		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/css.svg',
-		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/git.svg',
-		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/html.svg',
-		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/js.svg',
-		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/markdown.svg',
-		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/ts.svg',
+		'https://jsd.268682.xyz/gh/yxksw/icons@main/skills/astro.svg',
+		'https://jsd.268682.xyz/gh/yxksw/icons@main/skills/css.svg',
+		'https://jsd.268682.xyz/gh/yxksw/icons@main/skills/git.svg',
+		'https://jsd.268682.xyz/gh/yxksw/icons@main/skills/html.svg',
+		'https://jsd.268682.xyz/gh/yxksw/icons@main/skills/js.svg',
+		'https://jsd.268682.xyz/gh/yxksw/icons@main/skills/markdown.svg',
+		'https://jsd.268682.xyz/gh/yxksw/icons@main/skills/ts.svg',
 	],
 	general: [
-		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/nextjs.svg',
-		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/node.svg',
-		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/nuxt.svg',
-		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/php.svg',
-		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/vite.svg',
-		'https://cdn.jsdmirror.com/gh/yxksw/icons@main/skills/vue.svg',
+		'https://jsd.268682.xyz/gh/yxksw/icons@main/skills/nextjs.svg',
+		'https://jsd.268682.xyz/gh/yxksw/icons@main/skills/node.svg',
+		'https://jsd.268682.xyz/gh/yxksw/icons@main/skills/nuxt.svg',
+		'https://jsd.268682.xyz/gh/yxksw/icons@main/skills/php.svg',
+		'https://jsd.268682.xyz/gh/yxksw/icons@main/skills/vite.svg',
+		'https://jsd.268682.xyz/gh/yxksw/icons@main/skills/vue.svg',
 	],
 	learning: '正在持续学习中',
 }

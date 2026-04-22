@@ -11,7 +11,7 @@ export default defineNuxtConfig({
 				{ rel: 'stylesheet', href: 'https://rsms.me/inter/inter.css', media: 'print', onload: 'this.media="all"' },
 			],
 			script: [
-				{ src: 'https://cdn.jsdelivr.net/npm/twikoo@1.7.7/dist/twikoo.min.js', defer: true },
+				{ src: 'https://jsd.268682.xyz/npm/twikoo@1.7.7/dist/twikoo.min.js', defer: true },
 			],
 			meta: [
 				{ name: 'author', content: [homepageConfig.author.name, homepageConfig.author.email].filter(Boolean).join(', ') },

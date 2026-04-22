@@ -70,7 +70,7 @@ export default defineAppConfig({
 					text: '友链',
 					url: '#',
 					children: [
-						{ icon: 'tabler:friends', text: '友链屋', url: 'https://www.268682.xyz' },
+						{ icon: 'ri:team-line', text: '友链屋', url: 'https://www.268682.xyz' },
 						{ icon: 'ri:add-circle-line', text: '申请友链', url: '/addlinks' },
 					],
 				},

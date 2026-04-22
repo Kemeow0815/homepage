@@ -20,7 +20,7 @@ const tools = [
 		title: '装备',
 		desc: '我的一些装备展示',
 		href: '/equipment',
-		icon: 'tdesign:device',
+		icon: 'material-symbols:devices',
 		order: 2,
 	},
 	{
@@ -64,6 +64,41 @@ const tools = [
 		href: '/log',
 		icon: 'ri:history-line',
 		order: 8,
+	},
+	{
+		title: '代码片段',
+		desc: '常用的代码片段收藏',
+		href: '/gist',
+		icon: 'material-symbols:code-blocks-outline',
+		order: 9,
+	},
+	{
+		title: '相册',
+		desc: '记录生活中的美好瞬间',
+		href: '/albums',
+		icon: 'material-symbols:photo-library',
+		order: 10,
+	},
+	{
+		title: '留言',
+		desc: '欢迎留言交流，期待与你的互动',
+		href: '/message',
+		icon: 'ri:message-3-line',
+		order: 11,
+	},
+	{
+		title: '赞助',
+		desc: '支持我的创作',
+		href: '/sponsors',
+		icon: 'material-symbols:favorite',
+		order: 12,
+	},
+	{
+		title: '音乐',
+		desc: '享受音乐带来的美好时光',
+		href: '/music',
+		icon: 'material-symbols:music-note',
+		order: 13,
 	},
 ]
 

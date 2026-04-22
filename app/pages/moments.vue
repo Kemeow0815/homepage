@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import MomentsList from '~/components/partial/MomentsList.vue'
+import PageBanner from '~/components/partial/PageBanner.vue'
 import TwikooComments from '~/components/partial/TwikooComments.vue'
 
 useHead({
@@ -40,14 +41,12 @@ provide('handleComment', handleComment)
 
 <template>
 <div class="moments-page">
-	<!-- 页面标题 -->
-	<div class="page-header">
-		<span class="icon">💬</span>
-		<h1 class="title">
-			即刻短文
-			<span class="subtitle">记录生活中的点滴</span>
-		</h1>
-	</div>
+	<!-- 页面横幅 -->
+	<PageBanner
+		title="即刻短文"
+		description="记录生活中的点滴"
+		image="https://jsd.268682.xyz/gh/Kemeow0815/img@main/img/bg.webp"
+	/>
 
 	<!-- 即刻列表 -->
 	<MomentsList :type="momentsType" />
@@ -62,31 +61,6 @@ provide('handleComment', handleComment)
 	max-width: 1000px;
 	margin: 0 auto;
 	padding: 20px;
-}
-
-.page-header {
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-	margin-bottom: 1.5rem;
-
-	.icon {
-		font-size: 1.5rem;
-	}
-
-	.title {
-		font-size: 1.5rem;
-		font-weight: 600;
-		color: var(--c-text-1);
-		margin: 0;
-
-		.subtitle {
-			font-size: 0.85rem;
-			color: var(--c-text-3);
-			font-weight: normal;
-			margin-left: 0.5rem;
-		}
-	}
 }
 
 // 响应式

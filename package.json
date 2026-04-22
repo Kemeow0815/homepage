@@ -28,6 +28,7 @@
     "fast-xml-parser": "catalog:util",
     "nuxt": "catalog:framework",
     "pinia": "catalog:framework",
+    "shiki": "^4.0.2",
     "temporal-polyfill": "catalog:util",
     "vue": "catalog:framework",
     "vue-router": "catalog:framework",
@@ -38,10 +39,13 @@
     "@iconify-json/bxs": "^1.2.3",
     "@iconify-json/dinkie-icons": "^1.2.0",
     "@iconify-json/jam": "^1.2.3",
+    "@iconify-json/material-symbols": "^1.2.67",
     "@iconify-json/ri": "^1.2.10",
+    "@iconify-json/tdesign": "^1.2.14",
     "@zinkawaii/stylelint-config": "catalog:quality",
     "eslint": "catalog:quality",
     "sass-embedded": "catalog:framework",
+    "simple-icons": "link:iconify-json\\simple-icons",
     "stylelint": "catalog:quality",
     "typescript": "catalog:framework"
   }
