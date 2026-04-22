@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { TimetableViewModel, TimetableData } from '~/types/timetable'
-import { buildTimetableViewModel, resolveCurrentWeek, parseTimetableData } from '~/utils/timetable'
-import timetableData from '~/data/timetable/大三下.json'
+import type { TimetableData, TimetableViewModel } from '~/types/timetable'
 // 从 homepage.config.ts 导入个人配置
 import homepageConfig from '~~/homepage.config'
 import LiveTimetableStatus from '~/components/content/LiveTimetableStatus.vue'
+import timetableData from '~/data/timetable/大三下.json'
+import { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } from '~/utils/timetable'
 
 useHead({ title: '' })
 
@@ -249,19 +249,20 @@ const coursesByDay = computed(() => {
 	<!-- 感谢区域 -->
 	<section class="thanks-section card">
 		<p>
-			感谢
-			<ZBadge link="https://github.com/KazariEX" text="KazariEX" />
-			<ZBadge link="https://github.com/isYangs" text="isYangs" />
-			等众多朋友为个人主页提供帮助。
+			感谢<ZLink to="https://github.com/L33Z22L11/homepage-v5" icon="ri:github-line">L33Z22L11/homepage-v5</ZLink>的开源项目，我在其基础上进行魔改，感谢
+			<ZBadge link="https://blog.liushen.fun/" text="liushen" />
+			<ZBadge link="https://2x.nz/" text="二叉树树" />
+			<ZBadge link="https://www.wxuyu.top/" text="闻絮语" />
+			等大佬为个人主页提供帮助。
 		</p>
 		<p>
-			主页开源在
-			<ZLink to="https://github.com/L33Z22L11/homepage-v5" icon="ri:github-line">L33Z22L11/homepage-v5</ZLink>
-			上，欢迎使用、参考样式：
+			我魔改的源码开源在
+			<ZLink to="https://github.com/Kemeow0815/homepage" icon="ri:github-line">Kemeow0815/homepage</ZLink>
+			上，欢迎使用、参考样式。
 		</p>
-		<p class="fork-badges">
+		<!-- <p class="fork-badges">
 			<ZBadge v-for="item in _appConfig.fork" :key="item.link" v-bind="item" />
-		</p>
+		</p> -->
 	</section>
 </div>
 </template>
