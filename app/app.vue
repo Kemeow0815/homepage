@@ -5,6 +5,14 @@ useSeoMeta({
 	description: appConfig.description,
 	ogImage: appConfig.author.avatar,
 })
+
+// 初始化外链跳转检测
+const externalLinksConfig = computed(() => appConfig.externalLinks)
+initExternalLinks({
+	enabled: externalLinksConfig.value?.enabled ?? true,
+	redirectPage: externalLinksConfig.value?.redirectPage ?? '/go',
+	whitelist: externalLinksConfig.value?.whitelist ?? [],
+})
 </script>
 
 <template>

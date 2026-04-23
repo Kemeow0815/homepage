@@ -41,5 +41,7 @@ catalog:
   '@iconify-json/bxs': ^1.2.3
   '@iconify-json/dinkie-icons': ^1.2.0
   '@iconify-json/jam': ^1.2.3
+  '@iconify-json/material-symbols': ^1.2.67
   '@iconify-json/ri': ^1.2.10
+  '@iconify-json/tdesign': ^1.2.14
   shiki: ^4.0.2

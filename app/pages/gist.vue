@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { snippets } from '~/data/snippets'
-import { useClipboard } from '@vueuse/core'
+import { useClipboard, useColorMode } from '@vueuse/core'
 import { codeToHtml } from 'shiki'
-import { useColorMode } from '@vueuse/core'
+import { snippets } from '~/data/snippets'
 
 useHead({
-  title: '代码片段',
+	title: '代码片段',
 })
 
 definePageMeta({
-  headerText: '代码片段',
+	headerText: '代码片段',
 })
 
 const { copy, copied } = useClipboard()
@@ -25,26 +24,26 @@ const maxLinesBeforeCollapse = 16 // 超过16行折叠
 
 // 计算代码行数
 function getLineCount(code: string): number {
-  return code.split('\n').length
+	return code.split('\n').length
 }
 
 // 切换折叠状态
 function toggleCollapse(id: string) {
-  collapsedSnippets.value[id] = !collapsedSnippets.value[id]
+	collapsedSnippets.value[id] = !collapsedSnippets.value[id]
 }
 
 // 初始化折叠状态 - 默认折叠超过行数限制的代码
 function initCollapsedState() {
-  for (const snippet of snippets) {
-    if (getLineCount(snippet.code) > maxLinesBeforeCollapse) {
-      collapsedSnippets.value[snippet.id] = true
-    }
-  }
+	for (const snippet of snippets) {
+		if (getLineCount(snippet.code) > maxLinesBeforeCollapse) {
+			collapsedSnippets.value[snippet.id] = true
+		}
+	}
 }
 
 // 页面加载时初始化
 onMounted(() => {
-  initCollapsedState()
+	initCollapsedState()
 })
 
 // 计算总页数
@@ -52,121 +51,121 @@ const totalPages = computed(() => Math.ceil(snippets.length / pageSize))
 
 // 当前页的代码片段
 const paginatedSnippets = computed(() => {
-  const start = (currentPage.value - 1) * pageSize
-  const end = start + pageSize
-  return snippets.slice(start, end)
+	const start = (currentPage.value - 1) * pageSize
+	const end = start + pageSize
+	return snippets.slice(start, end)
 })
 
 // 页码列表
 const pageNumbers = computed(() => {
-  const pages: (number | string)[] = []
-  const maxVisible = 5
+	const pages: (number | string)[] = []
+	const maxVisible = 5
 
-  if (totalPages.value <= maxVisible) {
-    for (let i = 1; i <= totalPages.value; i++) {
-      pages.push(i)
-    }
-  }
-  else {
-    if (currentPage.value <= 3) {
-      for (let i = 1; i <= 4; i++) {
-        pages.push(i)
-      }
-      pages.push('...')
-      pages.push(totalPages.value)
-    }
-    else if (currentPage.value >= totalPages.value - 2) {
-      pages.push(1)
-      pages.push('...')
-      for (let i = totalPages.value - 3; i <= totalPages.value; i++) {
-        pages.push(i)
-      }
-    }
-    else {
-      pages.push(1)
-      pages.push('...')
-      for (let i = currentPage.value - 1; i <= currentPage.value + 1; i++) {
-        pages.push(i)
-      }
-      pages.push('...')
-      pages.push(totalPages.value)
-    }
-  }
-  return pages
+	if (totalPages.value <= maxVisible) {
+		for (let i = 1; i <= totalPages.value; i++) {
+			pages.push(i)
+		}
+	}
+	else {
+		if (currentPage.value <= 3) {
+			for (let i = 1; i <= 4; i++) {
+				pages.push(i)
+			}
+			pages.push('...')
+			pages.push(totalPages.value)
+		}
+		else if (currentPage.value >= totalPages.value - 2) {
+			pages.push(1)
+			pages.push('...')
+			for (let i = totalPages.value - 3; i <= totalPages.value; i++) {
+				pages.push(i)
+			}
+		}
+		else {
+			pages.push(1)
+			pages.push('...')
+			for (let i = currentPage.value - 1; i <= currentPage.value + 1; i++) {
+				pages.push(i)
+			}
+			pages.push('...')
+			pages.push(totalPages.value)
+		}
+	}
+	return pages
 })
 
 // 切换页面
 function goToPage(page: number) {
-  if (page >= 1 && page <= totalPages.value) {
-    currentPage.value = page
-    // 滚动到顶部
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+	if (page >= 1 && page <= totalPages.value) {
+		currentPage.value = page
+		// 滚动到顶部
+		window.scrollTo({ top: 0, behavior: 'smooth' })
+	}
 }
 
 // 语言映射到 shiki 语言标识
 const languageMap: Record<string, string> = {
-  yaml: 'yaml',
-  typescript: 'typescript',
-  javascript: 'javascript',
-  vue: 'vue',
-  json: 'json',
-  nginx: 'nginx',
+	yaml: 'yaml',
+	typescript: 'typescript',
+	javascript: 'javascript',
+	vue: 'vue',
+	json: 'json',
+	nginx: 'nginx',
 }
 
 // 语言颜色映射
 const languageColors: Record<string, string> = {
-  yaml: '#cb171e',
-  typescript: '#3178c6',
-  javascript: '#f7df1e',
-  vue: '#42b883',
-  json: '#292929',
-  nginx: '#009639',
+	yaml: '#cb171e',
+	typescript: '#3178c6',
+	javascript: '#f7df1e',
+	vue: '#42b883',
+	json: '#292929',
+	nginx: '#009639',
 }
 
 function getLanguageColor(lang: string): string {
-  return languageColors[lang.toLowerCase()] || 'var(--c-primary)'
+	return languageColors[lang.toLowerCase()] || 'var(--c-primary)'
 }
 
 function handleCopy(code: string) {
-  copy(code)
+	copy(code)
 }
 
 // 高亮代码
 async function highlightCode(code: string, language: string): Promise<string> {
-  const lang = languageMap[language.toLowerCase()] || 'text'
-  const theme = colorMode.value === 'dark' ? 'github-dark' : 'github-light'
+	const lang = languageMap[language.toLowerCase()] || 'text'
+	const theme = colorMode.value === 'dark' ? 'github-dark' : 'github-light'
 
-  try {
-    const html = await codeToHtml(code, {
-      lang,
-      theme,
-      transformers: [
-        {
-          pre(node) {
-            node.properties.style = 'margin: 0; padding: 0; background: transparent;'
-          },
-          code(node) {
-            node.properties.style = 'font-family: inherit; background: transparent;'
-          },
-        },
-      ],
-    })
-    return html
-  }
-  catch {
-    // 如果语言不支持，返回原始代码
-    return `<pre><code>${escapeHtml(code)}</code></pre>`
-  }
+	try {
+		const html = await codeToHtml(code, {
+			lang,
+			theme,
+			transformers: [
+				{
+					pre(node) {
+						node.properties.style = 'margin: 0; padding: 0; background: transparent;'
+					},
+					code(node) {
+						node.properties.style = 'font-family: inherit; background: transparent;'
+					},
+				},
+			],
+		})
+		return html
+	}
+	catch {
+		// 如果语言不支持，返回原始代码
+		return `<pre><code>${escapeHtml(code)}</code></pre>`
+	}
 }
 
 function escapeHtml(text: string): string {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;')
+	return text
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#039;')
 }
 
 // 为每个代码片段生成高亮
@@ -174,141 +173,143 @@ const highlightedSnippets = ref<Record<string, string>>({})
 
 // 监听当前页变化，高亮新加载的代码
 watch(() => paginatedSnippets.value, async (newSnippets) => {
-  for (const snippet of newSnippets) {
-    if (!highlightedSnippets.value[snippet.id]) {
-      highlightedSnippets.value[snippet.id] = await highlightCode(snippet.code, snippet.language)
-    }
-  }
+	for (const snippet of newSnippets) {
+		if (!highlightedSnippets.value[snippet.id]) {
+			highlightedSnippets.value[snippet.id] = await highlightCode(snippet.code, snippet.language)
+		}
+	}
 }, { immediate: true })
 
 // 监听主题变化，重新高亮
 watch(() => colorMode.value, async () => {
-  for (const snippet of paginatedSnippets.value) {
-    highlightedSnippets.value[snippet.id] = await highlightCode(snippet.code, snippet.language)
-  }
+	for (const snippet of paginatedSnippets.value) {
+		highlightedSnippets.value[snippet.id] = await highlightCode(snippet.code, snippet.language)
+	}
 })
 </script>
 
 <template>
-  <div class="snippets-page">
-    <div class="snippets-container">
-      <div class="page-header">
-        <div class="header-title">
-          <Icon name="material-symbols:code-blocks-outline" class="header-icon" />
-          <h1>代码片段</h1>
-        </div>
-        <p class="header-desc">
-          这些是我在日常开发中使用的代码片段，你可以直接复制过去用！
-        </p>
-      </div>
+<div class="snippets-page">
+	<div class="snippets-container">
+		<div class="page-header">
+			<div class="header-title">
+				<Icon name="material-symbols:code-blocks-outline" class="header-icon" />
+				<h1>代码片段</h1>
+			</div>
+			<p class="header-desc">
+				这些是我在日常开发中使用的代码片段，你可以直接复制过去用！
+			</p>
+		</div>
 
-      <div class="snippets-list">
-        <div
-          v-for="snippet in paginatedSnippets"
-          :key="snippet.id"
-          class="snippet-card"
-        >
-          <div class="snippet-header">
-            <div class="snippet-title-wrapper">
-              <h3 class="snippet-title">{{ snippet.title }}</h3>
-              <span
-                class="language-badge"
-                :style="{ backgroundColor: getLanguageColor(snippet.language) }"
-              >
-                {{ snippet.language }}
-              </span>
-            </div>
-            <p v-if="snippet.description" class="snippet-description">
-              {{ snippet.description }}
-            </p>
-            <p v-if="snippet.filename" class="snippet-filename">
-              <Icon name="material-symbols:description-outline" class="file-icon" />
-              {{ snippet.filename }}
-            </p>
-          </div>
+		<div class="snippets-list">
+			<div
+				v-for="snippet in paginatedSnippets"
+				:key="snippet.id"
+				class="snippet-card"
+			>
+				<div class="snippet-header">
+					<div class="snippet-title-wrapper">
+						<h3 class="snippet-title">
+							{{ snippet.title }}
+						</h3>
+						<span
+							class="language-badge"
+							:style="{ backgroundColor: getLanguageColor(snippet.language) }"
+						>
+							{{ snippet.language }}
+						</span>
+					</div>
+					<p v-if="snippet.description" class="snippet-description">
+						{{ snippet.description }}
+					</p>
+					<p v-if="snippet.filename" class="snippet-filename">
+						<Icon name="material-symbols:description-outline" class="file-icon" />
+						{{ snippet.filename }}
+					</p>
+				</div>
 
-          <div class="snippet-code-wrapper">
-            <div class="code-toolbar">
-              <span class="code-stats">
-                {{ getLineCount(snippet.code) }} lines
-              </span>
-              <button
-                class="copy-btn"
-                :class="{ copied }"
-                @click="handleCopy(snippet.code)"
-              >
-                <Icon
-                  :name="copied ? 'material-symbols:check' : 'material-symbols:content-copy-outline'"
-                  class="copy-icon"
-                />
-                <span>{{ copied ? '已复制' : '复制' }}</span>
-              </button>
-            </div>
-            <div
-              class="code-block-container"
-              :class="{ collapsed: collapsedSnippets[snippet.id] && getLineCount(snippet.code) > maxLinesBeforeCollapse }"
-            >
-              <div
-                v-if="highlightedSnippets[snippet.id]"
-                class="code-block"
-                v-html="highlightedSnippets[snippet.id]"
-              />
-              <pre v-else class="code-block loading"><code>{{ snippet.code }}</code></pre>
-            </div>
-            <!-- 折叠按钮 -->
-            <button
-              v-if="getLineCount(snippet.code) > maxLinesBeforeCollapse"
-              class="collapse-toggle"
-              @click="toggleCollapse(snippet.id)"
-            >
-              <Icon
-                :name="collapsedSnippets[snippet.id] ? 'material-symbols:keyboard-arrow-down' : 'material-symbols:keyboard-arrow-up'"
-                class="collapse-icon"
-              />
-              <span>{{ collapsedSnippets[snippet.id] ? '展开' : '收起' }}</span>
-            </button>
-          </div>
-        </div>
-      </div>
+				<div class="snippet-code-wrapper">
+					<div class="code-toolbar">
+						<span class="code-stats">
+							{{ getLineCount(snippet.code) }} lines
+						</span>
+						<button
+							class="copy-btn"
+							:class="{ copied }"
+							@click="handleCopy(snippet.code)"
+						>
+							<Icon
+								:name="copied ? 'material-symbols:check' : 'material-symbols:content-copy-outline'"
+								class="copy-icon"
+							/>
+							<span>{{ copied ? '已复制' : '复制' }}</span>
+						</button>
+					</div>
+					<div
+						class="code-block-container"
+						:class="{ collapsed: collapsedSnippets[snippet.id] && getLineCount(snippet.code) > maxLinesBeforeCollapse }"
+					>
+						<div
+							v-if="highlightedSnippets[snippet.id]"
+							class="code-block"
+							v-html="highlightedSnippets[snippet.id]"
+						/>
+						<pre v-else class="code-block loading"><code>{{ snippet.code }}</code></pre>
+					</div>
+					<!-- 折叠按钮 -->
+					<button
+						v-if="getLineCount(snippet.code) > maxLinesBeforeCollapse"
+						class="collapse-toggle"
+						@click="toggleCollapse(snippet.id)"
+					>
+						<Icon
+							:name="collapsedSnippets[snippet.id] ? 'material-symbols:keyboard-arrow-down' : 'material-symbols:keyboard-arrow-up'"
+							class="collapse-icon"
+						/>
+						<span>{{ collapsedSnippets[snippet.id] ? '展开' : '收起' }}</span>
+					</button>
+				</div>
+			</div>
+		</div>
 
-      <!-- 分页 -->
-      <div v-if="totalPages > 1" class="pagination">
-        <button
-          class="page-btn"
-          :disabled="currentPage === 1"
-          @click="goToPage(currentPage - 1)"
-        >
-          <Icon name="material-symbols:chevron-left" class="page-icon" />
-        </button>
+		<!-- 分页 -->
+		<div v-if="totalPages > 1" class="pagination">
+			<button
+				class="page-btn"
+				:disabled="currentPage === 1"
+				@click="goToPage(currentPage - 1)"
+			>
+				<Icon name="material-symbols:chevron-left" class="page-icon" />
+			</button>
 
-        <div class="page-numbers">
-          <button
-            v-for="page in pageNumbers"
-            :key="page"
-            class="page-number"
-            :class="{ active: page === currentPage, ellipsis: page === '...' }"
-            :disabled="page === '...'"
-            @click="typeof page === 'number' && goToPage(page)"
-          >
-            {{ page }}
-          </button>
-        </div>
+			<div class="page-numbers">
+				<button
+					v-for="page in pageNumbers"
+					:key="page"
+					class="page-number"
+					:class="{ active: page === currentPage, ellipsis: page === '...' }"
+					:disabled="page === '...'"
+					@click="typeof page === 'number' && goToPage(page)"
+				>
+					{{ page }}
+				</button>
+			</div>
 
-        <button
-          class="page-btn"
-          :disabled="currentPage === totalPages"
-          @click="goToPage(currentPage + 1)"
-        >
-          <Icon name="material-symbols:chevron-right" class="page-icon" />
-        </button>
-      </div>
+			<button
+				class="page-btn"
+				:disabled="currentPage === totalPages"
+				@click="goToPage(currentPage + 1)"
+			>
+				<Icon name="material-symbols:chevron-right" class="page-icon" />
+			</button>
+		</div>
 
-      <!-- 分页信息 -->
-      <div class="pagination-info">
-        共 {{ snippets.length }} 条，第 {{ currentPage }} / {{ totalPages }} 页
-      </div>
-    </div>
-  </div>
+		<!-- 分页信息 -->
+		<div class="pagination-info">
+			共 {{ snippets.length }} 条，第 {{ currentPage }} / {{ totalPages }} 页
+		</div>
+	</div>
+</div>
 </template>
 
 <style lang="scss" scoped>

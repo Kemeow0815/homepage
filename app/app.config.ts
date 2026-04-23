@@ -9,8 +9,29 @@ import homepageConfig from '~~/homepage.config'
 export default defineAppConfig({
 	...homepageConfig,
 
+	// 外链跳转检测配置
+	externalLinks: {
+		// 是否启用
+		enabled: true,
+		// 跳转页面路径
+		redirectPage: '/go',
+		// 白名单域名（除了这些域名外，其他外链都会跳转）
+		whitelist: [
+			'kemeow0815.github.io',
+			'cdn.jsdmirror.com',
+			'ghchart.rshah.org',
+			'api-space.tnxg.top',
+			'q1.qlogo.cn',
+			'wsrv.nl',
+			'file.furrys.im',
+			'www.268682.xyz',
+			'268682.xyz',
+			'jsd.268682.xyz',
+		],
+	},
+
 	footer: [
-		`© 2026 克喵爱吃卤面 (Kemeow0815)`,
+		`© 2026 克喵爱吃卤面 (Kemeow0815)`
 		// h('a', { href: 'https://beian.miit.gov.cn/', target: '_blank', rel: 'noopener nofollow' }, '陕ICP备2025082251号'),
 	],
 
