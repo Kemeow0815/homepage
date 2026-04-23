@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises'
+import { join } from 'node:path'
 import { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } from '../../app/utils/timetable'
 import type { TimetableViewModel } from '../../app/types/timetable'
 
@@ -6,8 +7,8 @@ export default defineEventHandler(async (event): Promise<{ viewModel: TimetableV
 	const query = getQuery(event)
 	const requestedWeek = Number(query.week)
 
-	// 读取课表数据文件
-	const filePath = './app/data/timetable/大三下.json'
+	// 读取课表数据文件（使用绝对路径）
+	const filePath = join(process.cwd(), 'app/data/timetable/大三下.json')
 	const fileContent = await readFile(filePath, 'utf-8')
 
 	// 解析课表数据（标准 JSON 格式）
