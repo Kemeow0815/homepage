@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { TimetableCourseView } from '~/types/timetable'
+import { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } from '~/utils/timetable'
+import timetableData from '../../public/data/timetable/大三下.json'
 
 interface StatusLine {
 	text: string
@@ -313,59 +315,12 @@ function updateStatus(payload: TimetablePayload) {
 	state.statusLines = newStatusLines
 }
 
-// 使用 useAsyncData 在服务端获取数据
-const { data: payloadData, error } = await useAsyncData<TimetablePayload>('timetable-card', async () => {
-	// 服务端直接读取文件
-	if (process.server) {
-		const { readFile } = await import('node:fs/promises')
-		const { join } = await import('node:path')
-		const { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } = await import('~/utils/timetable')
-
-		// 尝试多个可能的路径（开发环境和生产环境）
-		const possiblePaths = [
-			join(process.cwd(), 'public/data/timetable/大三下.json'),
-			join(process.cwd(), '../public/data/timetable/大三下.json'),
-			join(process.cwd(), '../../public/data/timetable/大三下.json'),
-			'./public/data/timetable/大三下.json',
-		]
-
-		let fileContent: string | null = null
-		let lastError: Error | null = null
-
-		for (const filePath of possiblePaths) {
-			try {
-				fileContent = await readFile(filePath, 'utf-8')
-				console.log('[TimetableCard] Successfully read file from:', filePath)
-				break
-			}
-			catch (err) {
-				lastError = err as Error
-				console.log('[TimetableCard] Failed to read from:', filePath)
-			}
-		}
-
-		if (!fileContent) {
-			throw new Error(`无法读取课表数据文件: ${lastError?.message}`)
-		}
-
-		const data = parseTimetableData(fileContent)
-		const currentWeek = resolveCurrentWeek(data.settings.startDate, data.settings.maxWeek)
-		const viewModel = buildTimetableViewModel(data, currentWeek)
-
-		return { coursesByDay: viewModel.coursesByDay }
-	}
-
-	// 客户端使用 API
-	const response = await fetch('/api/timetable')
-	if (!response.ok) {
-		throw new Error(`API 请求失败: ${response.status}`)
-	}
-	const result = await response.json()
-	if (!result.viewModel?.coursesByDay) {
-		throw new Error('课表数据格式错误')
-	}
-	return { coursesByDay: result.viewModel.coursesByDay }
-})
+// 服务端和客户端都直接导入 JSON 数据
+const baselineText = JSON.stringify(timetableData)
+const parsedData = parseTimetableData(baselineText)
+const currentWeek = resolveCurrentWeek(parsedData.settings.startDate, parsedData.settings.maxWeek)
+const viewModel = buildTimetableViewModel(parsedData, currentWeek)
+const payloadData: TimetablePayload = { coursesByDay: viewModel.coursesByDay }
 
 onMounted(() => {
 	const state = getGlobalState()
@@ -377,25 +332,14 @@ onMounted(() => {
 		}
 	}, 100)
 
-	// 如果有数据，直接使用
-	if (payloadData.value) {
-		updateStatus(payloadData.value)
+	// 使用导入的数据
+	updateStatus(payloadData)
 
-		// 确保定时器在运行
-		if (state.intervalId === null) {
-			state.intervalId = window.setInterval(() => {
-				if (payloadData.value) {
-					updateStatus(payloadData.value)
-				}
-			}, 1000)
-		}
-	}
-	else if (error.value) {
-		console.error('Failed to load timetable:', error.value)
-		const errorLines = [[{ text: '### 加载失败' }]]
-		statusLines.value = errorLines
-		isLoading.value = false
-		state.statusLines = errorLines
+	// 确保定时器在运行
+	if (state.intervalId === null) {
+		state.intervalId = window.setInterval(() => {
+			updateStatus(payloadData)
+		}, 1000)
 	}
 })
 
