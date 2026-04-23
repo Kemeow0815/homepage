@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TimetableData, TimetableViewModel } from '~/types/timetable'
-import timetableData from '~/data/timetable/大三下.json'
 import { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } from '~/utils/timetable'
+import timetableData from '../../public/data/timetable/大三下.json'
 
 useHead({
 	title: '课程表',

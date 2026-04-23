@@ -15,4 +15,10 @@ declare module 'nuxt/schema' {
 	}
 }
 
+// JSON 文件模块声明
+declare module '*.json' {
+	const value: any
+	export default value
+}
+
 export {}

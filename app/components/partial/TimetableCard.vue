@@ -323,10 +323,10 @@ const { data: payloadData, error } = await useAsyncData<TimetablePayload>('timet
 
 		// 尝试多个可能的路径（开发环境和生产环境）
 		const possiblePaths = [
-			join(process.cwd(), 'app/data/timetable/大三下.json'),
-			join(process.cwd(), '../app/data/timetable/大三下.json'),
-			join(process.cwd(), '../../app/data/timetable/大三下.json'),
-			'./app/data/timetable/大三下.json',
+			join(process.cwd(), 'public/data/timetable/大三下.json'),
+			join(process.cwd(), '../public/data/timetable/大三下.json'),
+			join(process.cwd(), '../../public/data/timetable/大三下.json'),
+			'./public/data/timetable/大三下.json',
 		]
 
 		let fileContent: string | null = null
