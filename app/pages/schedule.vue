@@ -412,7 +412,7 @@ function goToNextWeek() {
 		padding: 2px 8px;
 		font-size: 0.75rem;
 		font-weight: 500;
-		color: white;
+		color: var(--c-bg-1);
 		background-color: var(--c-primary);
 		border-radius: 4px;
 	}
