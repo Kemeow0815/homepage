@@ -31,7 +31,7 @@ export default defineAppConfig({
 	},
 
 	footer: [
-		`© 2026 克喵爱吃卤面 (Kemeow0815)`
+		`© 2026 克喵爱吃卤面 (Kemeow0815)`,
 		// h('a', { href: 'https://beian.miit.gov.cn/', target: '_blank', rel: 'noopener nofollow' }, '陕ICP备2025082251号'),
 	],
 
