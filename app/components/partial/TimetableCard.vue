@@ -321,8 +321,33 @@ const { data: payloadData, error } = await useAsyncData<TimetablePayload>('timet
 		const { join } = await import('node:path')
 		const { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } = await import('~/utils/timetable')
 
-		const filePath = join(process.cwd(), 'app/data/timetable/大三下.json')
-		const fileContent = await readFile(filePath, 'utf-8')
+		// 尝试多个可能的路径（开发环境和生产环境）
+		const possiblePaths = [
+			join(process.cwd(), 'app/data/timetable/大三下.json'),
+			join(process.cwd(), '../app/data/timetable/大三下.json'),
+			join(process.cwd(), '../../app/data/timetable/大三下.json'),
+			'./app/data/timetable/大三下.json',
+		]
+
+		let fileContent: string | null = null
+		let lastError: Error | null = null
+
+		for (const filePath of possiblePaths) {
+			try {
+				fileContent = await readFile(filePath, 'utf-8')
+				console.log('[TimetableCard] Successfully read file from:', filePath)
+				break
+			}
+			catch (err) {
+				lastError = err as Error
+				console.log('[TimetableCard] Failed to read from:', filePath)
+			}
+		}
+
+		if (!fileContent) {
+			throw new Error(`无法读取课表数据文件: ${lastError?.message}`)
+		}
+
 		const data = parseTimetableData(fileContent)
 		const currentWeek = resolveCurrentWeek(data.settings.startDate, data.settings.maxWeek)
 		const viewModel = buildTimetableViewModel(data, currentWeek)
