@@ -67,19 +67,23 @@ function hexToRgb(hex: string): string {
 
 function parseTimeToMinute(text: string): number | null {
 	const parts = String(text || '').split(':')
-	if (parts.length !== 2) return null
+	if (parts.length !== 2)
+		return null
 	const hour = Number(parts[0])
 	const minute = Number(parts[1])
-	if (!Number.isFinite(hour) || !Number.isFinite(minute)) return null
+	if (!Number.isFinite(hour) || !Number.isFinite(minute))
+		return null
 	return hour * 60 + minute
 }
 
 function extractRangeMinutes(timeText: string): { startMinute: number, endMinute: number } | null {
 	const match = String(timeText || '').match(TIME_RANGE_REGEX)
-	if (!match) return null
+	if (!match)
+		return null
 	const startMinute = parseTimeToMinute(match[1]!)
 	const endMinute = parseTimeToMinute(match[2]!)
-	if (startMinute === null || endMinute === null) return null
+	if (startMinute === null || endMinute === null)
+		return null
 	return { startMinute, endMinute }
 }
 
@@ -91,10 +95,14 @@ function formatDuration(totalSeconds: number): string {
 	const seconds = safeSecs % 60
 
 	const parts: string[] = []
-	if (days > 0) parts.push(`${days}天`)
-	if (hours > 0) parts.push(`${hours}时`)
-	if (minutes > 0) parts.push(`${minutes}分钟`)
-	if (seconds > 0 || parts.length === 0) parts.push(`${seconds}秒`)
+	if (days > 0)
+		parts.push(`${days}天`)
+	if (hours > 0)
+		parts.push(`${hours}时`)
+	if (minutes > 0)
+		parts.push(`${minutes}分钟`)
+	if (seconds > 0 || parts.length === 0)
+		parts.push(`${seconds}秒`)
 
 	return parts.join('，')
 }
@@ -105,7 +113,8 @@ function getTodayCourses(payload: TimetablePayload, now: Date) {
 	return rawCourses
 		.map((course) => {
 			const range = extractRangeMinutes(course.timeText)
-			if (!range) return null
+			if (!range)
+				return null
 			return {
 				...course,
 				startMinute: range.startMinute,
@@ -133,7 +142,8 @@ function getAllCoursesThisWeek(payload: TimetablePayload): any[] {
 		}
 	}
 	return allCourses.sort((a, b) => {
-		if (a.day !== b.day) return a.day - b.day
+		if (a.day !== b.day)
+			return a.day - b.day
 		return a.startMinute - b.startMinute
 	})
 }
@@ -208,18 +218,22 @@ function resolveLiveState(payload: TimetablePayload): StatusLine[][] {
 
 			return [
 				[{ text: '### 上课' }],
-				...(prev ? [[
-					{ text: '上节：', strikethrough: true },
-					{ text: `${prev.courseName} - ${prev.room || '未知'}`, strikethrough: true, color: hexToRgb(prev.color) },
-				]] : []),
+				...(prev
+					? [[
+							{ text: '上节：', strikethrough: true },
+							{ text: `${prev.courseName} - ${prev.room || '未知'}`, strikethrough: true, color: hexToRgb(prev.color) },
+						]]
+					: []),
 				[
 					{ text: '本节：' },
 					{ text: `${current.courseName} - ${current.room || '未知'}`, bold: true, color: hexToRgb(current.color) },
 				],
-				...(next ? [[
-					{ text: '下节：' },
-					{ text: `${next.courseName} - ${next.room || '未知'}`, color: hexToRgb(next.color) },
-				]] : []),
+				...(next
+					? [[
+							{ text: '下节：' },
+							{ text: `${next.courseName} - ${next.room || '未知'}`, color: hexToRgb(next.color) },
+						]]
+					: []),
 				[
 					{ text: '距下课还有：' },
 					{ text: formatDuration(remainSeconds), bold: true },

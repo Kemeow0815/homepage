@@ -20,6 +20,9 @@ const WEEKDAY_LABELS: Record<number, string> = {
 	7: '周日',
 }
 
+// 正则表达式（模块作用域，避免重复编译）
+const LINE_SPLIT_REGEX = /\r?\n/
+
 function hashText(input: string): number {
 	let hash = 0
 	for (let i = 0; i < input.length; i += 1) {
@@ -41,7 +44,9 @@ function parseDateFromYmd(ymd: string): Date | null {
 	if (parts.length !== 3 || parts.some(part => !Number.isFinite(part))) {
 		return null
 	}
-	const [year, month, day] = parts
+	const year = parts[0]!
+	const month = parts[1]!
+	const day = parts[2]!
 	return new Date(year, month - 1, day)
 }
 
@@ -94,27 +99,27 @@ function toNodeRows(timeTable: TimetableTimeSlot[], nodes: number): TimetableNod
 
 function toDayColumns(settings: TimetableSettings, currentWeek: number): TimetableDayColumn[] {
 	const columns: TimetableDayColumn[] = [
-		{ day: 1, label: WEEKDAY_LABELS[1] },
-		{ day: 2, label: WEEKDAY_LABELS[2] },
-		{ day: 3, label: WEEKDAY_LABELS[3] },
-		{ day: 4, label: WEEKDAY_LABELS[4] },
-		{ day: 5, label: WEEKDAY_LABELS[5] },
+		{ day: 1, label: WEEKDAY_LABELS[1]! },
+		{ day: 2, label: WEEKDAY_LABELS[2]! },
+		{ day: 3, label: WEEKDAY_LABELS[3]! },
+		{ day: 4, label: WEEKDAY_LABELS[4]! },
+		{ day: 5, label: WEEKDAY_LABELS[5]! },
 	]
 
 	// 检查是否有特定周次的周末显示配置
 	const weekendConfig = settings.weekendDisplay
-	const hasWeekendConfig = weekendConfig?.enabled && weekendConfig?.weeks?.length > 0
+	const hasWeekendConfig = weekendConfig?.enabled && weekendConfig?.weeks && weekendConfig.weeks.length > 0
 
 	// 如果启用了特定周次配置
-	if (hasWeekendConfig) {
+	if (hasWeekendConfig && weekendConfig) {
 		// 只在指定周次显示周末
-		const isTargetWeek = weekendConfig?.weeks?.includes(currentWeek) ?? false
+		const isTargetWeek = weekendConfig.weeks?.includes(currentWeek) ?? false
 		if (isTargetWeek) {
-			if (weekendConfig?.days?.includes('sat')) {
-				columns.push({ day: 6, label: WEEKDAY_LABELS[6] })
+			if (weekendConfig.days?.includes('sat')) {
+				columns.push({ day: 6, label: WEEKDAY_LABELS[6]! })
 			}
-			if (weekendConfig?.days?.includes('sun')) {
-				columns.push({ day: 7, label: WEEKDAY_LABELS[7] })
+			if (weekendConfig.days?.includes('sun')) {
+				columns.push({ day: 7, label: WEEKDAY_LABELS[7]! })
 			}
 		}
 		// 非指定周次不显示周末
@@ -122,10 +127,10 @@ function toDayColumns(settings: TimetableSettings, currentWeek: number): Timetab
 	else {
 		// 使用基础设置
 		if (settings.showSat) {
-			columns.push({ day: 6, label: WEEKDAY_LABELS[6] })
+			columns.push({ day: 6, label: WEEKDAY_LABELS[6]! })
 		}
 		if (settings.showSun) {
-			columns.push({ day: 7, label: WEEKDAY_LABELS[7] })
+			columns.push({ day: 7, label: WEEKDAY_LABELS[7]! })
 		}
 	}
 	return columns
@@ -195,23 +200,26 @@ export function buildTimetableViewModel(
 		if (week < schedule.startWeek || week > schedule.endWeek) {
 			continue
 		}
-		if (!(schedule.day in coursesByDay)) {
+		if (!coursesByDay[schedule.day]) {
 			continue
 		}
 
 		const courseDef = courseMap.get(schedule.id)
 		const courseName = courseDef?.courseName ?? `课程 #${schedule.id}`
 		const color = courseDef?.color || buildCourseColor(courseName, schedule.id)
-		coursesByDay[schedule.day].push(
+		coursesByDay[schedule.day]!.push(
 			toCourseView(schedule, courseName, color, nodeRows),
 		)
 	}
 
 	for (const day of Object.keys(coursesByDay)) {
-		coursesByDay[Number(day)].sort(
-			(a, b) =>
-				a.startNode - b.startNode || a.courseName.localeCompare(b.courseName),
-		)
+		const dayCourses = coursesByDay[Number(day)]
+		if (dayCourses) {
+			dayCourses.sort(
+				(a, b) =>
+					a.startNode - b.startNode || a.courseName.localeCompare(b.courseName),
+			)
+		}
 	}
 
 	return {
@@ -239,7 +247,7 @@ export function parseTimetableData(jsonText: string): TimetableData {
 // 解析多行 JSON 课表数据（svaf 格式）
 export function parseTimetableText(rawText: string): TimetableData {
 	const lines = rawText
-		.split(/\r?\n/)
+		.split(LINE_SPLIT_REGEX)
 		.map(line => line.trim())
 		.filter(line => line.length > 0)
 
@@ -250,13 +258,13 @@ export function parseTimetableText(rawText: string): TimetableData {
 	try {
 		// 第1行: 配置 (忽略)
 		// 第2行: 时间表
-		const timeTable = JSON.parse(lines[1]) as TimetableTimeSlot[]
+		const timeTable = JSON.parse(lines[1]!) as TimetableTimeSlot[]
 		// 第3行: 设置
-		const settings = JSON.parse(lines[2]) as TimetableSettings
+		const settings = JSON.parse(lines[2]!) as TimetableSettings
 		// 第4行: 课程定义
-		const courses = JSON.parse(lines[3]) as TimetableCourse[]
+		const courses = JSON.parse(lines[3]!) as TimetableCourse[]
 		// 第5行: 课程安排
-		const schedules = JSON.parse(lines[4]) as TimetableSchedule[]
+		const schedules = JSON.parse(lines[4]!) as TimetableSchedule[]
 
 		return {
 			courses,
