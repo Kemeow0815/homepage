@@ -294,7 +294,13 @@ function resolveLiveState(payload: TimetablePayload): StatusLine[][] {
 
 async function loadTimetableData(): Promise<TimetablePayload> {
 	const response = await fetch('/api/timetable')
+	if (!response.ok) {
+		throw new Error(`API 请求失败: ${response.status}`)
+	}
 	const result = await response.json()
+	if (!result.viewModel?.coursesByDay) {
+		throw new Error('课表数据格式错误')
+	}
 	return { coursesByDay: result.viewModel.coursesByDay }
 }
 

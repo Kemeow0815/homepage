@@ -103,17 +103,17 @@ function toDayColumns(settings: TimetableSettings, currentWeek: number): Timetab
 
 	// 检查是否有特定周次的周末显示配置
 	const weekendConfig = settings.weekendDisplay
-	const hasWeekendConfig = weekendConfig?.enabled && weekendConfig.weeks.length > 0
+	const hasWeekendConfig = weekendConfig?.enabled && weekendConfig?.weeks?.length > 0
 
 	// 如果启用了特定周次配置
 	if (hasWeekendConfig) {
 		// 只在指定周次显示周末
-		const isTargetWeek = weekendConfig.weeks.includes(currentWeek)
+		const isTargetWeek = weekendConfig?.weeks?.includes(currentWeek) ?? false
 		if (isTargetWeek) {
-			if (weekendConfig.days.includes('sat')) {
+			if (weekendConfig?.days?.includes('sat')) {
 				columns.push({ day: 6, label: WEEKDAY_LABELS[6] })
 			}
-			if (weekendConfig.days.includes('sun')) {
+			if (weekendConfig?.days?.includes('sun')) {
 				columns.push({ day: 7, label: WEEKDAY_LABELS[7] })
 			}
 		}
