@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import type { TimetableData, TimetableViewModel } from '~/types/timetable'
 // 从 homepage.config.ts 导入个人配置
 import homepageConfig from '~~/homepage.config'
-import LiveTimetableStatus from '~/components/content/LiveTimetableStatus.vue'
-import timetableData from '~/data/timetable/大三下.json'
-import { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } from '~/utils/timetable'
+import TimetableCard from '~/components/partial/TimetableCard.vue'
 
 useHead({ title: '' })
 
@@ -36,22 +33,6 @@ const description = descriptionAndSocial.description
 
 // 社交链接
 const socialLinks = descriptionAndSocial.socialLinks
-
-// 课表数据
-const coursesByDay = computed(() => {
-	try {
-		const parsedData: TimetableData = timetableData as TimetableData
-		const currentWeek = resolveCurrentWeek(
-			parsedData.settings.startDate,
-			parsedData.settings.maxWeek,
-		)
-		const viewModel = buildTimetableViewModel(parsedData, currentWeek)
-		return viewModel.coursesByDay
-	}
-	catch {
-		return {}
-	}
-})
 </script>
 
 <template>
@@ -101,9 +82,7 @@ const coursesByDay = computed(() => {
 		</a>
 
 		<!-- 课程表状态卡片 -->
-		<NuxtLink v-if="Object.keys(coursesByDay).length > 0" to="/timetable" class="timetable-link">
-			<LiveTimetableStatus :courses-by-day="coursesByDay" />
-		</NuxtLink>
+		<TimetableCard />
 	</section>
 
 	<!-- 信息区域 -->

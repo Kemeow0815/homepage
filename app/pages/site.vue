@@ -60,6 +60,15 @@ const webSites: Array<CardProps> = [
 		],
 		desc: '克喵の内容中转',
 	},
+	{
+		name: 'KeMiao ImgBed',
+		nameAlt: '我的图床',
+		buttons: [
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://imgbed.268682.xyz' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/img-bed' },
+		],
+		desc: '我的图床',
+	},
 ]
 
 // const orgSites: Array<CardProps> = [

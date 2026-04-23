@@ -1,5 +1,6 @@
 // 课程表数据类型定义
 
+// 时间槽
 export interface TimetableTimeSlot {
 	endTime: string
 	node: number
@@ -7,6 +8,14 @@ export interface TimetableTimeSlot {
 	timeTable: number
 }
 
+// 周末显示配置
+export interface WeekendDisplayConfig {
+	enabled: boolean
+	weeks: number[]
+	days: ('sat' | 'sun')[]
+}
+
+// 课程设置
 export interface TimetableSettings {
 	background: string
 	courseTextColor: number
@@ -20,6 +29,7 @@ export interface TimetableSettings {
 	showOtherWeekCourse: boolean
 	showSat: boolean
 	showSun: boolean
+	weekendDisplay?: WeekendDisplayConfig
 	showTime: boolean
 	startDate: string
 	strokeColor: number
@@ -38,6 +48,7 @@ export interface TimetableSettings {
 	widgetTextColor: number
 }
 
+// 课程
 export interface TimetableCourse {
 	color: string
 	courseName: string
@@ -47,6 +58,7 @@ export interface TimetableCourse {
 	tableId: number
 }
 
+// 课程安排
 export interface TimetableSchedule {
 	day: number
 	endTime: string
@@ -64,20 +76,15 @@ export interface TimetableSchedule {
 	type: number
 }
 
+// 课表数据
 export interface TimetableData {
-	courseLen: number
-	id: number
-	name: string
-	sameBreakLen: boolean
-	sameLen: boolean
-	theBreakLen: number
-	timeTable: TimetableTimeSlot[]
-	settings: TimetableSettings
 	courses: TimetableCourse[]
 	schedules: TimetableSchedule[]
+	settings: TimetableSettings
+	timeTable: TimetableTimeSlot[]
 }
 
-// 视图模型类型
+// 课程视图
 export interface TimetableCourseView {
 	courseId: number
 	courseName: string
@@ -94,17 +101,20 @@ export interface TimetableCourseView {
 	timeText: string
 }
 
+// 星期列
 export interface TimetableDayColumn {
 	day: number
 	label: string
 }
 
+// 节次行
 export interface TimetableNodeRow {
 	node: number
 	startTime: string
 	endTime: string
 }
 
+// 课表视图模型
 export interface TimetableViewModel {
 	tableName: string
 	maxWeek: number

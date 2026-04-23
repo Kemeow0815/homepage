@@ -5,6 +5,8 @@ import type {
 	TimetableDayColumn,
 	TimetableNodeRow,
 	TimetableSchedule,
+	TimetableSettings,
+	TimetableTimeSlot,
 	TimetableViewModel,
 } from '~/types/timetable'
 
@@ -66,9 +68,9 @@ export function resolveCurrentWeek(
 	return week
 }
 
-function toNodeRows(data: TimetableData): TimetableNodeRow[] {
-	const rows = data.timeTable
-		.filter(item => item.node >= 1 && item.node <= data.settings.nodes)
+function toNodeRows(timeTable: TimetableTimeSlot[], nodes: number): TimetableNodeRow[] {
+	const rows = timeTable
+		.filter(item => item.node >= 1 && item.node <= nodes)
 		.sort((a, b) => a.node - b.node)
 		.map(item => ({
 			node: item.node,
@@ -80,7 +82,7 @@ function toNodeRows(data: TimetableData): TimetableNodeRow[] {
 		return rows
 	}
 
-	return Array.from({ length: data.settings.nodes }, (_, index) => {
+	return Array.from({ length: nodes }, (_, index) => {
 		const node = index + 1
 		return {
 			node,
@@ -90,7 +92,7 @@ function toNodeRows(data: TimetableData): TimetableNodeRow[] {
 	})
 }
 
-function toDayColumns(data: TimetableData): TimetableDayColumn[] {
+function toDayColumns(settings: TimetableSettings, currentWeek: number): TimetableDayColumn[] {
 	const columns: TimetableDayColumn[] = [
 		{ day: 1, label: WEEKDAY_LABELS[1] },
 		{ day: 2, label: WEEKDAY_LABELS[2] },
@@ -99,11 +101,32 @@ function toDayColumns(data: TimetableData): TimetableDayColumn[] {
 		{ day: 5, label: WEEKDAY_LABELS[5] },
 	]
 
-	if (data.settings.showSat) {
-		columns.push({ day: 6, label: WEEKDAY_LABELS[6] })
+	// 检查是否有特定周次的周末显示配置
+	const weekendConfig = settings.weekendDisplay
+	const hasWeekendConfig = weekendConfig?.enabled && weekendConfig.weeks.length > 0
+
+	// 如果启用了特定周次配置
+	if (hasWeekendConfig) {
+		// 只在指定周次显示周末
+		const isTargetWeek = weekendConfig.weeks.includes(currentWeek)
+		if (isTargetWeek) {
+			if (weekendConfig.days.includes('sat')) {
+				columns.push({ day: 6, label: WEEKDAY_LABELS[6] })
+			}
+			if (weekendConfig.days.includes('sun')) {
+				columns.push({ day: 7, label: WEEKDAY_LABELS[7] })
+			}
+		}
+		// 非指定周次不显示周末
 	}
-	if (data.settings.showSun) {
-		columns.push({ day: 7, label: WEEKDAY_LABELS[7] })
+	else {
+		// 使用基础设置
+		if (settings.showSat) {
+			columns.push({ day: 6, label: WEEKDAY_LABELS[6] })
+		}
+		if (settings.showSun) {
+			columns.push({ day: 7, label: WEEKDAY_LABELS[7] })
+		}
 	}
 	return columns
 }
@@ -153,8 +176,8 @@ export function buildTimetableViewModel(
 ): TimetableViewModel {
 	const maxWeek = Math.max(1, data.settings.maxWeek || 1)
 	const week = Math.min(Math.max(1, selectedWeek), maxWeek)
-	const nodeRows = toNodeRows(data)
-	const dayColumns = toDayColumns(data)
+	const nodeRows = toNodeRows(data.timeTable, data.settings.nodes)
+	const dayColumns = toDayColumns(data.settings, week)
 
 	const courseMap = new Map(
 		data.courses.map(course => [course.id, course]),
@@ -202,10 +225,45 @@ export function buildTimetableViewModel(
 	}
 }
 
-// 解析课表数据
+// 解析单行 JSON 课表数据
 export function parseTimetableData(jsonText: string): TimetableData {
 	try {
 		return JSON.parse(jsonText) as TimetableData
+	}
+	catch (error) {
+		const message = error instanceof Error ? error.message : String(error)
+		throw new Error(`课表数据解析失败：${message}`)
+	}
+}
+
+// 解析多行 JSON 课表数据（svaf 格式）
+export function parseTimetableText(rawText: string): TimetableData {
+	const lines = rawText
+		.split(/\r?\n/)
+		.map(line => line.trim())
+		.filter(line => line.length > 0)
+
+	if (lines.length < 4) {
+		throw new Error(`课表数据结构错误：需要至少 4 段 JSON，当前为 ${lines.length} 段`)
+	}
+
+	try {
+		// 第1行: 配置 (忽略)
+		// 第2行: 时间表
+		const timeTable = JSON.parse(lines[1]) as TimetableTimeSlot[]
+		// 第3行: 设置
+		const settings = JSON.parse(lines[2]) as TimetableSettings
+		// 第4行: 课程定义
+		const courses = JSON.parse(lines[3]) as TimetableCourse[]
+		// 第5行: 课程安排
+		const schedules = JSON.parse(lines[4]) as TimetableSchedule[]
+
+		return {
+			courses,
+			schedules,
+			settings,
+			timeTable,
+		}
 	}
 	catch (error) {
 		const message = error instanceof Error ? error.message : String(error)
