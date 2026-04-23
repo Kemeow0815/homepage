@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { TimetableCourseView } from '~/types/timetable'
 import { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } from '~/utils/timetable'
-import timetableData from '../../public/data/timetable/大三下.json'
+// @ts-ignore
+import timetableData from '~/public/data/timetable/大三下.json'
 
 interface StatusLine {
 	text: string
