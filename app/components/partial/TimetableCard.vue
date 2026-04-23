@@ -43,7 +43,6 @@ function getGlobalState(): GlobalState {
 
 const statusLines = ref<StatusLine[][]>([])
 const isLoading = ref(true)
-const isClient = ref(false)
 
 // 监听全局状态变化并同步到本地状态
 let syncInterval: number | null = null
@@ -306,7 +305,32 @@ function resolveLiveState(payload: TimetablePayload): StatusLine[][] {
 	]
 }
 
-async function loadTimetableData(): Promise<TimetablePayload> {
+function updateStatus(payload: TimetablePayload) {
+	const newStatusLines = resolveLiveState(payload)
+	statusLines.value = newStatusLines
+	isLoading.value = false
+	const state = getGlobalState()
+	state.statusLines = newStatusLines
+}
+
+// 使用 useAsyncData 在服务端获取数据
+const { data: payloadData, error } = await useAsyncData<TimetablePayload>('timetable-card', async () => {
+	// 服务端直接读取文件
+	if (process.server) {
+		const { readFile } = await import('node:fs/promises')
+		const { join } = await import('node:path')
+		const { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } = await import('~/utils/timetable')
+
+		const filePath = join(process.cwd(), 'app/data/timetable/大三下.json')
+		const fileContent = await readFile(filePath, 'utf-8')
+		const data = parseTimetableData(fileContent)
+		const currentWeek = resolveCurrentWeek(data.settings.startDate, data.settings.maxWeek)
+		const viewModel = buildTimetableViewModel(data, currentWeek)
+
+		return { coursesByDay: viewModel.coursesByDay }
+	}
+
+	// 客户端使用 API
 	const response = await fetch('/api/timetable')
 	if (!response.ok) {
 		throw new Error(`API 请求失败: ${response.status}`)
@@ -316,18 +340,9 @@ async function loadTimetableData(): Promise<TimetablePayload> {
 		throw new Error('课表数据格式错误')
 	}
 	return { coursesByDay: result.viewModel.coursesByDay }
-}
-
-function updateStatus(payload: TimetablePayload) {
-	const newStatusLines = resolveLiveState(payload)
-	statusLines.value = newStatusLines
-	isLoading.value = false
-	const state = getGlobalState()
-	state.statusLines = newStatusLines
-}
+})
 
 onMounted(() => {
-	isClient.value = true
 	const state = getGlobalState()
 
 	// 同步全局状态到本地（每100ms检查一次）
@@ -337,43 +352,26 @@ onMounted(() => {
 		}
 	}, 100)
 
-	// 如果已经有数据，直接使用
-	if (state.payload) {
-		updateStatus(state.payload)
+	// 如果有数据，直接使用
+	if (payloadData.value) {
+		updateStatus(payloadData.value)
 
 		// 确保定时器在运行
 		if (state.intervalId === null) {
 			state.intervalId = window.setInterval(() => {
-				if (state.payload) {
-					updateStatus(state.payload)
+				if (payloadData.value) {
+					updateStatus(payloadData.value)
 				}
 			}, 1000)
 		}
-		return
 	}
-
-	// 首次加载数据
-	loadTimetableData()
-		.then((payload) => {
-			state.payload = payload
-			updateStatus(payload)
-
-			// 启动定时器（全局唯一）
-			if (state.intervalId === null) {
-				state.intervalId = window.setInterval(() => {
-					if (state.payload) {
-						updateStatus(state.payload)
-					}
-				}, 1000)
-			}
-		})
-		.catch((error) => {
-			console.error('Failed to load timetable:', error)
-			const errorLines = [[{ text: '### 加载失败' }]]
-			statusLines.value = errorLines
-			isLoading.value = false
-			state.statusLines = errorLines
-		})
+	else if (error.value) {
+		console.error('Failed to load timetable:', error.value)
+		const errorLines = [[{ text: '### 加载失败' }]]
+		statusLines.value = errorLines
+		isLoading.value = false
+		state.statusLines = errorLines
+	}
 })
 
 onUnmounted(() => {
@@ -389,50 +387,41 @@ onUnmounted(() => {
 <template>
 <NuxtLink to="/schedule/" class="timetable-card-link">
 	<div class="timetable-card">
-		<!-- 客户端渲染内容 -->
-		<ClientOnly>
-			<!-- 加载状态 -->
-			<div v-if="isLoading" class="loading-state">
-				<Icon name="ri:loader-4-line" class="loading-icon" />
-				<span>加载中...</span>
+		<!-- 加载状态 -->
+		<div v-if="isLoading" class="loading-state">
+			<Icon name="ri:loader-4-line" class="loading-icon" />
+			<span>加载中...</span>
+		</div>
+		<!-- 内容 -->
+		<template v-else>
+			<div
+				v-for="(line, lineIndex) in statusLines"
+				:key="lineIndex"
+				class="status-line"
+			>
+				<template v-for="(segment, segIndex) in line" :key="segIndex">
+					<span
+						v-if="segment.text.startsWith('###')"
+						class="status-title"
+						:style="{ color: segment.color || 'inherit' }"
+					>
+						{{ segment.text.replace('###', '').trim() }}
+					</span>
+					<span
+						v-else
+						class="status-text"
+						:class="{
+							'bold': segment.bold,
+							'strikethrough': segment.strikethrough,
+							'opacity-60': segment.strikethrough,
+						}"
+						:style="{ color: segment.color || 'inherit' }"
+					>
+						{{ segment.text }}
+					</span>
+				</template>
 			</div>
-			<!-- 内容 -->
-			<template v-else>
-				<div
-					v-for="(line, lineIndex) in statusLines"
-					:key="lineIndex"
-					class="status-line"
-				>
-					<template v-for="(segment, segIndex) in line" :key="segIndex">
-						<span
-							v-if="segment.text.startsWith('###')"
-							class="status-title"
-							:style="{ color: segment.color || 'inherit' }"
-						>
-							{{ segment.text.replace('###', '').trim() }}
-						</span>
-						<span
-							v-else
-							class="status-text"
-							:class="{
-								'bold': segment.bold,
-								'strikethrough': segment.strikethrough,
-								'opacity-60': segment.strikethrough,
-							}"
-							:style="{ color: segment.color || 'inherit' }"
-						>
-							{{ segment.text }}
-						</span>
-					</template>
-				</div>
-			</template>
-			<template #fallback>
-				<div class="loading-state">
-					<Icon name="ri:loader-4-line" class="loading-icon" />
-					<span>加载中...</span>
-				</div>
-			</template>
-		</ClientOnly>
+		</template>
 	</div>
 </NuxtLink>
 </template>
