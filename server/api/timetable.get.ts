@@ -11,10 +11,10 @@ export default defineEventHandler(async (event): Promise<{ viewModel: TimetableV
 
 		// 尝试多个可能的路径
 		const possiblePaths = [
-			join(process.cwd(), 'public/data/timetable/大三下.json'),
-			join(process.cwd(), '../public/data/timetable/大三下.json'),
-			join(process.cwd(), '../../public/data/timetable/大三下.json'),
-			'./public/data/timetable/大三下.json',
+			join(process.cwd(), 'app/data/timetable/大三下.json'),
+			join(process.cwd(), '../app/data/timetable/大三下.json'),
+			join(process.cwd(), '../../app/data/timetable/大三下.json'),
+			'./app/data/timetable/大三下.json',
 		]
 
 		let fileContent: string | null = null

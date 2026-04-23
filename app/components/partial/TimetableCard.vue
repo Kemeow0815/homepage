@@ -2,7 +2,7 @@
 import type { TimetableCourseView } from '~/types/timetable'
 import { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } from '~/utils/timetable'
 // @ts-ignore
-import timetableData from '~/public/data/timetable/大三下.json'
+import timetableData from '~/data/timetable/大三下.json'
 
 interface StatusLine {
 	text: string
