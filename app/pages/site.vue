@@ -69,6 +69,15 @@ const webSites: Array<CardProps> = [
 		],
 		desc: '我的图床',
 	},
+	{
+		name: 'KeMiao Cover Generator',
+		nameAlt: '我的封面生成器',
+		buttons: [
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://kemeow0815.github.io/cover' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/cover' },
+		],
+		desc: '我的封面生成器',
+	},
 ]
 
 // const orgSites: Array<CardProps> = [
