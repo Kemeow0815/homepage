@@ -47,11 +47,33 @@ function handleComment(content?: string) {
 provide('handleComment', handleComment)
 
 // Toast 提示
-const showVpnToast = ref(true)
+const vpnToastConfig = computed(() => appConfig.momentsVpnToast)
+const showVpnToast = ref(vpnToastConfig.value?.enabled ?? true)
+let autoCloseTimer: ReturnType<typeof setTimeout> | null = null
 
 function closeVpnToast() {
 	showVpnToast.value = false
+	if (autoCloseTimer) {
+		clearTimeout(autoCloseTimer)
+		autoCloseTimer = null
+	}
 }
+
+// 自动关闭弹窗
+onMounted(() => {
+	if (showVpnToast.value && vpnToastConfig.value?.autoClose) {
+		const duration = vpnToastConfig.value?.duration ?? 5000
+		autoCloseTimer = setTimeout(() => {
+			showVpnToast.value = false
+		}, duration)
+	}
+})
+
+onUnmounted(() => {
+	if (autoCloseTimer) {
+		clearTimeout(autoCloseTimer)
+	}
+})
 </script>
 
 <template>

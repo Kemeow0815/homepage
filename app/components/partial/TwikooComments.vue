@@ -1,15 +1,6 @@
 <script setup lang="ts">
-const commentEl = useTemplateRef<HTMLElement>('comment')
+const commentEl = useTemplateRef('comment')
 const { copy } = useClipboard({ legacy: true })
-
-// 声明 Twikoo 全局类型
-declare global {
-	interface Window {
-		twikoo?: {
-			init?: (options: { envId: string, el: string }) => void
-		}
-	}
-}
 
 onMounted(() => {
 	// 加载 Twikoo
@@ -253,6 +244,52 @@ defineExpose({
 			border-radius: 4px;
 			background-color: var(--c-bg-2);
 			font-size: 0.9em;
+		}
+	}
+
+	// 表情面板深色模式适配 (OwO)
+	.OwO {
+		.OwO-body {
+			background-color: var(--c-bg-1) !important;
+			border-color: var(--c-border) !important;
+			color: var(--c-text-1) !important;
+		}
+
+		.OwO-items {
+			background-color: var(--c-bg-1) !important;
+		}
+
+		.OwO-item {
+			background-color: var(--c-bg-2) !important;
+			border-color: var(--c-border) !important;
+
+			&:hover {
+				background-color: var(--c-bg-3) !important;
+			}
+		}
+
+		.OwO-bar {
+			background-color: var(--c-bg-2) !important;
+			border-color: var(--c-border) !important;
+		}
+
+		.OwO-packages {
+			background-color: var(--c-bg-2) !important;
+
+			li {
+				color: var(--c-text-2) !important;
+				border-color: var(--c-border) !important;
+
+				&:hover {
+					color: var(--c-primary) !important;
+				}
+
+				&.OwO-package-active {
+					color: var(--c-primary) !important;
+					border-color: var(--c-primary) !important;
+					background-color: var(--c-bg-1) !important;
+				}
+			}
 		}
 	}
 }

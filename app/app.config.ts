@@ -79,6 +79,16 @@ export default defineAppConfig({
 		},
 	],
 
+	// 即刻页面 VPN 提示弹窗配置
+	momentsVpnToast: {
+		// 是否启用
+		enabled: true,
+		// 是否自动关闭
+		autoClose: true,
+		// 自动关闭延迟（毫秒）
+		duration: 5000,
+	},
+
 	nav: [
 		{
 			title: '',
