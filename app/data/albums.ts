@@ -37,7 +37,8 @@ export function getPhotoById(id: string): AlbumPhoto | undefined {
 
 // 格式化日期
 export function formatDate(dateString: string | null): string {
-	if (!dateString) return '未知日期'
+	if (!dateString)
+		return '未知日期'
 	const date = new Date(dateString)
 	return date.toLocaleDateString('zh-CN', {
 		year: 'numeric',
@@ -48,7 +49,8 @@ export function formatDate(dateString: string | null): string {
 
 // 格式化文件大小
 export function formatFileSize(bytes?: number): string {
-	if (!bytes) return '未知大小'
+	if (!bytes)
+		return '未知大小'
 	const units = ['B', 'KB', 'MB', 'GB']
 	let size = bytes
 	let unitIndex = 0

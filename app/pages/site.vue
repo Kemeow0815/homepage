@@ -79,6 +79,24 @@ const webSites: Array<CardProps> = [
 		],
 		desc: '我的封面生成器',
 	},
+	{
+		name: 'KeMiao Music',
+		nameAlt: '我的音乐播放器',
+		buttons: [
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://kemeow0815.github.io/music' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/music' },
+		],
+		desc: '基于HeoMusic的自用音乐播放器',
+	},
+	{
+		name: 'KeMiao TimeTable',
+		nameAlt: '我的课表',
+		buttons: [
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://kemeow0815.github.io/timetable' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/timetable' },
+		],
+		desc: '我的自用课表',
+	},
 ]
 
 // const orgSites: Array<CardProps> = [

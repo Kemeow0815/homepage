@@ -1,35 +1,35 @@
 <script setup lang="ts">
 interface Props {
-  username: string
-  color?: string
+	username: string
+	color?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  color: '659eb9',
+	color: '659eb9',
 })
 
 const chartUrl = computed(() => {
-  return `https://ghchart.rshah.org/${props.color}/${props.username}`
+	return `https://ghchart.rshah.org/${props.color}/${props.username}`
 })
 </script>
 
 <template>
-  <div class="github-contributions">
-    <div class="contributions-header">
-      <Icon name="ri:github-fill" class="github-icon" />
-      <span class="username">{{ username }}</span>
-      <span class="label">的 GitHub 贡献</span>
-    </div>
+<div class="github-contributions">
+	<div class="contributions-header">
+		<Icon name="ri:github-fill" class="github-icon" />
+		<span class="username">{{ username }}</span>
+		<span class="label">的 GitHub 贡献</span>
+	</div>
 
-    <div class="chart-container">
-      <img
-        :src="chartUrl"
-        :alt="`${username} 的 GitHub 贡献图`"
-        class="contributions-chart"
-        loading="lazy"
-      />
-    </div>
-  </div>
+	<div class="chart-container">
+		<img
+			:src="chartUrl"
+			:alt="`${username} 的 GitHub 贡献图`"
+			class="contributions-chart"
+			loading="lazy"
+		>
+	</div>
+</div>
 </template>
 
 <style lang="scss" scoped>

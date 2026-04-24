@@ -354,23 +354,23 @@ watch(currentSong, () => {
 	</div>
 
 	<!-- 音频元素 -->
-		<audio
-			v-if="currentSong"
-			ref="audioRef"
-			:src="currentSong.url"
-			preload="metadata"
-			@ended="onEnded"
-			@play="isPlaying = true"
-			@pause="isPlaying = false"
-			@timeupdate="onTimeUpdate"
-			@loadedmetadata="onLoadedMetadata"
-		/>
+	<audio
+		v-if="currentSong"
+		ref="audioRef"
+		:src="currentSong.url"
+		preload="metadata"
+		@ended="onEnded"
+		@play="isPlaying = true"
+		@pause="isPlaying = false"
+		@timeupdate="onTimeUpdate"
+		@loadedmetadata="onLoadedMetadata"
+	/>
 
-		<!-- 浏览量统计 -->
-		<div class="page-views-wrapper">
-			<PageViewCounter />
-		</div>
+	<!-- 浏览量统计 -->
+	<div class="page-views-wrapper">
+		<PageViewCounter />
 	</div>
+</div>
 </template>
 
 <style lang="scss" scoped>

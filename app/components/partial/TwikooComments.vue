@@ -1,6 +1,15 @@
 <script setup lang="ts">
-const commentEl = useTemplateRef('comment')
+const commentEl = useTemplateRef<HTMLElement>('comment')
 const { copy } = useClipboard({ legacy: true })
+
+// 声明 Twikoo 全局类型
+declare global {
+	interface Window {
+		twikoo?: {
+			init?: (options: { envId: string, el: string }) => void
+		}
+	}
+}
 
 onMounted(() => {
 	// 加载 Twikoo
@@ -20,7 +29,8 @@ function formatQuote(text: string) {
 // 获取评论输入框
 function getCommentInput(): HTMLTextAreaElement | HTMLElement | null {
 	const root = document.querySelector('#twikoo')
-	if (!root) return null
+	if (!root)
+		return null
 
 	const inputSelectors = [
 		'textarea',
@@ -31,8 +41,10 @@ function getCommentInput(): HTMLTextAreaElement | HTMLElement | null {
 
 	for (const selector of inputSelectors) {
 		const target = root.querySelector(selector)
-		if (target instanceof HTMLTextAreaElement) return target
-		if (target instanceof HTMLElement && target.isContentEditable) return target
+		if (target instanceof HTMLTextAreaElement)
+			return target
+		if (target instanceof HTMLElement && target.isContentEditable)
+			return target
 	}
 
 	return null
@@ -61,7 +73,8 @@ async function waitCommentInput(timeout = 6000, step = 120): Promise<HTMLTextAre
 	const start = Date.now()
 	while ((Date.now() - start) < timeout) {
 		const target = getCommentInput()
-		if (target) return target
+		if (target)
+			return target
 		await new Promise(resolve => setTimeout(resolve, step))
 	}
 	return null
@@ -77,10 +90,12 @@ function scrollToComments() {
 
 // 插入引用
 async function insertQuote(text: string): Promise<boolean> {
-	if (!import.meta.client) return false
+	if (!import.meta.client)
+		return false
 
 	const quoteText = formatQuote(text)
-	if (!quoteText) return false
+	if (!quoteText)
+		return false
 
 	// 滚动到评论区
 	scrollToComments()
@@ -105,15 +120,17 @@ defineExpose({
 </script>
 
 <template>
-	<section id="twikoo-comments" ref="comment" class="twikoo-wrapper">
-		<h3 class="comments-title">
-			<Icon name="ri:chat-3-line" />
-			评论区
-		</h3>
-		<div id="twikoo">
-			<p class="loading-text">评论加载中...</p>
-		</div>
-	</section>
+<section id="twikoo-comments" ref="comment" class="twikoo-wrapper">
+	<h3 class="comments-title">
+		<Icon name="ri:chat-3-line" />
+		评论区
+	</h3>
+	<div id="twikoo">
+		<p class="loading-text">
+			评论加载中...
+		</p>
+	</div>
+</section>
 </template>
 
 <style lang="scss" scoped>
