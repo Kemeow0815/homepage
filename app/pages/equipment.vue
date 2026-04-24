@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import equipmentData from '~/data/equipment.json'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 import type { EquipmentItem } from '~/types/equipment'
 
 useHead({
@@ -127,6 +128,11 @@ function handleTabClick(category: string) {
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- 浏览量统计 -->
+      <div class="page-views-wrapper">
+        <PageViewCounter />
       </div>
     </div>
   </div>
@@ -424,5 +430,13 @@ function handleTabClick(category: string) {
       }
     }
   }
+}
+
+.page-views-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding: 1rem;
+  border-top: 1px solid var(--c-border);
 }
 </style>

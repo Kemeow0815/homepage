@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
+
 useHead({
 	title: '工具',
 })
@@ -135,6 +137,11 @@ tools.sort((a, b) => a.order - b.order)
 				</p>
 			</NuxtLink>
 		</div>
+
+		<!-- 浏览量统计 -->
+		<div class="page-views-wrapper">
+			<PageViewCounter />
+		</div>
 	</div>
 </div>
 </template>
@@ -236,6 +243,14 @@ tools.sort((a, b) => a.order - b.order)
     margin-left: 2.25rem;
     line-height: 1.5;
   }
+}
+
+.page-views-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  border-top: 1px solid var(--c-border);
+  background-color: var(--c-bg-soft);
 }
 
 // Responsive

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { TimetableData, TimetableViewModel } from '~/types/timetable'
-import { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } from '~/utils/timetable'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 // @ts-ignore
 import timetableData from '~/data/timetable/大三下.json'
+import { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } from '~/utils/timetable'
 
 useHead({
 	title: '课程表',
@@ -119,6 +120,11 @@ function nextWeek() {
 		<p class="timetable-hint">
 			提示：周次切换后将展示该周实际有课的安排，多周课程会在对应周自动出现。
 		</p>
+
+		<!-- 浏览量统计 -->
+		<div class="page-views-wrapper">
+			<PageViewCounter />
+		</div>
 
 		<!-- 课表网格（桌面端） -->
 		<TimetableGrid :view-model="viewModel" />
@@ -244,6 +250,12 @@ function nextWeek() {
 .timetable-hint {
 	font-size: 12px;
 	color: var(--c-text-3);
+	margin-bottom: 16px;
+}
+
+.page-views-wrapper {
+	display: flex;
+	justify-content: center;
 	margin-bottom: 16px;
 }
 

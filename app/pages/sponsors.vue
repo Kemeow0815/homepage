@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PageBanner from '~/components/partial/PageBanner.vue'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 
 interface Sponsor {
 	name: string
@@ -199,19 +200,28 @@ const wechatQr = 'https://jsd.268682.xyz/gh/zsxcoder/github-img@main/img/weixin.
 							:src="sponsor.avatar"
 							:alt="`${sponsor.name}的头像`"
 							loading="lazy"
-							@error="$event.target.style.display='none'"
+							@error="($event.target as HTMLImageElement).style.display = 'none'"
 						>
 						<div v-else class="avatar-placeholder">
 							<Icon name="material-symbols:person" />
 						</div>
 					</div>
 					<div class="sponsor-info">
-						<h4 class="sponsor-name">{{ sponsor.name }}</h4>
+						<h4 class="sponsor-name">
+							{{ sponsor.name }}
+						</h4>
 						<span class="sponsor-date">{{ sponsor.date }}</span>
 					</div>
-					<div class="sponsor-amount">{{ sponsor.amount }}</div>
+					<div class="sponsor-amount">
+						{{ sponsor.amount }}
+					</div>
 				</div>
 			</div>
+		</div>
+
+		<!-- 浏览量统计 -->
+		<div class="page-views-wrapper">
+			<PageViewCounter />
 		</div>
 	</div>
 </div>
@@ -656,6 +666,13 @@ const wechatQr = 'https://jsd.268682.xyz/gh/zsxcoder/github-img@main/img/weixin.
 @media (max-width: 768px) {
 	.sponsors-page {
 		padding: 10px;
+	}
+
+	.page-views-wrapper {
+		display: flex;
+		justify-content: center;
+		padding: 1rem;
+		border-top: 1px solid var(--c-border);
 	}
 
 	.intro-section,

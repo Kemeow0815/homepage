@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CollectionType, ContentType } from '~/composables/useBangumi'
 import useBangumi from '~/composables/useBangumi'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 
 useHead({
 	title: '追番记录',
@@ -124,13 +125,18 @@ const orderMap = computed(() => {
 		</div>
 
 		<!-- 版权信息 -->
-		<div class="bangumi-footer">
-			<p>
-				数据来自 <a href="https://bgm.tv" target="_blank" rel="noopener noreferrer">Bangumi</a>
-			</p>
-			<p>共计 {{ data?.total || 0 }} 部作品</p>
-		</div>
+	<div class="bangumi-footer">
+		<p>
+			数据来自 <a href="https://bgm.tv" target="_blank" rel="noopener noreferrer">Bangumi</a>
+		</p>
+		<p>共计 {{ data?.total || 0 }} 部作品</p>
 	</div>
+
+	<!-- 浏览量统计 -->
+	<div class="page-views-wrapper">
+		<PageViewCounter />
+	</div>
+</div>
 </template>
 
 <style lang="scss" scoped>
@@ -296,6 +302,12 @@ const orderMap = computed(() => {
 @media (max-width: 768px) {
 	.bangumi-page {
 		padding: 10px;
+	}
+
+	.page-views-wrapper {
+		display: flex;
+		justify-content: center;
+		margin-top: 1rem;
 	}
 
 	.bangumi-nav {

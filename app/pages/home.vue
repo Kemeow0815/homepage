@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // 从 homepage.config.ts 导入个人配置
 import homepageConfig from '~~/homepage.config'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 import TimetableCard from '~/components/partial/TimetableCard.vue'
 
 useHead({ title: '' })
@@ -83,6 +84,11 @@ const socialLinks = descriptionAndSocial.socialLinks
 
 		<!-- 课程表状态卡片 -->
 		<TimetableCard />
+
+		<!-- 浏览量统计 -->
+		<div class="page-views-wrapper">
+			<PageViewCounter pathname="/" />
+		</div>
 	</section>
 
 	<!-- 信息区域 -->
@@ -377,6 +383,13 @@ const socialLinks = descriptionAndSocial.socialLinks
 			margin-bottom: 0;
 			cursor: pointer;
 		}
+	}
+
+	// 浏览量统计
+	.page-views-wrapper {
+		margin-top: 1rem;
+		display: flex;
+		justify-content: center;
 	}
 }
 

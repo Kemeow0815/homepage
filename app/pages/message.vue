@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PageBanner from '~/components/partial/PageBanner.vue'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 import TwikooComments from '~/components/partial/TwikooComments.vue'
 
 useHead({
@@ -79,6 +80,11 @@ const introItems: IntroItem[] = [
 		<!-- 评论区 -->
 		<div class="comments-section">
 			<TwikooComments />
+		</div>
+
+		<!-- 浏览量统计 -->
+		<div class="page-views-wrapper">
+			<PageViewCounter />
 		</div>
 	</div>
 </div>
@@ -196,8 +202,16 @@ const introItems: IntroItem[] = [
 
 // 评论区
 .comments-section {
-	padding: 2rem;
-}
+		padding: 2rem;
+	}
+
+	.page-views-wrapper {
+		display: flex;
+		justify-content: center;
+		padding: 1rem;
+		border-top: 1px solid var(--c-border);
+		background-color: var(--c-bg-soft);
+	}
 
 // 响应式
 @media (max-width: 768px) {

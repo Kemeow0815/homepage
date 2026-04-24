@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import homepageConfig from '~~/homepage.config'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 import { myFeed } from '~/data/feeds'
 
 useHead({
@@ -498,6 +499,11 @@ function resetForm() {
 			</div>
 		</template>
 	</Tab>
+
+	<!-- 浏览量统计 -->
+	<div class="page-views-wrapper">
+		<PageViewCounter />
+	</div>
 </div>
 </template>
 
@@ -914,6 +920,12 @@ function resetForm() {
 @media (max-width: 600px) {
 	.addlinks-page {
 		padding: 10px;
+	}
+
+	.page-views-wrapper {
+		display: flex;
+		justify-content: center;
+		margin-top: 1rem;
 	}
 
 	.page-header-section {

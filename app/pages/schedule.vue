@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { TimetableData, TimetableViewModel } from '~/types/timetable'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 // @ts-ignore
 import timetableData from '~/data/timetable/大三下.json'
 import { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } from '~/utils/timetable'
@@ -152,6 +153,16 @@ function goToNextWeek() {
 			>
 				<Icon name="ri:arrow-right-s-line" />
 			</button>
+		</div>
+
+		<!-- 提示 -->
+		<p class="timetable-hint">
+			提示：周次切换后将展示该周实际有课的安排，多周课程会在对应周自动出现。
+		</p>
+
+		<!-- 浏览量统计 -->
+		<div class="page-views-wrapper">
+			<PageViewCounter />
 		</div>
 
 		<!-- 桌面端网格视图 -->

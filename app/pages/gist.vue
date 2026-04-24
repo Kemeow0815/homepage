@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useClipboard, useColorMode } from '@vueuse/core'
 import { codeToHtml } from 'shiki'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 import { snippets } from '~/data/snippets'
 
 useHead({
@@ -307,6 +308,11 @@ watch(() => colorMode.value, async () => {
 		<!-- 分页信息 -->
 		<div class="pagination-info">
 			共 {{ snippets.length }} 条，第 {{ currentPage }} / {{ totalPages }} 页
+		</div>
+
+		<!-- 浏览量统计 -->
+		<div class="page-views-wrapper">
+			<PageViewCounter />
 		</div>
 	</div>
 </div>
@@ -638,11 +644,17 @@ watch(() => colorMode.value, async () => {
 }
 
 .pagination-info {
-  text-align: center;
-  padding: 0 1.5rem 1.5rem;
-  font-size: 0.875rem;
-  color: var(--c-text-3);
-}
+		text-align: center;
+		padding: 0 1.5rem 1.5rem;
+		font-size: 0.875rem;
+		color: var(--c-text-3);
+	}
+
+	.page-views-wrapper {
+		display: flex;
+		justify-content: center;
+		padding-bottom: 1.5rem;
+	}
 
 // Responsive
 @media (max-width: 768px) {

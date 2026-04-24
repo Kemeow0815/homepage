@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
+
 useHead({ title: '项目' })
 definePageMeta({ headerText: '参与的开源项目' })
 
@@ -30,7 +32,18 @@ const projects = [
 <section>
 	<ZProject v-for="project in projects" :key="project.title" v-bind="project" />
 </section>
+<div class="page-views-wrapper">
+	<PageViewCounter />
+</div>
 </template>
+
+<style lang="scss" scoped>
+.page-views-wrapper {
+	display: flex;
+	justify-content: center;
+	margin-top: 1rem;
+}
+</style>
 
 <style lang="scss" scoped>
 section {

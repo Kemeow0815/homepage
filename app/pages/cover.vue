@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 
 useHead({
 	title: '封面生成',
@@ -1234,6 +1235,11 @@ function downloadLink(url: string, filename: string) {
 				</div>
 			</div>
 		</div>
+
+		<!-- 浏览量统计 -->
+		<div class="page-views-wrapper">
+			<PageViewCounter />
+		</div>
 	</div>
 </div>
 </template>
@@ -2288,5 +2294,15 @@ function downloadLink(url: string, filename: string) {
   .export-ratios {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+.page-views-wrapper {
+	display: flex;
+	justify-content: center;
+	margin-top: 1rem;
+	padding: 1rem;
+	background-color: var(--c-bg-1);
+	border: 1px solid var(--c-border);
+	border-radius: 12px;
 }
 </style>

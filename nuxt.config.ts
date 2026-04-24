@@ -34,6 +34,7 @@ export default defineNuxtConfig({
 		{ path: '~/components/partial', prefix: 'Z' },
 		'~/components',
 		'~/components/content',
+		'~/components/partial',
 	],
 
 	css: [

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PageBanner from '~/components/partial/PageBanner.vue'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 
 interface Song {
 	id: string
@@ -353,18 +354,23 @@ watch(currentSong, () => {
 	</div>
 
 	<!-- 音频元素 -->
-	<audio
-		v-if="currentSong"
-		ref="audioRef"
-		:src="currentSong.url"
-		preload="metadata"
-		@ended="onEnded"
-		@play="isPlaying = true"
-		@pause="isPlaying = false"
-		@timeupdate="onTimeUpdate"
-		@loadedmetadata="onLoadedMetadata"
-	/>
-</div>
+		<audio
+			v-if="currentSong"
+			ref="audioRef"
+			:src="currentSong.url"
+			preload="metadata"
+			@ended="onEnded"
+			@play="isPlaying = true"
+			@pause="isPlaying = false"
+			@timeupdate="onTimeUpdate"
+			@loadedmetadata="onLoadedMetadata"
+		/>
+
+		<!-- 浏览量统计 -->
+		<div class="page-views-wrapper">
+			<PageViewCounter />
+		</div>
+	</div>
 </template>
 
 <style lang="scss" scoped>
@@ -710,11 +716,17 @@ watch(currentSong, () => {
 
 // 播放列表
 .playlist-section {
-	background-color: var(--c-bg-1);
-	border: 1px solid var(--c-border);
-	border-radius: 12px;
-	padding: 1.5rem;
-}
+		background-color: var(--c-bg-1);
+		border: 1px solid var(--c-border);
+		border-radius: 12px;
+		padding: 1.5rem;
+	}
+
+	.page-views-wrapper {
+		display: flex;
+		justify-content: center;
+		margin-top: 1rem;
+	}
 
 .section-title {
 	display: flex;

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import MomentsList from '~/components/partial/MomentsList.vue'
 import PageBanner from '~/components/partial/PageBanner.vue'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 import TwikooComments from '~/components/partial/TwikooComments.vue'
 
 useHead({
@@ -87,6 +88,11 @@ function closeVpnToast() {
 
 	<!-- Twikoo 评论区 -->
 	<TwikooComments ref="twikooRef" />
+
+	<!-- 浏览量统计 -->
+	<div class="page-views-wrapper">
+		<PageViewCounter />
+	</div>
 </div>
 </template>
 
@@ -249,5 +255,11 @@ function closeVpnToast() {
 	.moments-page {
 		padding: 10px;
 	}
+}
+
+.page-views-wrapper {
+	display: flex;
+	justify-content: center;
+	margin-top: 1rem;
 }
 </style>

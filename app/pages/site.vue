@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CardProps } from '~/components/partial/Card.vue'
 import { ZLink } from '#components'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 
 useHead({ title: '站点' })
 definePageMeta({ headerText: '一些网站' })
@@ -141,7 +142,18 @@ const webSites: Array<CardProps> = [
 <ZCardList :data-list="webSites" />
 <!-- <ZTitle>组织门户</ZTitle>
 <ZCardList :data-list="orgSites" /> -->
+<div class="page-views-wrapper">
+	<PageViewCounter />
+</div>
 </template>
+
+<style lang="scss" scoped>
+.page-views-wrapper {
+	display: flex;
+	justify-content: center;
+	margin-top: 1rem;
+}
+</style>
 
 <style lang="scss" scoped>
 </style>

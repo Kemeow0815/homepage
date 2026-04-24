@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ApiResponse } from '~/types/hot'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 
 useHead({
 	title: '今日热搜',
@@ -186,6 +187,11 @@ const statusMessage = computed(() => {
 			数据来自 <a href="https://hot-api.liiiu.cn" target="_blank" rel="noopener noreferrer">今日热榜 API</a>
 		</p>
 	</div>
+
+	<!-- 浏览量统计 -->
+	<div class="page-views-wrapper">
+		<PageViewCounter />
+	</div>
 </div>
 </template>
 
@@ -285,9 +291,15 @@ const statusMessage = computed(() => {
 
 // 响应式
 @media (max-width: 768px) {
-  .hot-page {
-    padding: 10px;
-  }
+	.hot-page {
+		padding: 10px;
+	}
+
+	.page-views-wrapper {
+		display: flex;
+		justify-content: center;
+		margin-top: 1rem;
+	}
 
   .platform-tabs {
     gap: 0.4em;

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
+
 useHead({ title: '文章' })
 definePageMeta({ headerText: '最近更新' })
 
@@ -14,6 +16,7 @@ const articles = computed(() => data.value?.slice(0, 11) || [])
 		<ZRawLink :to="appConfig.blog.url"><mark>{{ appConfig.blog.name }}</mark></ZRawLink>
 		的文章
 	</span>
+	<PageViewCounter />
 </ZTitle>
 
 <template v-if="status === 'pending'">

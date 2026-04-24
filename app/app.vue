@@ -13,6 +13,17 @@ initExternalLinks({
 	redirectPage: externalLinksConfig.value?.redirectPage ?? '/go',
 	whitelist: externalLinksConfig.value?.whitelist ?? [],
 })
+
+// 添加 Umami 统计脚本
+useHead({
+	script: [
+		{
+			src: 'https://cf-um.268682.xyz/tracker.js',
+			defer: true,
+			'data-website-id': 'homepage',
+		},
+	],
+})
 </script>
 
 <template>

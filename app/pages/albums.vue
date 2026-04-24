@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { AlbumPhoto } from '~/data/albums'
 import PageBanner from '~/components/partial/PageBanner.vue'
+import PageViewCounter from '~/components/partial/PageViewCounter.vue'
 import { formatDate, formatFileSize, getAllPhotos, getPhotoById } from '~/data/albums'
 
 useHead({
@@ -170,6 +171,11 @@ function handleKeydown(e: KeyboardEvent) {
 
 			<div class="albums-footer">
 				<p>共 {{ photos.length }} 张照片</p>
+			</div>
+
+			<!-- 浏览量统计 -->
+			<div class="page-views-wrapper">
+				<PageViewCounter />
 			</div>
 		</template>
 	</div>
@@ -432,11 +438,17 @@ function handleKeydown(e: KeyboardEvent) {
 }
 
 .albums-footer {
-	margin: 2rem 0;
-	font-size: 0.9rem;
-	text-align: center;
-	color: var(--c-text-3);
-}
+		margin: 2rem 0;
+		font-size: 0.9rem;
+		text-align: center;
+		color: var(--c-text-3);
+	}
+
+	.page-views-wrapper {
+		display: flex;
+		justify-content: center;
+		margin: 2rem 0;
+	}
 
 // 灯箱
 .lightbox {
