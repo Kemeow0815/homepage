@@ -73,7 +73,7 @@ watch(() => route.path, openActiveMenus, { immediate: true })
 							<Icon :name="isOpen(itemKey(groupIndex, itemIndex)) ? 'ri:arrow-up-s-line' : 'ri:arrow-down-s-line'" />
 						</button>
 
-						<ul v-show="isOpen(itemKey(groupIndex, itemIndex))" class="aside-subnav">
+						<ul v-if="isOpen(itemKey(groupIndex, itemIndex))" class="aside-subnav">
 							<li v-for="(subItem, subIndex) in item.children" :key="subIndex">
 								<ZRawLink v-slot="{ external }" :to="subItem.url" class="aside-nav-item submenu-item" :class="{ 'router-link-active': isActive(subItem) }">
 									<Icon :name="subItem.icon" />

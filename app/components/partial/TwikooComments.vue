@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const commentEl = useTemplateRef('comment')
 const { copy } = useClipboard({ legacy: true })
 
 onMounted(() => {
 	// 加载 Twikoo
-	window.twikoo?.init?.({
+	const twikoo = (window as any).twikoo
+	twikoo?.init?.({
 		envId: 'https://twikoo-homepage.268682.xyz',
 		// twikoo 会把挂载后的元素变为 #twikoo
 		el: '#twikoo',
@@ -111,7 +111,7 @@ defineExpose({
 </script>
 
 <template>
-<section id="twikoo-comments" ref="comment" class="twikoo-wrapper">
+<section id="twikoo-comments" class="twikoo-wrapper">
 	<h3 class="comments-title">
 		<Icon name="ri:chat-3-line" />
 		评论区
@@ -262,6 +262,14 @@ defineExpose({
 		.OwO-item {
 			background-color: var(--c-bg-2) !important;
 			border-color: var(--c-border) !important;
+			// 修复颜文字换行问题
+			white-space: nowrap !important;
+			word-break: keep-all !important;
+			overflow: hidden !important;
+			text-overflow: ellipsis !important;
+			display: flex !important;
+			align-items: center !important;
+			justify-content: center !important;
 
 			&:hover {
 				background-color: var(--c-bg-3) !important;

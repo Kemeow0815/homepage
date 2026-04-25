@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { TimetableCourseView } from '~/types/timetable'
-import { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } from '~/utils/timetable'
 // @ts-ignore
 import timetableData from '~/data/timetable/大三下.json'
+import { buildTimetableViewModel, parseTimetableData, resolveCurrentWeek } from '~/utils/timetable'
 
 interface StatusLine {
 	text: string
@@ -150,7 +150,32 @@ function getAllCoursesThisWeek(payload: TimetablePayload): any[] {
 	})
 }
 
-function resolveLiveState(payload: TimetablePayload): StatusLine[][] {
+// 获取指定周次的所有课程（用于周末显示下周课程）
+function getAllCoursesForWeek(week: number, data: typeof parsedData): any[] {
+	const viewModel = buildTimetableViewModel(data, week)
+	const allCourses: any[] = []
+	for (let day = 1; day <= 7; day++) {
+		const dayCourses = viewModel.coursesByDay?.[day] || []
+		for (const course of dayCourses) {
+			const range = extractRangeMinutes(course.timeText)
+			if (range) {
+				allCourses.push({
+					...course,
+					day,
+					startMinute: range.startMinute,
+					endMinute: range.endMinute,
+				})
+			}
+		}
+	}
+	return allCourses.sort((a, b) => {
+		if (a.day !== b.day)
+			return a.day - b.day
+		return a.startMinute - b.startMinute
+	})
+}
+
+function resolveLiveState(payload: TimetablePayload, week: number, data: typeof parsedData): StatusLine[][] {
 	const now = new Date()
 	const currentSecond = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds()
 	const currentMinute = Math.floor(currentSecond / 60)
@@ -158,7 +183,11 @@ function resolveLiveState(payload: TimetablePayload): StatusLine[][] {
 
 	// 周末
 	if (day >= 6) {
-		const allCourses = getAllCoursesThisWeek(payload)
+		// 周末时，需要获取下一周的课程
+		const nextWeek = week + 1
+		const allCourses = nextWeek <= data.settings.maxWeek
+			? getAllCoursesForWeek(nextWeek, data)
+			: getAllCoursesThisWeek(payload)
 		const nextWeekFirstCourse = allCourses.find(c => c.day === 1)
 
 		if (nextWeekFirstCourse) {
@@ -185,11 +214,28 @@ function resolveLiveState(payload: TimetablePayload): StatusLine[][] {
 
 	// 今日无课
 	if (courses.length === 0) {
-		const allCourses = getAllCoursesThisWeek(payload)
-		const nextDayCourse = allCourses.find(c => c.day > day)
+		// 如果今天是周五，需要获取下周的课程
+		let allCourses: any[]
+		let nextDayCourse: any
+		let daysUntil: number
+
+		if (day === 5) {
+			// 周五无课，查找下周一的课程（下周）
+			const nextWeek = week + 1
+			allCourses = nextWeek <= data.settings.maxWeek
+				? getAllCoursesForWeek(nextWeek, data)
+				: getAllCoursesThisWeek(payload)
+			nextDayCourse = allCourses.find(c => c.day === 1)
+			daysUntil = 3 // 周五到周一有3天
+		}
+		else {
+			// 其他工作日，查找本周后续课程
+			allCourses = getAllCoursesThisWeek(payload)
+			nextDayCourse = allCourses.find(c => c.day > day)
+			daysUntil = nextDayCourse ? nextDayCourse.day - day : 0
+		}
 
 		if (nextDayCourse) {
-			const daysUntil = nextDayCourse.day - day
 			const secondsUntilCourse = daysUntil * 86400 + nextDayCourse.startMinute * 60 - (currentMinute * 60 + now.getSeconds())
 
 			return [
@@ -268,11 +314,28 @@ function resolveLiveState(payload: TimetablePayload): StatusLine[][] {
 	// 今日课毕
 	const lastCourse = courses[courses.length - 1]!
 	if (currentMinute >= lastCourse.endMinute) {
-		const allCourses = getAllCoursesThisWeek(payload)
-		const nextDayCourse = allCourses.find(c => c.day > day)
+		// 如果今天是周五，需要获取下周的课程
+		let allCourses: any[]
+		let nextDayCourse: any
+		let daysUntil: number
+
+		if (day === 5) {
+			// 周五课程结束，查找下周一的课程（下周）
+			const nextWeek = week + 1
+			allCourses = nextWeek <= data.settings.maxWeek
+				? getAllCoursesForWeek(nextWeek, data)
+				: getAllCoursesThisWeek(payload)
+			nextDayCourse = allCourses.find(c => c.day === 1)
+			daysUntil = 3 // 周五到周一有3天（周六、周日、周一）
+		}
+		else {
+			// 其他工作日，查找本周后续课程
+			allCourses = getAllCoursesThisWeek(payload)
+			nextDayCourse = allCourses.find(c => c.day > day)
+			daysUntil = nextDayCourse ? nextDayCourse.day - day : 0
+		}
 
 		if (nextDayCourse) {
-			const daysUntil = nextDayCourse.day - day
 			const secondsUntilCourse = daysUntil * 86400 + nextDayCourse.startMinute * 60 - (currentMinute * 60 + now.getSeconds())
 
 			return [
@@ -308,8 +371,8 @@ function resolveLiveState(payload: TimetablePayload): StatusLine[][] {
 	]
 }
 
-function updateStatus(payload: TimetablePayload) {
-	const newStatusLines = resolveLiveState(payload)
+function updateStatus(payload: TimetablePayload, week: number, data: typeof parsedData) {
+	const newStatusLines = resolveLiveState(payload, week, data)
 	statusLines.value = newStatusLines
 	isLoading.value = false
 	const state = getGlobalState()
@@ -334,12 +397,12 @@ onMounted(() => {
 	}, 100)
 
 	// 使用导入的数据
-	updateStatus(payloadData)
+	updateStatus(payloadData, currentWeek, parsedData)
 
 	// 确保定时器在运行
 	if (state.intervalId === null) {
 		state.intervalId = window.setInterval(() => {
-			updateStatus(payloadData)
+			updateStatus(payloadData, currentWeek, parsedData)
 		}, 1000)
 	}
 })
