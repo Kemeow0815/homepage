@@ -6,7 +6,10 @@ const external = computed(() => isExtLink(props.to))
 <template>
 <a v-if="to === '#'" :href="to"><slot /></a>
 <span v-else-if="to === undefined"><slot /></span>
-<NuxtLink v-else :to :target="external ? '_blank' : undefined">
+<a v-else-if="external" :href="to" target="_blank" rel="noopener noreferrer">
+	<slot :external />
+</a>
+<NuxtLink v-else :to>
 	<slot :external />
 </NuxtLink>
 </template>
