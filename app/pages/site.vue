@@ -62,8 +62,8 @@ const webSites: Array<CardProps> = [
 		desc: '克喵の内容中转',
 	},
 	{
-		name: 'KeMiao ImgBed',
-		nameAlt: '我的图床',
+		name: '我的图床',
+		nameAlt: 'KeMiao ImgBed',
 		buttons: [
 			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://imgbed.268682.xyz' },
 			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/img-bed' },
@@ -71,8 +71,8 @@ const webSites: Array<CardProps> = [
 		desc: '我的图床',
 	},
 	{
-		name: 'KeMiao Cover Generator',
-		nameAlt: '我的封面生成器',
+		name: '我的封面生成器',
+		nameAlt: 'KeMiao Cover Generator',
 		buttons: [
 			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://kemeow0815.github.io/cover' },
 			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/cover' },
@@ -80,8 +80,8 @@ const webSites: Array<CardProps> = [
 		desc: '我的封面生成器',
 	},
 	{
-		name: 'KeMiao Music',
-		nameAlt: '我的音乐播放器',
+		name: '我的音乐播放器',
+		nameAlt: 'KeMiao Music',
 		buttons: [
 			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://kemeow0815.github.io/music' },
 			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/music' },
@@ -89,13 +89,40 @@ const webSites: Array<CardProps> = [
 		desc: '基于HeoMusic的自用音乐播放器',
 	},
 	{
-		name: 'KeMiao TimeTable',
-		nameAlt: '我的课表',
+		name: '我的课表',
+		nameAlt: 'KeMiao TimeTable',
 		buttons: [
 			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://kemeow0815.github.io/timetable' },
 			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/timetable' },
 		],
 		desc: '我的自用课表',
+	},
+	{
+		name: '支付二维码合并版',
+		nameAlt: 'PayQrCode',
+		buttons: [
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://qrcode.268682.xyz' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/PayQrcode' },
+		],
+		desc: '韩小寒的支付二维码合并版',
+	},
+	{
+		name: '我的赞助页',
+		nameAlt: 'Sponsor',
+		buttons: [
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://kemeow0815.github.io/sponsor' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/sponsor' },
+		],
+		desc: '我的赞助页',
+	},
+	{
+		name: 'Gwitter',
+		nameAlt: 'Gwitter',
+		buttons: [
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://gwitter.268682.xyz' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/gwitter' },
+		],
+		desc: '说说',
 	},
 ]
 
