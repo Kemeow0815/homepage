@@ -7,6 +7,7 @@ interface Sponsor {
 	avatar?: string
 	date: string
 	amount: string
+	url?: string
 }
 
 useHead({
@@ -24,7 +25,7 @@ const error = ref('')
 // 加载赞助数据
 onMounted(async () => {
 	try {
-		const response = await fetch('https://cdn.jsdelivr.net/gh/Kemeow0815/sponsors@main/data/sponsors/sponsors.json')
+		const response = await fetch('https://sponsor.268682.xyz/data/sponsors/sponsors.json')
 		if (!response.ok) {
 			throw new Error('加载赞助数据失败')
 		}
@@ -193,29 +194,63 @@ const wechatQr = 'https://jsd.268682.xyz/gh/zsxcoder/github-img@main/img/weixin.
 
 			<!-- 赞助者列表 -->
 			<div v-else class="sponsors-list">
-				<div v-for="sponsor in sponsors" :key="sponsor.name + sponsor.date" class="sponsor-item">
-					<div class="sponsor-avatar">
-						<img
-							v-if="sponsor.avatar"
-							:src="sponsor.avatar"
-							:alt="`${sponsor.name}的头像`"
-							loading="lazy"
-							@error="($event.target as HTMLImageElement).style.display = 'none'"
-						>
-						<div v-else class="avatar-placeholder">
-							<Icon name="material-symbols:person" />
+				<template v-for="sponsor in sponsors" :key="sponsor.name + sponsor.date">
+					<!-- 有 URL 的赞助者 - 可点击 -->
+					<a
+						v-if="sponsor.url"
+						:href="sponsor.url"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="sponsor-item sponsor-item-link"
+					>
+						<div class="sponsor-avatar">
+							<img
+								v-if="sponsor.avatar"
+								:src="sponsor.avatar"
+								:alt="`${sponsor.name}的头像`"
+								loading="lazy"
+								@error="($event.target as HTMLImageElement).style.display = 'none'"
+							>
+							<div v-else class="avatar-placeholder">
+								<Icon name="material-symbols:person" />
+							</div>
+						</div>
+						<div class="sponsor-info">
+							<h4 class="sponsor-name">
+								{{ sponsor.name }}
+								<Icon name="ri:external-link-line" class="external-icon" />
+							</h4>
+							<span class="sponsor-date">{{ sponsor.date }}</span>
+						</div>
+						<div class="sponsor-amount">
+							{{ sponsor.amount }}
+						</div>
+					</a>
+					<!-- 无 URL 的赞助者 - 不可点击 -->
+					<div v-else class="sponsor-item">
+						<div class="sponsor-avatar">
+							<img
+								v-if="sponsor.avatar"
+								:src="sponsor.avatar"
+								:alt="`${sponsor.name}的头像`"
+								loading="lazy"
+								@error="($event.target as HTMLImageElement).style.display = 'none'"
+							>
+							<div v-else class="avatar-placeholder">
+								<Icon name="material-symbols:person" />
+							</div>
+						</div>
+						<div class="sponsor-info">
+							<h4 class="sponsor-name">
+								{{ sponsor.name }}
+							</h4>
+							<span class="sponsor-date">{{ sponsor.date }}</span>
+						</div>
+						<div class="sponsor-amount">
+							{{ sponsor.amount }}
 						</div>
 					</div>
-					<div class="sponsor-info">
-						<h4 class="sponsor-name">
-							{{ sponsor.name }}
-						</h4>
-						<span class="sponsor-date">{{ sponsor.date }}</span>
-					</div>
-					<div class="sponsor-amount">
-						{{ sponsor.amount }}
-					</div>
-				</div>
+				</template>
 			</div>
 		</div>
 
@@ -604,6 +639,27 @@ const wechatQr = 'https://jsd.268682.xyz/gh/zsxcoder/github-img@main/img/weixin.
 	&:hover {
 		background-color: var(--c-bg-soft);
 		border-color: var(--c-primary-soft);
+	}
+
+	&.sponsor-item-link {
+		text-decoration: none;
+		color: inherit;
+		cursor: pointer;
+
+		&:hover {
+			background-color: var(--c-bg-soft);
+			border-color: var(--c-primary);
+			transform: translateY(-1px);
+			box-shadow: 0 4px 12px var(--ld-shadow);
+		}
+
+		.external-icon {
+			width: 0.875rem;
+			height: 0.875rem;
+			margin-left: 0.25rem;
+			color: var(--c-text-3);
+			vertical-align: middle;
+		}
 	}
 }
 
