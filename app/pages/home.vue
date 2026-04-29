@@ -73,7 +73,7 @@ const socialLinks = descriptionAndSocial.socialLinks
 		</p>
 		<a
 			id="card-info-btn"
-			href="https://github.com/Kemeow0815/smtp-feed/issues/new?template=subscribe.yml"
+			href="https://github.com/Kemeow0815/Friend-Circle-Lite/issues/new?template=%E9%82%AE%E7%AE%B1%E8%AE%A2%E9%98%85.md"
 			target="_blank"
 			rel="noopener noreferrer"
 			class="github-subscribe-btn"
