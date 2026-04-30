@@ -4,7 +4,7 @@ import type { NitroConfig } from 'nitropack'
 
 const author = {
 	name: '克喵爱吃卤面',
-	avatar: 'https://avatars-githubusercontent-webp.webp.se/Kemeow0815',
+	avatar: 'https://jsd.268682.xyz/gh/Kemeow0815/img@main/img/kemeow0815.webp',
 	email: 'mcy@kemiaosw.top',
 	homepage: 'https://www.kemiaosw.top/',
 }
@@ -13,7 +13,7 @@ const author = {
 
 // 顶部信息
 const topInfo = {
-	avatar: 'https://wsrv.nl/?url=github.com%2FKemeow0815.png',
+	avatar: 'https://jsd.268682.xyz/gh/Kemeow0815/img@main/img/kemeow0815.webp',
 	siteName: '克喵爱吃卤面',
 	motto: '每一段旅行，都有终点。',
 	floatText: [

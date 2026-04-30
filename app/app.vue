@@ -18,8 +18,13 @@ initExternalLinks({
 useHead({
 	script: [
 		{
-			src: 'https://cf-um.268682.xyz/tracker.js',
-			defer: true,
+			'src': 'https://cf-um.268682.xyz/tracker.js',
+			'defer': true,
+			'data-website-id': 'homepage',
+		},
+		{
+			'src': 'https://analytics.268682.xyz/tracker.min.js',
+			'defer': true,
 			'data-website-id': 'homepage',
 		},
 	],

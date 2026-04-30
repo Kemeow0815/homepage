@@ -12,6 +12,7 @@
 	transition: color 0.1s, background-color 0.2s;
 	scrollbar-color: var(--c-text-3) var(--c-bg-2);
 	font-variant-alternates: styleset(open-digits, disambiguation, round-quotes-and-commas);
+	cursor: url('/default.cur'), auto;
 }
 
 * {

@@ -124,6 +124,15 @@ const webSites: Array<CardProps> = [
 		],
 		desc: '说说',
 	},
+	{
+		name: 'Ke Miao Analytics',
+		nameAlt: 'web-analytics',
+		buttons: [
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://analytics.268682.xyz' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/HanAnalytics' },
+		],
+		desc: '基于github的网站分析',
+	},
 ]
 
 // const orgSites: Array<CardProps> = [
