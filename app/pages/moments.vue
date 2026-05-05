@@ -22,10 +22,10 @@ const appConfig = useAppConfig()
 const twikooRef = ref<InstanceType<typeof TwikooComments>>()
 
 // 根据配置决定使用哪种数据源
-type MomentsType = 'local' | 'ispeak' | 'tgtalk'
+type MomentsType = 'local' | 'ispeak' | 'tgtalk' | 'memos'
 const momentsType = computed<MomentsType>(() => {
 	const type = appConfig.moments?.type
-	if (type === 'tgtalk' || type === 'ispeak') {
+	if (type === 'tgtalk' || type === 'ispeak' || type === 'memos') {
 		return type
 	}
 	return 'local'

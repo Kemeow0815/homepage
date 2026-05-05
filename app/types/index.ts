@@ -12,6 +12,21 @@ declare module 'nuxt/schema' {
 			redirectPage?: string
 			whitelist?: string[]
 		}
+		moments?: {
+			type: 'local' | 'tgtalk' | 'memos'
+			tgtalk?: {
+				url: string
+			}
+			memos?: {
+				baseUrl: string
+				pageSize?: number
+			}
+		}
+		momentsVpnToast?: {
+			enabled?: boolean
+			autoClose?: boolean
+			duration?: number
+		}
 	}
 }
 

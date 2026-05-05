@@ -2,12 +2,13 @@
 import type { MomentItem } from '~/types/moments'
 import homepageConfig from '~~/homepage.config'
 import { localMoments } from '~/data/moments/local'
+import { fetchMemosData } from '~/data/moments/memos'
 import { fetchTgtalkData } from '~/data/moments/tgtalk'
 import { useMomentsStore } from '~/stores/moments'
 import MomentsCard from './MomentsCard.vue'
 
 const props = defineProps<{
-	type: 'local' | 'ispeak' | 'tgtalk'
+	type: 'local' | 'ispeak' | 'tgtalk' | 'memos'
 }>()
 
 const momentsStore = useMomentsStore()
@@ -66,7 +67,7 @@ async function loadLocalData() {
 
 // 加载 tgtalk 数据
 async function loadTgtalkData() {
-	const config = homepageConfig.moments.tgtalk
+	const config = homepageConfig.moments?.tgtalk
 	if (!config?.url) {
 		message.value = '未配置 tgtalk API 地址'
 		return
@@ -80,6 +81,29 @@ async function loadTgtalkData() {
 	}
 	catch (error) {
 		console.error('Error loading tgtalk data:', error)
+		message.value = '加载失败'
+	}
+	finally {
+		loading.value = false
+	}
+}
+
+// 加载 memos 数据
+async function loadMemosData() {
+	const config = homepageConfig.moments?.memos
+	if (!config?.baseUrl) {
+		message.value = '未配置 memos API 地址'
+		return
+	}
+
+	loading.value = true
+	try {
+		const data = await fetchMemosData(config.baseUrl, config.pageSize)
+		momentsList.value = data
+		hasMore.value = false // memos 一次性加载全部
+	}
+	catch (error) {
+		console.error('Error loading memos data:', error)
 		message.value = '加载失败'
 	}
 	finally {
@@ -101,6 +125,9 @@ onMounted(async () => {
 	}
 	else if (props.type === 'tgtalk') {
 		await loadTgtalkData()
+	}
+	else if (props.type === 'memos') {
+		await loadMemosData()
 	}
 })
 

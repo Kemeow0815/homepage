@@ -22,6 +22,21 @@ export interface MomentItem {
 	views?: string
 }
 
+// Moments 数据源配置类型
+export interface MomentsConfig {
+	/** 数据源类型 */
+	type: 'local' | 'tgtalk' | 'memos'
+	/** tgtalk 配置 */
+	tgtalk?: {
+		url: string
+	}
+	/** memos 配置 (0.26.x) */
+	memos?: {
+		baseUrl: string
+		pageSize?: number
+	}
+}
+
 // tgtalk API 类型
 export interface TgtalkMessage {
 	id: string
