@@ -171,7 +171,7 @@ function goToNextWeek() {
 				<table class="schedule-table">
 					<colgroup>
 						<col class="col-time">
-						<col v-for="day in viewModel.dayColumns" :key="day.day">
+						<col v-for="day in viewModel.dayColumns" :key="day.day" class="col-day">
 					</colgroup>
 					<thead>
 						<tr>
@@ -185,17 +185,16 @@ function goToNextWeek() {
 					</thead>
 					<tbody>
 						<tr
-							v-for="row in viewModel.nodeRows.filter(r => r.node % 2 === 1)"
+							v-for="row in viewModel.nodeRows"
 							:key="row.node"
 							class="schedule-row"
 						>
 							<td class="td-time">
 								<div class="node-label">
-									第 {{ row.node }}-{{ Math.min(row.node + 1, viewModel?.nodeRows.length ?? 0) }} 节
+									第 {{ row.node }} 节
 								</div>
 								<div class="time-range">
-									{{ row.startTime }} -
-									{{ viewModel?.nodeRows.find(item => item.node === Math.min(row.node + 1, viewModel?.nodeRows.length ?? 0))?.endTime ?? row.endTime }}
+									{{ row.startTime }} - {{ row.endTime }}
 								</div>
 							</td>
 							<td
@@ -208,6 +207,33 @@ function goToNextWeek() {
 										v-for="course in viewModel?.coursesByDay[day.day]?.filter(c => c.startNode === row.node) ?? []"
 										:key="course.courseId"
 										class="course-card"
+										:style="{
+											borderLeftColor: course.color,
+											backgroundColor: `color-mix(in srgb, ${course.color} 10%, transparent)`,
+										}"
+									>
+										<div class="course-name">
+											{{ course.courseName }}
+										</div>
+										<div class="course-info">
+											<div class="course-weeks">
+												{{ course.startWeek }}-{{ course.endWeek }}周
+											</div>
+											<div class="course-room">
+												教室：{{ course.room }}
+											</div>
+											<div class="course-teacher">
+												教师：{{ course.teacher }}
+											</div>
+										</div>
+									</div>
+								</template>
+								<!-- 检查当前行是否被某个课程覆盖（跨节课程） -->
+								<template v-else-if="viewModel?.coursesByDay[day.day]?.filter(c => c.startNode < row.node && c.endNode >= row.node).length ?? 0 > 0">
+									<div
+										v-for="course in viewModel?.coursesByDay[day.day]?.filter(c => c.startNode < row.node && c.endNode >= row.node) ?? []"
+										:key="`cont-${course.courseId}`"
+										class="course-card course-continuation"
 										:style="{
 											borderLeftColor: course.color,
 											backgroundColor: `color-mix(in srgb, ${course.color} 10%, transparent)`,
@@ -448,11 +474,15 @@ function goToNextWeek() {
 .schedule-table {
 	width: 100%;
 	border-collapse: collapse;
-	min-width: 700px;
+	min-width: 900px;
 	table-layout: fixed;
 
 	col.col-time {
-		width: 100px;
+		width: 110px;
+	}
+
+	col.col-day {
+		min-width: 140px;
 	}
 
 	th, td {
@@ -484,6 +514,8 @@ function goToNextWeek() {
 		text-align: left;
 		background-color: var(--c-bg-soft);
 		height: auto;
+		min-width: 100px;
+		white-space: nowrap;
 	}
 
 	.schedule-row:last-child {

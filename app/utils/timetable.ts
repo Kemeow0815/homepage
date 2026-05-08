@@ -142,13 +142,14 @@ function toCourseView(
     color: string,
     nodeRows: TimetableNodeRow[],
 ): TimetableCourseView {
-    const fixedDurationNodes = 2
+    // 使用 schedule.step 作为课程持续时间，默认为2节
+    const durationNodes = schedule.step || 2
     const maxNode = Math.max(
         ...nodeRows.map(row => row.node),
         schedule.startNode,
     )
     const endNode = Math.min(
-        schedule.startNode + fixedDurationNodes - 1,
+        schedule.startNode + durationNodes - 1,
         maxNode,
     )
     const startNodeRow = nodeRows.find(
@@ -167,7 +168,7 @@ function toCourseView(
         day: schedule.day,
         startNode: schedule.startNode,
         endNode,
-        durationNodes: fixedDurationNodes,
+        durationNodes,
         startWeek: schedule.startWeek,
         endWeek: schedule.endWeek,
         nodeText: `第 ${schedule.startNode}-${endNode} 节`,

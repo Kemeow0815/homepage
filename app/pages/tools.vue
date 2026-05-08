@@ -35,7 +35,7 @@ const tools = [
 	{
 		title: '课程表',
 		desc: '我的课表',
-		href: '/timetable',
+		href: '/schedule',
 		icon: 'material-symbols:calendar-month',
 		order: 4,
 	},
