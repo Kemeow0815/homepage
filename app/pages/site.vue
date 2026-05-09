@@ -116,11 +116,11 @@ const webSites: Array<CardProps> = [
 		desc: '我的赞助页',
 	},
 	{
-		name: 'Gwitter',
-		nameAlt: 'Gwitter',
+		name: 'Memos-Vervel',
+		nameAlt: 'memos',
 		buttons: [
-			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://gwitter.268682.xyz' },
-			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/gwitter' },
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://memos.268682.xyz' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/memos' },
 		],
 		desc: '说说',
 	},
@@ -132,6 +132,33 @@ const webSites: Array<CardProps> = [
 			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/HanAnalytics' },
 		],
 		desc: '基于github的网站分析',
+	},
+	{
+		name: 'Ke Miao News',
+		nameAlt: '60s-news',
+		buttons: [
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://news.268682.xyz' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/60s-web' },
+		],
+		desc: '基于60s的api的网站新闻',
+	},
+	{
+		name: 'Html-tools',
+		nameAlt: 'html',
+		buttons: [
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://kemeow0815.github.io/html' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/html' },
+		],
+		desc: '基于github pages的html工具集',
+	},
+	{
+		name: 'blog-link-monitor',
+		nameAlt: '博客友链检测工具',
+		buttons: [
+			{ icon: 'ph:planet-duotone', text: '访问', to: 'https://kemeow0815.github.io/link-data' },
+			{ icon: 'ph:github-logo-duotone', text: 'GitHub', to: 'https://github.com/Kemeow0815/link-data' },
+		],
+		desc: '基于mongodb的博客友链检测工具',
 	},
 ]
 
