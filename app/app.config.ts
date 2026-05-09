@@ -82,7 +82,7 @@ export default defineAppConfig({
 	// 即刻页面 VPN 提示弹窗配置
 	momentsVpnToast: {
 		// 是否启用
-		enabled: true,
+		enabled: false,
 		// 是否自动关闭
 		autoClose: true,
 		// 自动关闭延迟（毫秒）
@@ -117,6 +117,7 @@ export default defineAppConfig({
 				// 	],
 				// },
 				{ icon: 'jam:tools', text: '工具', url: '/tools' },
+				// { icon: 'ri:heartbeat-line', text: '监控', url: '/monitor' },
 				// { icon: 'ri:planet-line', text: '站点', url: '/site' },
 				// { icon: 'ri:history-line', text: '日志', url: '/log' },
 			],

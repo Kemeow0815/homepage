@@ -102,6 +102,13 @@ const tools = [
 		icon: 'material-symbols:music-note',
 		order: 13,
 	},
+	{
+		title: '友链检测',
+		desc: '检测友链是否可用',
+		href: '/monitor',
+		icon: 'material-symbols:monitor-heart',
+		order: 13,
+	},
 ]
 
 // 按 order 排序

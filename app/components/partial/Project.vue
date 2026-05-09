@@ -24,6 +24,8 @@ type Repo = typeof initRepo
 const author = computed(() => props.github?.split('/')[0] || '')
 const authorAvatar = computed(() => getGhAvatar(author.value, { size: null }))
 const { data } = useFetch<{ repo: Repo }>(() => `https://ungh.cc/repos/${props.github}`, {
+	key: () => `project-${props.github}`,
+	server: false,
 	default: () => ({ repo: initRepo }),
 })
 </script>

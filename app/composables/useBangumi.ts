@@ -37,7 +37,9 @@ export default function useBangumiCollection(
 		},
 		{
 			key: () =>
-				`bangumi-${contentType}-${collectionType.value}-page-${page.value}`,
+				`bangumi-${toValue(contentType)}-${toValue(collectionType)}-page-${page.value}`,
+			server: false,
+			default: () => ({ data: [], total: 0 }),
 		},
 	)
 

@@ -14,6 +14,34 @@ export interface MemosAttachment {
 	memo: string
 }
 
+/**
+ * 从 Markdown 内容中提取图片 URL
+ * @param content Markdown 内容
+ * @returns 图片 URL 数组
+ */
+function extractImagesFromContent(content: string): string[] {
+	const images: string[] = []
+	// 匹配 Markdown 图片语法: ![alt](url)
+	const imageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g
+	let match
+	while ((match = imageRegex.exec(content)) !== null) {
+		if (match[2]) {
+			images.push(match[2])
+		}
+	}
+	return images
+}
+
+/**
+ * 从 Markdown 内容中移除图片语法，保留其他内容
+ * @param content Markdown 内容
+ * @returns 处理后的内容
+ */
+function removeMarkdownImages(content: string): string {
+	// 移除 Markdown 图片语法: ![alt](url)
+	return content.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '').trim()
+}
+
 export interface MemosMemo {
 	name: string
 	state: string
@@ -77,16 +105,25 @@ export async function fetchMemosData(
 				minute: '2-digit',
 			})
 
-			// 提取图片附件
-			const images = memo.attachments
+			// 提取附件中的图片
+			const attachmentImages = memo.attachments
 				?.filter((att) => att.type?.startsWith('image/'))
 				.map((att) => att.externalLink || `${cleanUrl}/api/v1/${att.name}`) || []
 
+			// 提取内容中的 Markdown 图片
+			const contentImages = extractImagesFromContent(memo.content)
+
+			// 合并所有图片（附件图片 + 内容中的图片）
+			const allImages = [...attachmentImages, ...contentImages]
+
+			// 移除内容中的 Markdown 图片语法，避免重复显示
+			const cleanContent = removeMarkdownImages(memo.content)
+
 			return {
 				id: memo.name.replace('memos/', ''),
-				content: memo.content,
+				content: cleanContent,
 				date: dateStr,
-				images: images.length > 0 ? images : undefined,
+				images: allImages.length > 0 ? allImages : undefined,
 				tags: memo.tags,
 			}
 		})
