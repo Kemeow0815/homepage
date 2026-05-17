@@ -114,10 +114,10 @@ const homepageConfig = {
 	favicon: '/icon.png',
 	url: 'https://www.kemiaosw.top/',
 	blog: {
-		url: 'https://kemeow0815.github.io/',
-		atom: 'https://kemeow0815.github.io/feed.xml',
-		link: 'https://kemeow0815.github.io/links',
-		archive: 'https://kemeow0815.github.io/archives',
+		url: 'https://blog.kemeow.top/',
+		atom: 'https://blog.kemeow.top/rss.xml',
+		link: 'https://blog.kemeow.top/friends',
+		archive: 'https://blog.kemeow.top/archives',
 		name: '喵洛阁',
 	},
 
